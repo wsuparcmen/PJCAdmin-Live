@@ -642,10 +642,84 @@
           failure();
         }
 
-        complete();
+        ParentAndJobCoachInfoRetrieval();
       });
     }
 
     function RRformatRoutine(item) {
       return item.routineTitle + ': ' + item.userName + "'s Routine assigned by - " + item.creatorUserName;
+    }
+
+<!-- %%%%%%%%% Parent and JobCoach Info Retrieval %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+    function ParentAndJobCoachInfoRetrieval() {
+      IRLogin();
+      //IRGetParentInfo();
+      //IRGetJobCoachInfo();
+    }
+
+    function IRLogin() {
+      var login = {
+        'UserName':'UnitTesterChild',
+        'Password':'password'};
+      $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        data: login,
+        url: uri + "Login",
+        success: function(data){
+          var loginToken = data;
+          $('#data').html(data);
+          IRGetParentInfo(loginToken);
+        },
+        error: function(){
+          alert('Login Failure');
+        }
+      });
+    }
+
+    function IRGetParentInfo(loginToken) {
+      $.getJSON(uri + "Parent",
+        {token: loginToken},
+        function (data) {
+          // On success, 'data' contains Parent Info.
+          $('<li>', { text: IRFormatInfo(data) }).appendTo($('#getParentInfoResults'));
+        }
+      ).always(function(){
+        if ($('#getParentInfoResults li').length == 1){
+          $('#getParentInfoPF').html('Success!');
+          success();
+        } else {
+          $('#getParentInfoPF').html('Failure: Non-singular info result');
+          $('#getParentInfoPF').css('color','red');
+          failure();
+        }
+
+        IRGetJobCoachInfo(loginToken);
+      });
+    }
+
+    function IRGetJobCoachInfo(loginToken) {
+      $.getJSON(uri + "JobCoach",
+        {token: loginToken},
+        function (data) {
+          // On success, 'data' contains JobCoach Info.
+          $('<li>', { text: IRFormatInfo(data) }).appendTo($('#getJobCoachInfoResults'));
+        }
+      ).always(function(){
+        if ($('#getJobCoachInfoResults li').length == 1){
+          $('#getJobCoachInfoPF').html('Success!');
+          success();
+        } else {
+          $('#getJobCoachInfoPF').html('Failure: Non-singular info result');
+          $('#getJobCoachInfoPF').css('color','red');
+          failure();
+        }
+
+        complete();
+      });
+    }
+
+    function IRFormatInfo(item) {
+      return item.userName + ' - Email: ' + item.email + " - Phone: " + item.phone;
     }
