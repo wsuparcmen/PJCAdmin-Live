@@ -182,6 +182,13 @@ namespace PJCAdmin.Classes.Helpers
         {
             return db.Jobs.AsQueryable();
         }
+        public Job createJob(Job j)
+        {
+            db.Jobs.Add(j);
+            db.SaveChanges();
+
+            return j;
+        }
         #endregion
         #region Routines
         public Routine createRoutine(Routine r)

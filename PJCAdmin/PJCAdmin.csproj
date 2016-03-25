@@ -167,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Helpers\APIModelHelpers\Auth.cs" />
+    <Compile Include="Classes\Helpers\APIModelHelpers\JobHelper.cs" />
     <Compile Include="Classes\Helpers\APIModelHelpers\ModelCopier.cs" />
     <Compile Include="Classes\Helpers\APIModelHelpers\RoutineHelper.cs" />
     <Compile Include="Classes\Helpers\APIModelHelpers\UserInfoHelper.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="Classes\Helpers\MVCModelHelpers\TaskHelper.cs" />
     <Compile Include="Classes\TokenIsInvalidException.cs" />
     <Compile Include="ControllersAPI\JobCoachController.cs" />
+    <Compile Include="ControllersAPI\JobController.cs" />
     <Compile Include="ControllersAPI\ParentController.cs" />
     <Compile Include="ControllersAPI\TestController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -238,6 +240,7 @@
     <Compile Include="Models\Job.cs">
       <DependentUpon>PJCModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\JobModels.cs" />
     <Compile Include="Models\MediaType.cs">
       <DependentUpon>PJCModel.tt</DependentUpon>
     </Compile>
