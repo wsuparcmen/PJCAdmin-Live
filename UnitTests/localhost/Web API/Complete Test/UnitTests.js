@@ -674,6 +674,8 @@
         },
         error: function(){
           alert('Login Failure');
+          failure();
+          complete();
         }
       });
     }
@@ -716,10 +718,95 @@
           failure();
         }
 
-        complete();
+        JobUpload();
       });
     }
 
     function IRFormatInfo(item) {
       return item.userName + ' - Email: ' + item.email + " - Phone: " + item.phone;
+    }
+
+<!-- %%%%%%%%% Job Upload %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+    function JobUpload() {
+      JULogin();
+      //JUUploadJob();
+    }
+
+    function JULogin() {
+      var login = {
+        'UserName':'UnitTesterChild',
+        'Password':'password'};
+      $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        data: login,
+        url: uri + "Login",
+        success: function(data){
+          var loginToken = data;
+          $('#data').html(data);
+          JUUploadJob(loginToken);
+        },
+        error: function(){
+          alert('Login Failure');
+          failure();
+          complete();
+        }
+      });
+    }
+
+    function JUUploadJob(loginToken) {
+      var job = {
+        'creatorUsername':'UnitTesterJobCoach',
+        'routineTitle':'UnitTestJob1',
+        'startTime':'2016-03-24 03:04:25',
+        'stepEndTimes[0]':'2016-03-24 03:05:32',
+        'stepEndTimes[1]':'2016-03-24 03:07:05',
+        'stepEndTimes[2]':'2016-03-24 03:10:49',
+        'jobNotes[0].noteTitle':'Job Note 1',
+        'jobNotes[0].noteMessage':'This is the first Note',
+        'jobNotes[1].noteTitle':'Job Note 2',
+        'jobNotes[1].noteMessage':'This is the second Note',
+        'stepNotes[0].stepNo':'1',
+        'stepNotes[0].note.noteTitle':'Step 1 Note 1',
+        'stepNotes[0].note.noteMessage':'This is the first note for step 1',
+        'stepNotes[1].stepNo':'1',
+        'stepNotes[1].note.noteTitle':'Step 1 Note 2',
+        'stepNotes[1].note.noteMessage':'This is the second note for step 1',
+        'stepNotes[2].stepNo':'2',
+        'stepNotes[2].note.noteTitle':'Step 2 Note 1',
+        'stepNotes[2].note.noteMessage':'This is the first note for step 2'};
+      $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        data: job,
+        url: uri + "Job?token=" + loginToken,
+        success: function(data){
+          JUDisplayUploadedJob(data);
+          $('#uploadJobPF').html('Success: Job Uploaded');
+          success();
+
+          complete();
+        },
+        error: function(){
+          $('#uploadJobPF').html('Failure');
+          $('#uploadJobPF').css('color','red');
+          failure();
+          complete();
+        }
+      });
+    }
+
+    function JUDisplayUploadedJob(job) {
+      $('#uploadedJobResultsIdentifier').html(job.creatorUsername + ' - ' + job.routineTitle);
+      $('#uploadedJobResultsStart').html('Start Time: ' + job.startTime);
+      for (i=0; i < job.stepEndTimes.length; i++) {
+        $('<li>', { text: "StepNo" + i + ": " + job.stepEndTimes[i] }).appendTo($('#uploadedJobResultsSteps'));
+      }
+      $.each(job.jobNotes, function(key, item) {
+        $('<li>', { text: item.noteTitle + ": " + item.noteMessage}).appendTo($('#uploadedJobResultsJobNotes'));
+      });
+      $.each(job.stepNotes, function(key, item) {
+        $('<li>', { text: "StepNo" + item.stepNo + " - " + item.note.noteTitle + ": " + item.note.noteMessage}).appendTo($('#uploadedJobResultsStepNotes'));
+      });
     }
