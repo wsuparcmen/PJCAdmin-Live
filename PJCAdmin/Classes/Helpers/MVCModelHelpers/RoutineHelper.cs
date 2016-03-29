@@ -18,7 +18,6 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
     {
         private TaskHelper taskHelper = new TaskHelper();
         private FeedbackHelper feedbackHelper = new FeedbackHelper();
-        private JobHelper jobHelper = new JobHelper();
         private DbHelper helper = new DbHelper();
 
         #region Current User Methods
@@ -439,6 +438,13 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
         {
             return getMostRecentRoutineModelsAssignedTo(creatorUsername, assigneeName).Where(r => r.routineTitle.Equals(routineName)).Count() > 0;
         }
+        /* TODO */
+        public bool routineVersionExists(string creatorUsername, string assigneeName, string routineName, DateTime updatedDate)
+        {
+            List<Routine> versions = getRoutinesAssignedToByName(creatorUsername, routineName, assigneeName);
+            IEnumerable<Routine> matchedTimes = versions.Where(r => DateTime.Compare(r.updatedDate.AddMilliseconds(-r.updatedDate.Millisecond), updatedDate) == 0);
+            return matchedTimes.Count() > 0;
+        }
         /* Returns whether or not any routines created by the
          * given user that match the given name are active.
          * @param creatorUsername: The username of the 
@@ -463,7 +469,7 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
 
             Routine routine = getMostRecentRoutineAssignedToByName(creatorUsername, routineName, assigneeName);
 
-            if (jobHelper.jobsExistForRoutine(routine.routineID))
+            if (jobsExistForRoutine(routine.routineID))
                 return true;
             return false;
         }
@@ -689,13 +695,20 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
                 }
             }
         }
+        /* Returns whether or not jobs have been created
+         * for the given routine.
+         * @param routineID: The unique ID for the routine.
+         */
+        private bool jobsExistForRoutine(int routineID)
+        {
+            return helper.findRoutine(routineID).Jobs.Count() > 0;
+        }
         #endregion
 
         public void dispose()
         {
             helper.dispose();
             feedbackHelper.dispose();
-            jobHelper.dispose();
             taskHelper.dispose();
         }
     }
