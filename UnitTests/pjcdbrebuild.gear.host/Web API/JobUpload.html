@@ -1,0 +1,99 @@
+<html>
+<head><title>Job Upload Unit Test</title></head>
+<body>
+  <div>
+    <h4>Uploaded Job</h4>
+    <p id="uploadedJobResultsIdentifier"></p>
+    <p id="uploadedJobResultsStart"></p>
+    <h5>Step End Times</h5>
+    <ul id="uploadedJobResultsSteps"></ul>
+    <h5>Job Notes</h5>
+    <ul id="uploadedJobResultsJobNotes"></ul>
+    <h5>Step Notes</h5>
+    <ul id="uploadedJobResultsStepNotes"></ul>
+    <p id="uploadJobPF" style="color:limegreen;"></p>
+  </div>
+
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+  <script>
+    var uri = 'http://pjcdbrebuild.gear.host/api/';
+    var loginToken = "";
+    var uName = 'UnitTesterChild';
+    var uPass = 'password';
+    
+    $(document).ready(function () {
+      login();
+    });
+
+    function login() {
+      var login = {
+        'UserName':uName,
+        'Password':uPass};
+      $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        data: login,
+        url: uri + "Login",
+        success: function(data){
+          loginToken = data;
+          $('#data').html(data);
+          uploadJob();
+        },
+        error: function(){
+          alert('Login Failure');
+        }
+      });
+    }
+    
+    function uploadJob() {
+      var job = {
+        'creatorUsername':'UnitTesterJobCoach',
+        'routineTitle':'UnitTestJob1',
+        'startTime':'2016-03-24 03:04:25',
+        'stepEndTimes[0]':'2016-03-24 03:05:32',
+        'stepEndTimes[1]':'2016-03-24 03:07:05',
+        'stepEndTimes[2]':'2016-03-24 03:10:49',
+        'jobNotes[0].noteTitle':'Job Note 1',
+        'jobNotes[0].noteMessage':'This is the first Note',
+        'jobNotes[1].noteTitle':'Job Note 2',
+        'jobNotes[1].noteMessage':'This is the second Note',
+        'stepNotes[0].stepNo':'1',
+        'stepNotes[0].note.noteTitle':'Step 1 Note 1',
+        'stepNotes[0].note.noteMessage':'This is the first note for step 1',
+        'stepNotes[1].stepNo':'1',
+        'stepNotes[1].note.noteTitle':'Step 1 Note 2',
+        'stepNotes[1].note.noteMessage':'This is the second note for step 1',
+        'stepNotes[2].stepNo':'2',
+        'stepNotes[2].note.noteTitle':'Step 2 Note 1',
+        'stepNotes[2].note.noteMessage':'This is the first note for step 2'};
+      $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        data: job,
+        url: uri + "Job?token=" + loginToken,
+        success: function(data){
+          DisplayUploadedJob(data);
+          $('#uploadJobPF').html('Success: Job Uploaded');
+        },
+        error: function(){
+          $('#uploadJobPF').html('Failure');
+          $('#uploadJobPF').css('color','red');
+        }
+      });
+    }
+
+    function DisplayUploadedJob(job) {
+      $('#uploadedJobResultsIdentifier').html(job.creatorUsername + ' - ' + job.routineTitle);
+      $('#uploadedJobResultsStart').html('Start Time: ' + job.startTime);
+      for (i=0; i < job.stepEndTimes.length; i++) {
+        $('<li>', { text: "StepNo" + i + ": " + job.stepEndTimes[i] }).appendTo($('#uploadedJobResultsSteps'));
+      }
+      $.each(job.jobNotes, function(key, item) {
+        $('<li>', { text: item.noteTitle + ": " + item.noteMessage}).appendTo($('#uploadedJobResultsJobNotes'));
+      });
+      $.each(job.stepNotes, function(key, item) {
+        $('<li>', { text: "StepNo" + item.stepNo + " - " + item.note.noteTitle + ": " + item.note.noteMessage}).appendTo($('#uploadedJobResultsStepNotes'));
+      });
+    }
+
+  </script>
