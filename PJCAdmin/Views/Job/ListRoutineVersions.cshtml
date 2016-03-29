@@ -1,0 +1,59 @@
+﻿@model IEnumerable<PJCAdmin.Models.Routine>
+
+@{
+ViewBag.Title = "Job - Routine Version Selection";
+}
+
+@if (Roles.IsUserInRole("Administrator") && !(ViewData["mockUser"] as string).Equals(""))
+{
+    <h1>
+        Viewing as: @(ViewData["mockUser"] as string)
+    </h1>
+    <p>@Html.ActionLink("View as different user","Index")</p>
+}
+
+<br />
+
+<h1>
+    Viewing Routine: @(ViewData["routineName"] as string) - Assigned to: @(ViewData["assigneeName"] as string)
+</h1>
+<p>
+    @if (Roles.IsUserInRole("Administrator")){
+        @Html.ActionLink("View different routine", "ListRoutines", new { mockUser = ViewData["mockUser"] as string })
+    }
+    else{
+        @Html.ActionLink("View different routine", "ListRoutines")
+    }
+</p>
+
+<table>
+    <tr>
+        <th>Select a the desired Routine version...</th>
+    </tr>
+
+    @foreach (PJCAdmin.Models.Routine routine in Model)
+    {
+        <tr>
+            <td>
+                Updated on: @Html.DisplayFor(modelItem => routine.updatedDate) 
+            </td>
+            <td>
+                @if (Roles.IsUserInRole("Administrator"))
+                {
+                    @Html.ActionLink("Show Jobs", "ListJobs", new { 
+                        mockUser = ViewData["mockUser"] as string,
+                        routineName = routine.routineTitle,
+                        assigneeName = routine.assigneeUserName,
+                        updatedDate = routine.updatedDate})
+                }
+                else
+                {
+                    @Html.ActionLink("Show Jobs", "ListJobs", new {
+                        routineName = routine.routineTitle,
+                        assigneeName = routine.assigneeUserName,
+                        updatedDate = routine.updatedDate})
+                }
+            </td>
+        </tr>
+    }
+</table>

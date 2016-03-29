@@ -435,8 +435,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Job\Index.cshtml" />
     <Content Include="Views\Job\Details.cshtml" />
-    <Content Include="Views\Job\Create.cshtml" />
-    <Content Include="Views\Job\Edit.cshtml" />
     <Content Include="Views\Job\Delete.cshtml" />
     <Content Include="Views\PromptType\Index.cshtml" />
     <Content Include="Views\PromptType\Details.cshtml" />
@@ -462,7 +460,6 @@
     <Content Include="Views\Prompt\Details.cshtml" />
     <Content Include="Views\Prompt\Edit.cshtml" />
     <Content Include="Views\Prompt\Delete.cshtml" />
-    <Content Include="Views\Job\_taskList.cshtml" />
     <Content Include="Views\Account\List.cshtml" />
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
@@ -496,6 +493,9 @@
     <Content Include="Views\Routine\ListByAssignedUser.cshtml" />
     <Content Include="Views\Routine\_EditFeedback.cshtml" />
     <Content Include="Views\Routine\_NewFeedback.cshtml" />
+    <Content Include="Views\Job\ListRoutines.cshtml" />
+    <Content Include="Views\Job\ListRoutineVersions.cshtml" />
+    <Content Include="Views\Job\ListJobs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
