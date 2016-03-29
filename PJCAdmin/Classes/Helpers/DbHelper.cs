@@ -8,7 +8,7 @@ namespace PJCAdmin.Classes.Helpers
 {
     public class DbHelper
     {
-        private static pjcEntities db = new pjcEntities();
+        private pjcEntities db = new pjcEntities();
 
         #region Accounts
         public void createUserName(object providerUserKey)

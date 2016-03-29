@@ -12,11 +12,12 @@ namespace PJCAdmin.ControllersAPI
     public class ParentController : ApiController
     {
         private UserInfoHelper helper = new UserInfoHelper();
+        private Auth auth = new Auth();
 
         public UserInfoModel Get(string token)
         {
-            Auth.authorizeToken(token);
-            string userName = Auth.getUserNameFromToken(token);
+            auth.authorizeToken(token);
+            string userName = auth.getUserNameFromToken(token);
 
             return helper.getParentInfo(userName);
         }

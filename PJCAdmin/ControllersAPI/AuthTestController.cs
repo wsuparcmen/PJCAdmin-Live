@@ -12,13 +12,14 @@ namespace PJCAdmin.ControllersAPI
     public class AuthTestController : ApiController
     {
         private pjcEntities db = new pjcEntities();
+        private Auth auth = new Auth();
 
         // GET api/AuthTest
         public IEnumerable<AuthTest> Get(string token)
         {
-            Auth.authorizeToken(token);
+            auth.authorizeToken(token);
 
-            string userName = Auth.getUserNameFromToken(token);
+            string userName = auth.getUserNameFromToken(token);
 
             return db.AuthTests.Where(a => a.UserName.Equals(userName));
         }
@@ -30,9 +31,9 @@ namespace PJCAdmin.ControllersAPI
             //string token = packet.token;
             //AuthTest test = packet.obj;
 
-            Auth.authorizeToken(token);
+            auth.authorizeToken(token);
 
-            test.UserName = Auth.getUserNameFromToken(token);
+            test.UserName = auth.getUserNameFromToken(token);
 
             db.AuthTests.Add(test);
             db.SaveChanges();

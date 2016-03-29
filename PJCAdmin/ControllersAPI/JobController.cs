@@ -12,12 +12,13 @@ namespace PJCAdmin.ControllersAPI
     public class JobController : ApiController
     {
         private JobHelper helper = new JobHelper();
+        private Auth auth = new Auth();
 
         [HttpPost]
         public HttpResponseMessage UploadJob(JobModel job, string token)
         {
-            Auth.authorizeToken(token);
-            string userName = Auth.getUserNameFromToken(token);
+            auth.authorizeToken(token);
+            string userName = auth.getUserNameFromToken(token);
 
             bool created = helper.createJob(userName, job);
 

@@ -12,6 +12,7 @@ namespace PJCAdmin.ControllersAPI
     public class LoginController : ApiController
     {
         private pjcEntities db = new pjcEntities();
+        private Auth auth = new Auth();
 
         //POST .../api/Login
         [HttpPost]
@@ -70,12 +71,12 @@ namespace PJCAdmin.ControllersAPI
         [HttpPost]
         public HttpResponseMessage ChangePassword(string token, ChangePasswordModel model)
         {
-            Auth.authorizeToken(token);
+            auth.authorizeToken(token);
 
             if (!(ModelState.IsValid))
                 return Request.CreateResponse<string>(HttpStatusCode.BadRequest, "The current password is incorrect or the new password is invalid.");
 
-            string userName = Auth.getUserNameFromToken(token);
+            string userName = auth.getUserNameFromToken(token);
             
             System.Web.Security.MembershipUser user = System.Web.Security.Membership.GetUser(userName);
             bool changePasswordSucceeded;
@@ -100,7 +101,7 @@ namespace PJCAdmin.ControllersAPI
         [HttpGet]
         public HttpResponseMessage RenewToken(string token)
         {
-            Auth.authorizeToken(token);
+            auth.authorizeToken(token);
             return Request.CreateResponse<string>(HttpStatusCode.OK, "Token renewed");
         }
 
