@@ -15,7 +15,7 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
      */
     public class Auth
     {
-        private static DbHelper helper = new DbHelper();
+        private DbHelper helper = new DbHelper();
 
         /* Returns the username for the user associated
          * with the given token.
@@ -25,7 +25,7 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
          * @throws TokenIsInvalidException: if isTokenValid
          * returns false for the token.
          */
-        public static string getUserNameFromToken(string token)
+        public string getUserNameFromToken(string token)
         {
             if (! isTokenValid(token))
             {
@@ -46,7 +46,7 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
          * server that was returned to the server with
          * an HTTP request.
          */
-        public static bool isTokenValid(string token)
+        public bool isTokenValid(string token)
         {
             if (token.Length < 38)
                 return false;
@@ -81,7 +81,7 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
          * isTokenValid returns false. This causes 
          * an HTTP Response to be sent to the client.
          */
-        public static void authorizeToken(string token)
+        public void authorizeToken(string token)
         {
             if (!isTokenValid(token))
             {

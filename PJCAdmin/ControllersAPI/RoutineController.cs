@@ -12,12 +12,13 @@ namespace PJCAdmin.ControllersAPI
     public class RoutineController : ApiController
     {
         private RoutineHelper helper = new RoutineHelper();
+        private Auth auth = new Auth();
 
         // GET api/Routine?token=<token>
         public IEnumerable<Routine> Get(string token)
         {
-            Auth.authorizeToken(token);
-            string userName = Auth.getUserNameFromToken(token);
+            auth.authorizeToken(token);
+            string userName = auth.getUserNameFromToken(token);
             
             return helper.getAllRoutinesAssignedToUserForSerialization(userName);
         }
@@ -25,8 +26,8 @@ namespace PJCAdmin.ControllersAPI
         // GET api/Routine?token=<token>&assignedBy=<"Parent" or "Job Coach">
         public IEnumerable<Routine> Get(string token, string assignedBy)
         {
-            Auth.authorizeToken(token);
-            string userName = Auth.getUserNameFromToken(token);
+            auth.authorizeToken(token);
+            string userName = auth.getUserNameFromToken(token);
 
             if (assignedBy.Equals("Parent"))
                 return helper.getRoutinesAssignedByParentForSerialization(userName);
