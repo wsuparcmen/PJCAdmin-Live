@@ -277,7 +277,7 @@
                 $('#noChildren').remove();
             var id = $('#selectAddChildren').val();
             var name = $('#selectAddChildren option:selected').html();
-
+            $('#selectAddChildren option[value=' + name + ']').remove();
             $('#assignedChildrenList').append('<li>' + name + '&nbsp; &nbsp;<button class="remove-user"><i class="fa fa-trash"></i></button><input type="hidden" name="assignedChildren[' + ($('#assignedChildrenList').children().size()).toString() + ']"  value="' + id + '" /></li>')
         });
         $('#addParent').on('click', function (e) {
@@ -288,6 +288,7 @@
             var id = $('#selectAddParent').val();
             var name = $('#selectAddParent option:selected').html();
             $('#assignedParentList').empty();
+            $('#selectAddParent option[value=' + name + ']').remove();
             $('#assignedParentList').append('<li>' + name + '&nbsp; &nbsp;<button class="remove-user"><i class="fa fa-trash"></i></button><input type="hidden" name="parent"  value="' + id + '" /></li>')
         });
         $('#addJobCoach').on('click', function (e) {
@@ -298,16 +299,17 @@
             var id = $('#selectAddJobCoach').val();
             var name = $('#selectAddJobCoach option:selected').html();
             $('#assignedJobCoachList').empty();
+            $('#selectAddJobCoach option[value=' + name + ']').remove();
             $('#assignedJobCoachList').append('<li>' + name + '&nbsp; &nbsp;<button class="remove-user"><i class="fa fa-trash"></i></button><input type="hidden" name="jobCoach"  value="' + id + '" /></li>')
         });
 
         $('#assignedUsersList').on('click', '.remove-user', function (e) {
             e.preventDefault();
             e.stopPropagation();
-            var name = $(this).parent().attr("name");
-            Console.log(name);
+            var name = $(this).parent().find("input").val();
+            console.log(name);
             $(this).parent().remove();
-            $('#selectAddUsers').add(name);
+            $('#selectAddUsers').append('<option value="'+name+'">'+name+'</option>');
             if ($('#assignedUsersList').children().size() == 0) {
                 $('#assignedUsersList').append('<li id="noUsers" style="color:#999"><i>No Assigned Users</i></li>');
             }
@@ -317,6 +319,7 @@
             e.preventDefault();
             e.stopPropagation();
             $(this).parent().remove();
+            $('#selectAddChildren').append('<option value="' + name + '">' + name + '</option>');
             if ($('#assignedChildrenList').children().size() == 0) {
                 $('#assignedChildrenList').append('<li id="noChildren" style="color:#999"><i>No Assigned Children</i></li>');
             }
@@ -326,6 +329,7 @@
             e.preventDefault();
             e.stopPropagation();
             $(this).parent().remove();
+            $('#selectAddParent').append('<option value="' + name + '">' + name + '</option>');
             if ($('#assignedParentList').children().size() == 0) {
                 $('#assignedParentList').append('<li id="noParent" style="color:#999"><i>No Assigned Parent</i></li>');
             }
@@ -378,51 +382,43 @@
     function showAssignedUsersSection() {
         $('#assignedUsersHeading').show();
         $('#assignedUsersList').show();
-        $('#selectAddUsers').show();
-        $('#addUser').show();
+        $('#liAddUsers').show();
     }
     function showChildrenSection() {
         $('#assignedChildrenHeading').show();
         $('#assignedChildrenList').show();
-        $('#selectAddChildren').show();
-        $('#addChild').show();
+        $('#liAddChildren').show();
     }
     function showParentSection() {
         $('#assignedParentHeading').show();
         $('#assignedParentList').show();
-        $('#selectAddParent').show();
-        $('#addParent').show();
+        $('#liAddParent').show();
     }
     function showJobCoachSection() {
         $('#assignedJobCoachHeading').show();
         $('#assignedJobCoachList').show();
-        $('#selectAddJobCoach').show();
-        $('#addJobCoach').show();
+        $('#liAddJobCoach').show();
     }
 
     function hideAssignedUsersSection() {
         $('#assignedUsersHeading').hide();
         $('#assignedUsersList').hide();
-        $('#selectAddUsers').hide();
-        $('#addUser').hide();
+        $('#liAddUsers').hide();
     }
     function hideChildrenSection() {
         $('#assignedChildrenHeading').hide();
         $('#assignedChildrenList').hide();
-        $('#selectAddChildren').hide();
-        $('#addChild').hide();
+        $('#liAddChildren').hide();
     }
     function hideParentSection() {
         $('#assignedParentHeading').hide();
         $('#assignedParentList').hide();
-        $('#selectAddParent').hide();
-        $('#addParent').hide();
+        $('#liAddParent').hide();
     }
     function hideJobCoachSection() {
         $('#assignedJobCoachHeading').hide();
         $('#assignedJobCoachList').hide();
-        $('#selectAddJobCoach').hide();
-        $('#addJobCoach').hide();
+        $('#liAddJobCoach').hide();
     }
 
     function UpdateIndexes(listID) {

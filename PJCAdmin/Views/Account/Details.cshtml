@@ -130,25 +130,10 @@
                 <td><b>Job Coach</b></td>
                 <td>
                     @Html.ActionLink(((MembershipUser)ViewData["Job Coach"]).UserName, "Details", new { user = ((MembershipUser)ViewData["Job Coach"]).UserName })
+                    @Html.ActionLink("Jobs Assigned By", "", "")
                     <br />
                 </td>
             </tr>
-            <tr>
-                <td>@Html.ActionLink("View all Assigned Jobs", "", "")</td>
-            </tr>
-                    <tr>
-                        <td><b>Jobs Assigned By</b></td>
-                        <td>
-                            @ViewData["Job Coach"]
-                            <br />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.ActionLink("Job 1 Sample", "", "")
-                            <br />
-                        </td>
-                    </tr>
         }
         if ((MembershipUser)ViewData["Parent"] != null)
         {
@@ -156,25 +141,16 @@
                 <td><b>Parent</b></td>
                 <td>
                     @Html.ActionLink(((MembershipUser)ViewData["Parent"]).UserName, "Details", new { user = ((MembershipUser)ViewData["Parent"]).UserName })
+                    @Html.ActionLink("Jobs Assigned By", "", "")
                     <br />
                 </td>
             </tr>
-                    <tr>
-                        <td><b>Jobs Assigned By</b></td>
-                        <td>
-                            @ViewData["Parent"]
-                            <br />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.ActionLink("Job 1 Sample", "", "")
-                            <br />
-                        </td>
-                    </tr>
-                    }
-                    }
-                </table>
+            <tr>
+                <td>@Html.ActionLink("View all assigned Jobs","","")</td>
+            </tr>
+          }
+    }
+</table>
 <!--
 <p>
     @{}//Html.ActionLink("Assigned Tasks", "AssignedTasks", new { user = Model.UserName })

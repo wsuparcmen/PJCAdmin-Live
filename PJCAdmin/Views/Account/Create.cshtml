@@ -72,7 +72,7 @@
                     <li id="noUsers" style="color:#999"><i>No Assigned Users</i></li>
                 </ul>
             </li>
-            <li style="margin-top:20px;">
+            <li id="liAddUsers" style="margin-top:20px;">
                 <select name="selectAddUsers" id="selectAddUsers">
                     @for (int i = 0; i < ((List<MembershipUser>)ViewData["AvailableUsers"]).Count; i++)
                     {
@@ -90,7 +90,7 @@
                     <li id="noChildren" style="color:#999"><i>No Assigned Children</i></li>
                 </ul>
             </li>
-            <li style="margin-top:20px;">
+            <li id="liAddChildren" style="margin-top:20px;">
                 <select name="selectAddChildren" id="selectAddChildren">
                     @for (int i = 0; i < ((List<MembershipUser>)ViewData["AvailableChildren"]).Count; i++)
                         {
@@ -108,7 +108,7 @@
                     <li id="noParent" style="color:#999"><i>No Parent</i></li>
                 </ul>
             </li>
-            <li style="margin-top:20px;">
+            <li id="liAddParent" style="margin-top:20px;">
                 <select name="selectAddParent" id="selectAddParent">
                     @for (int i = 0; i < ((List<MembershipUser>)ViewData["AvailableParents"]).Count; i++)
                     {
@@ -126,7 +126,7 @@
                     <li id="noJobCoach" style="color:#999"><i>No Job Coach</i></li>
                 </ul>
             </li>
-            <li style="margin-top:20px;">
+            <li id="liAddJobCoach" style="margin-top:20px;">
                 <select name="selectAddJobCoach" id="selectAddJobCoach">
                     @for (int i = 0; i < ((List<MembershipUser>)ViewData["AvailableJobCoaches"]).Count; i++)
                     {
@@ -272,51 +272,43 @@
     function showAssignedUsersSection() {
         $('#assignedUsersHeading').show();
         $('#assignedUsersList').show();
-        $('#selectAddUsers').show();
-        $('#addUser').show();
+        $('#liAddUsers').show();
     }
     function showChildrenSection() {
         $('#assignedChildrenHeading').show();
         $('#assignedChildrenList').show();
-        $('#selectAddChildren').show();
-        $('#addChild').show();
+        $('#liAddChildren').show();
     }
     function showParentSection() {
         $('#assignedParentHeading').show();
         $('#assignedParentList').show();
-        $('#selectAddParent').show();
-        $('#addParent').show();
+        $('#liAddParent').show();
     }
     function showJobCoachSection() {
         $('#assignedJobCoachHeading').show();
         $('#assignedJobCoachList').show();
-        $('#selectAddJobCoach').show();
-        $('#addJobCoach').show();
+        $('#liAddJobCoach').show();
     }
 
     function hideAssignedUsersSection() {
         $('#assignedUsersHeading').hide();
         $('#assignedUsersList').hide();
-        $('#selectAddUsers').hide();
-        $('#addUser').hide();
+        $('#liAddUsers').hide();
     }
     function hideChildrenSection() {
         $('#assignedChildrenHeading').hide();
         $('#assignedChildrenList').hide();
-        $('#selectAddChildren').hide();
-        $('#addChild').hide();
+        $('#liAddChildren').hide();
     }
     function hideParentSection() {
         $('#assignedParentHeading').hide();
         $('#assignedParentList').hide();
-        $('#selectAddParent').hide();
-        $('#addParent').hide();
+        $('#liAddParent').hide();
     }
     function hideJobCoachSection() {
         $('#assignedJobCoachHeading').hide();
         $('#assignedJobCoachList').hide();
-        $('#selectAddJobCoach').hide();
-        $('#addJobCoach').hide();
+        $('#liAddJobCoach').hide();
     }
 
     function UpdateIndexes(listID) {
