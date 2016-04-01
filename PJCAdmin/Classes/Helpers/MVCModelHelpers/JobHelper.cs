@@ -13,8 +13,23 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
      */
     public class JobHelper
     {
-        private RoutineHelper routineHelper = new RoutineHelper();
-        private DbHelper helper = new DbHelper();
+        private RoutineHelper routineHelper;
+        private DbHelper helper;
+
+        public JobHelper(DbHelper h = null)
+        {
+            if (h == null)
+                helper = new DbHelper();
+            else
+                helper = h;
+
+            routineHelper = new RoutineHelper(helper);
+        }
+
+        public DbHelper getDBHelper()
+        {
+            return helper;
+        }
 
         /* TODO */
         public List<Job> getAllJobsForRoutine(string creatorUsername, string assigneeUsername, string routineTitle)

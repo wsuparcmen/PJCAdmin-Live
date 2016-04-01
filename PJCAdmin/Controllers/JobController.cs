@@ -7,16 +7,25 @@ using System.Web;
 using System.Web.Security;
 using System.Web.Mvc;
 using PJCAdmin.Models;
+using PJCAdmin.Classes.Helpers;
 using PJCAdmin.Classes.Helpers.MVCModelHelpers;
 
 namespace PJCAdmin.Controllers
 {
     public class JobController : Controller
     {
-        private AccountHelper accountHelper = new AccountHelper();
-        private RoutineHelper routineHelper = new RoutineHelper();
-        private JobHelper helper = new JobHelper();
+        private AccountHelper accountHelper;
+        private RoutineHelper routineHelper;
+        private JobHelper helper;
         private pjcEntities db = new pjcEntities();
+
+        public JobController()
+        {
+            helper = new JobHelper();
+            DbHelper context = helper.getDBHelper();
+            accountHelper = new AccountHelper(context);
+            routineHelper = new RoutineHelper(context);
+        }
 
         //
         // GET: /Job/

@@ -13,8 +13,23 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
      */
     public class FeedbackHelper
     {
-        private EnumHelper enumHelper = new EnumHelper();
-        private DbHelper helper = new DbHelper();
+        private EnumHelper enumHelper;
+        private DbHelper helper;
+
+        public FeedbackHelper(DbHelper h = null)
+        {
+            if (h == null)
+                helper = new DbHelper();
+            else
+                helper = h;
+
+            enumHelper = new EnumHelper(helper);
+        }
+
+        public DbHelper getDBHelper()
+        {
+            return helper;
+        }
 
         #region Feedback
         /* Returns the matching Feedback record.

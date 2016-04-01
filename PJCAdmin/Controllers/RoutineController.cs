@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Web.Mvc;
+using PJCAdmin.Classes.Helpers;
 using PJCAdmin.Classes.Helpers.MVCModelHelpers;
 using PJCAdmin.Models;
 
@@ -11,8 +12,16 @@ namespace PJCAdmin.Controllers
 {
     public class RoutineController : Controller
     {
-        private RoutineHelper helper = new RoutineHelper();
-        private AccountHelper accountHelper = new AccountHelper();
+        private RoutineHelper helper;
+        private AccountHelper accountHelper;
+
+        public RoutineController()
+        {
+            helper = new RoutineHelper();
+            DbHelper context = helper.getDBHelper();
+            accountHelper = new AccountHelper(context);
+        }
+
         //Index = List all, Create, Details, Edit, Delete
 
         // GET: /Routine/

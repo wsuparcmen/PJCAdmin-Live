@@ -17,7 +17,20 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
      */
     public class AccountHelper
     {
-        private DbHelper helper = new DbHelper();
+        private DbHelper helper;
+
+        public AccountHelper(DbHelper h = null)
+        {
+            if (h == null)
+                helper = new DbHelper();
+            else
+                helper = h;
+        }
+
+        public DbHelper getDBHelper()
+        {
+            return helper;
+        }
 
         #region User Accounts
         /* Returns a list of all users of the given role.

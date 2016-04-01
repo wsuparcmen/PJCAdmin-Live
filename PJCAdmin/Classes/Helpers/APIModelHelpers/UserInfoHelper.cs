@@ -10,7 +10,20 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
 {
     public class UserInfoHelper
     {
-        private DbHelper helper = new DbHelper();
+        private DbHelper helper;
+
+        public UserInfoHelper(DbHelper h = null)
+        {
+            if (h == null)
+                helper = new DbHelper();
+            else
+                helper = h;
+        }
+
+        public DbHelper getDBHelper()
+        {
+            return helper;
+        }
 
         public UserInfoModel getJobCoachInfo(string username)
         {

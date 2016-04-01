@@ -8,9 +8,23 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
 {
     public class JobHelper
     {
-        private PJCAdmin.Classes.Helpers.MVCModelHelpers.RoutineHelper routineHelper = 
-            new PJCAdmin.Classes.Helpers.MVCModelHelpers.RoutineHelper();
-        private DbHelper helper = new DbHelper();
+        private PJCAdmin.Classes.Helpers.MVCModelHelpers.RoutineHelper routineHelper;
+        private DbHelper helper;
+
+        public JobHelper(DbHelper h = null)
+        {
+            if (h == null)
+                helper = new DbHelper();
+            else
+                helper = h;
+
+            routineHelper = new PJCAdmin.Classes.Helpers.MVCModelHelpers.RoutineHelper(helper);
+        }
+
+        public DbHelper getDBHelper()
+        {
+            return helper;
+        }
 
         public bool createJob(string assigneeUsername, JobModel job)
         {
