@@ -15,7 +15,20 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
      */
     public class Auth
     {
-        private DbHelper helper = new DbHelper();
+        private DbHelper helper;
+
+        public Auth(DbHelper h = null)
+        {
+            if (h == null)
+                helper = new DbHelper();
+            else
+                helper = h;
+        }
+
+        public DbHelper getDBHelper()
+        {
+            return helper;
+        }
 
         /* Returns the username for the user associated
          * with the given token.

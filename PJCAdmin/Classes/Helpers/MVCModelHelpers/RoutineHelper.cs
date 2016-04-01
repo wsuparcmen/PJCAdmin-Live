@@ -16,9 +16,25 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
      */
     public class RoutineHelper
     {
-        private TaskHelper taskHelper = new TaskHelper();
-        private FeedbackHelper feedbackHelper = new FeedbackHelper();
-        private DbHelper helper = new DbHelper();
+        private TaskHelper taskHelper;
+        private FeedbackHelper feedbackHelper;
+        private DbHelper helper;
+
+        public RoutineHelper(DbHelper h = null)
+        {
+            if (h == null)
+                helper = new DbHelper();
+            else
+                helper = h;
+
+            taskHelper = new TaskHelper(helper);
+            feedbackHelper = new FeedbackHelper(helper);
+        }
+
+        public DbHelper getDBHelper()
+        {
+            return helper;
+        }
 
         #region Current User Methods
         #region Getters

@@ -17,8 +17,13 @@ namespace PJCMobile.Controllers
     public class AccountController : Controller
     {
         private pjcEntities db = new pjcEntities();
-        private AccountHelper helper = new AccountHelper();
+        private AccountHelper helper;
         private DebugHelper debug = new DebugHelper();
+
+        public AccountController()
+        {
+            helper = new AccountHelper();
+        }
         //
         // GET: /Account/Index
 

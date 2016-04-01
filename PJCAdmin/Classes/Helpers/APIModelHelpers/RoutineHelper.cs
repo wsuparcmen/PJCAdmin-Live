@@ -13,7 +13,20 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
      */
     public class RoutineHelper
     {
-        private DbHelper helper = new DbHelper();
+        private DbHelper helper;
+
+        public RoutineHelper(DbHelper h = null)
+        {
+            if (h == null)
+                helper = new DbHelper();
+            else
+                helper = h;
+        }
+
+        public DbHelper getDBHelper()
+        {
+            return helper;
+        }
 
         #region Getters
         /*Returns a list of all routines assigned to the given 

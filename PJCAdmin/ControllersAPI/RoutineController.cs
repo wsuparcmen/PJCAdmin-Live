@@ -5,14 +5,22 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using PJCAdmin.Models;
+using PJCAdmin.Classes.Helpers;
 using PJCAdmin.Classes.Helpers.APIModelHelpers;
 
 namespace PJCAdmin.ControllersAPI
 {
     public class RoutineController : ApiController
     {
-        private RoutineHelper helper = new RoutineHelper();
-        private Auth auth = new Auth();
+        private RoutineHelper helper;
+        private Auth auth;
+
+        public RoutineController()
+        {
+            helper = new RoutineHelper();
+            DbHelper context = helper.getDBHelper();
+            auth = new Auth(context);
+        }
 
         // GET api/Routine?token=<token>
         public IEnumerable<Routine> Get(string token)

@@ -15,7 +15,20 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
      */
     public class EnumHelper
     {
-        private DbHelper helper = new DbHelper();
+        private DbHelper helper;
+
+        public EnumHelper(DbHelper h = null)
+        {
+            if (h == null)
+                helper = new DbHelper();
+            else
+                helper = h;
+        }
+
+        public DbHelper getDBHelper()
+        {
+            return helper;
+        }
 
         #region TaskCategory
         /* Creates a new TaskCategory enum for the

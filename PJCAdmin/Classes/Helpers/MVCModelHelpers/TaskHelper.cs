@@ -13,9 +13,25 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
      */
     public class TaskHelper
     {
-        private FeedbackHelper feedbackHelper = new FeedbackHelper();
-        private EnumHelper enumHelper = new EnumHelper();
-        private DbHelper helper = new DbHelper();
+        private FeedbackHelper feedbackHelper;
+        private EnumHelper enumHelper;
+        private DbHelper helper;
+
+        public TaskHelper(DbHelper h = null)
+        {
+            if (h == null)
+                helper = new DbHelper();
+            else
+                helper = h;
+
+            feedbackHelper = new FeedbackHelper(helper);
+            enumHelper = new EnumHelper(helper);
+        }
+
+        public DbHelper getDBHelper()
+        {
+            return helper;
+        }
 
         #region Creating, Updating, and Deleting
         /* Creates a task from the given model for the given 
