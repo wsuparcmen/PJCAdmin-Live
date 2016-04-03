@@ -237,6 +237,30 @@ namespace PJCAdmin.Classes.Helpers
         }
         public void deleteRoutine(Routine r)
         {
+            r.Feedbacks.Clear();
+            foreach (Task t in r.Tasks.ToList())
+            {
+                t.Feedbacks.Clear();
+                db.Tasks.Remove(t);
+            }
+            r.Tasks.Clear();
+            foreach (Job j in r.Jobs.ToList())
+            {
+                foreach (Note n in j.Notes.ToList())
+                    db.Notes.Remove(n);
+
+                foreach (Step s in j.Steps.ToList())
+                {
+                    foreach (Note n in s.Notes.ToList())
+                        db.Notes.Remove(n);
+
+                    db.Steps.Remove(s);
+                }
+
+                db.Jobs.Remove(j);
+            }
+            r.Jobs.Clear();
+
             db.Routines.Remove(r);
             db.SaveChanges();
         }

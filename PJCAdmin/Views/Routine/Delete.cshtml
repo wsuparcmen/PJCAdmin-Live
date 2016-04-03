@@ -10,3 +10,27 @@ ViewBag.Title = "Delete Routine";
     <p>@Html.ActionLink("View as different user","List")</p>
 }
 <h2>Delete Routine</h2>
+view: Routine and Assignee
+<h4>
+    Are you sure you want to delete Routine: "@ViewData["Routine"]" - Assigned to: @ViewData["Assignee"] from the system?
+    <small>This action is irreversible.</small>
+</h4>
+<br />
+<form action="~/Routine/Delete" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="routineName" value="@ViewData["Routine"]" />
+    <input type="hidden" name="assigneeName" value="@ViewData["Assignee"]" />
+    @if (Roles.IsUserInRole("Administrator"))
+    {
+        <input type="hidden" name="mockUser" value="@ViewData["mockUser"]" />
+    }
+    Delete all history for this Routine? <input type="checkbox" name="deleteAll" />
+    <input type="submit" value="Yes" />
+</form>
+
+<br />
+<br />
+@Html.ActionLink("Cancel", "Details", 
+    new {routineName = ViewData["Routine"], 
+        assigneeName = ViewData["Assignee"], 
+        mockUser = ViewData["mockUser"]})

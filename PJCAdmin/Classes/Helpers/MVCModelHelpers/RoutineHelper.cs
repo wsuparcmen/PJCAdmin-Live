@@ -673,6 +673,7 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
             db.SaveChanges();*/
 
             helper.deleteRoutine(routine);
+            helper.deleteOrphanedFeedbacks();
 
             //TODO check Feedback, Task, Job, Note etc for deletion. (Orphans should be, non-orphans should not be)
         }
