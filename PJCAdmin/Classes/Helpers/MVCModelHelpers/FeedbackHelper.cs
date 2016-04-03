@@ -41,8 +41,8 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
         {
             byte mediaTypeID = enumHelper.getMediaType(model.MediaType.mediaTypeName).mediaTypeID;
             byte feedbackTypeID = enumHelper.getFeedbackType(model.FeedbackType.feedbackTypeName).feedbackTypeID;
-
-            List<Feedback> lst = helper.getAllFeedbacks().Where(f => f.mediaTypeID == mediaTypeID && f.feedbackID == feedbackTypeID).ToList();
+            
+            List<Feedback> lst = helper.getAllFeedbacks().Where(f => f.mediaTypeID == mediaTypeID && f.feedbackTypeID == feedbackTypeID).ToList();
             foreach (Feedback f in lst)
             {
                 if (f.feedbackTitle.Equals(model.feedbackTitle) && f.feedbackMessage.Equals(model.feedbackMessage))
@@ -86,8 +86,8 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
                 feedback = createFeedback(model);
 
             feedback.Routines.Add(helper.findRoutine(routineID));
-            
-            return feedback;
+
+            return helper.updateFeedback(feedback);
         }
         /* Returns whether a RoutineFeedback connection
          * already exists between the given feedback and 
@@ -114,6 +114,27 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
          */
         public void updateRoutineFeedbacks(int routineID, List<FeedbackModel> models)
         {
+            Routine r = helper.findRoutine(routineID);
+            List<Feedback> rFB = r.Feedbacks.ToList();
+            foreach (Feedback f in rFB)
+            {
+                bool feedbackFound = false;
+                foreach (FeedbackModel model in models)
+                {
+                    if (f.feedbackTitle.Equals(model.feedbackTitle) && f.feedbackMessage.Equals(model.feedbackMessage))
+                    {
+                        feedbackFound = true;
+                    }
+                }
+
+                if (!feedbackFound)
+                {
+                    r.Feedbacks.Remove(f);
+                }
+            }
+
+            helper.updateRoutine(r);
+
             //TODO check for old Feedback associations
             foreach (FeedbackModel model in models)
             {

@@ -1,0 +1,32 @@
+﻿@model PJCAdmin.Models.FeedbackModel
+<li>\
+    <table>\
+        <tr>\
+            <td>\
+                Type: Positive@{PJCAdmin.Classes.Helpers.MVCModelHelpers.EnumHelper helper = new PJCAdmin.Classes.Helpers.MVCModelHelpers.EnumHelper();}\
+                @*(<!--<select name="Feedbacks['+atIndex+'].feedbackTypeName">\
+                    @foreach (PJCAdmin.Models.FeedbackType type in helper.getAllFeedbackTypes()){
+                        <option value="@type.feedbackTypeName">@type.feedbackTypeName</option>@("\\")
+                    }
+                </select>-->\ )*@\
+                <input type="hidden" name="Feedbacks['+atIndex+'].FeedbackType.feedbackTypeName" value="POSITIVE" />\
+            </td>\
+            <td>\
+                <input type="text" name="Feedbacks['+atIndex+'].feedbackTitle" value="" />\
+            </td>\
+            <td>\
+                <input type="text" name="Feedbacks['+atIndex+'].feedbackMessage" value="" />\
+            </td>\
+            <td>\
+                Media: Text\
+                <input type="hidden" name="Feedbacks['+atIndex+'].MediaType.mediaTypeName" value="Text" />\
+            </td>\
+        </tr>\
+        <tr>\
+            <td></td>\
+            <td>\
+                <button class="RemoveRoutineFeedback">Remove This Routine Feedback</button>\
+            </td>\
+        </tr>\
+    </table>\
+</li>\

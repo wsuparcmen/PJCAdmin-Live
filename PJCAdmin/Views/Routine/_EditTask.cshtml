@@ -1,9 +1,9 @@
 ﻿@model PJCAdmin.Models.TaskModel
 <li>
     <table>
-        <tr><td><input type="text" name="Tasks[@(Model.sequenceNo - 1)].taskName" value="@Model.taskName" /> - <input type="text" name="Tasks[@(Model.sequenceNo - 1)].taskDescription" value="@Model.taskDescription" /></td></tr>
+        <tr><td><input type="text" name="Tasks[@(Model.sequenceNo)].taskName" value="@Model.taskName" /> - <input type="text" name="Tasks[@(Model.sequenceNo)].taskDescription" value="@Model.taskDescription" /></td></tr>
         <tr><td>Category: 
-            <select name="Tasks[@(Model.sequenceNo - 1)].TaskCategory.categoryName" >
+            <select name="Tasks[@(Model.sequenceNo)].TaskCategory.categoryName" >
                     @foreach (string name in ViewData["TaskCategories"] as List<string>)
                     {
                         if (name == Model.TaskCategory.categoryName)
@@ -17,10 +17,10 @@
                     }
             </select>
         </td></tr> <!-- TODO Make Hidden: Not used? -->
-        <tr><td>Sequence Number: <input type="text" name="Tasks[@(Model.sequenceNo - 1)].sequenceNo" value="@Model.sequenceNo" /></td></tr> <!-- TODO Make Hidden -->
+        <tr><td>Sequence Number: <input type="text" name="Tasks[@(Model.sequenceNo)].sequenceNo" value="@Model.sequenceNo" /></td></tr> <!-- TODO Make Hidden -->
         <tr><td>
-            Timed? @Html.EditorFor(model => model.isTimed, "TemplateName","Tasks[" + (Model.sequenceNo - 1) + "].isTimed") - 
-            @Html.EditorFor(model => model.expectedDuration, "TemplateTimeName", "Tasks[" + (Model.sequenceNo - 1) + "].expectedDuration")
+            Timed? @Html.EditorFor(model => model.isTimed, "TemplateName","Tasks[" + (Model.sequenceNo) + "].isTimed") - 
+            @Html.EditorFor(model => model.expectedDuration, "TemplateTimeName", "Tasks[" + (Model.sequenceNo) + "].expectedDuration")
             </td></tr>
     </table>
 

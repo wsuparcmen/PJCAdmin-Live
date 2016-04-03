@@ -1,0 +1,28 @@
+﻿@model PJCAdmin.Models.FeedbackModel
+<li>
+    <table>
+        <tr>
+            <td>
+                Type: Positive @*@(Model.FeedbackType.feedbackTypeName)*@
+                <input type="hidden" name="Feedbacks[@ViewData["Index"]].FeedbackType.feedbackTypeName" value="POSITIVE" />
+            </td>
+            <td>
+                <input type="text" name="Feedbacks[@ViewData["Index"]].feedbackTitle" value="@(Model.feedbackTitle)" />
+            </td>
+            <td>
+                <input type="text" name="Feedbacks[@ViewData["Index"]].feedbackMessage" value="@(Model.feedbackMessage)" />
+            </td>
+            <td>
+                Media: Text
+                <input type="hidden" name="Feedbacks[@ViewData["Index"]].MediaType.mediaTypeName" value="Text" />
+                @*@(Model.MediaType.mediaTypeName)*@
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button class="RemoveRoutineFeedback">Remove This Routine Feedback</button>
+            </td>
+        </tr>
+    </table>
+</li>

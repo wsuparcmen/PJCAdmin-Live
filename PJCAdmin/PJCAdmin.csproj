@@ -491,8 +491,8 @@
     <Content Include="Views\Test\List.cshtml" />
     <Content Include="Views\Test\Edit.cshtml" />
     <Content Include="Views\Routine\ListByAssignedUser.cshtml" />
-    <Content Include="Views\Routine\_EditFeedback.cshtml" />
-    <Content Include="Views\Routine\_NewFeedback.cshtml" />
+    <Content Include="Views\Routine\_EditRoutineFeedback.cshtml" />
+    <Content Include="Views\Routine\_NewRoutineFeedback.cshtml" />
     <Content Include="Views\Job\ListRoutines.cshtml" />
     <Content Include="Views\Job\ListRoutineVersions.cshtml" />
     <Content Include="Views\Job\ListJobs.cshtml" />

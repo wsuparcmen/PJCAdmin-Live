@@ -47,6 +47,7 @@ ViewBag.Title = "Create New Routine";
         <h3>Routine Feedback</h3>
         <ol id="RoutineFeedbacks">
         </ol>
+        <button id="AddFinalRoutineFeedback" class="AddFinalRoutineFeedback">Add Routine Feedback</button>
 
         <h3>Tasks</h3>
         <ol id="Tasks">
@@ -58,6 +59,17 @@ ViewBag.Title = "Create New Routine";
 }
 
 <script>
+    function InsertNewRoutineFeedback(atIndex) {
+        if ($("#RoutineFeedbacks li").length > atIndex) {
+            $('#RoutineFeedbacks li:eq(' + atIndex + ')').before('@Html.Partial("_NewRoutineFeedback", new PJCAdmin.Models.FeedbackModel())');
+            UpdateRoutineFeedbackSequenceNos();
+        }
+        else if ($("#RoutineFeedbacks li").length == atIndex) {
+            $("#RoutineFeedbacks").append('@Html.Partial("_NewRoutineFeedback", new PJCAdmin.Models.FeedbackModel())');
+        }
+        return false;
+    }
+
     function InsertNewTask(atIndex) {
         if ($("#Tasks li").length > atIndex) {
             $('#Tasks li:eq(' + atIndex + ')').before('@Html.Partial("_NewTask", new PJCAdmin.Models.TaskModel(),new ViewDataDictionary{{"TaskCategories",ViewData["TaskCategories"]}})');
@@ -69,8 +81,16 @@ ViewBag.Title = "Create New Routine";
         return false;
     }
 
+    function DeleteRoutineFeedback(atIndex) {
+        $("#RoutineFeedbacks li").eq(atIndex).remove();
+        UpdateRoutineFeedbackSequenceNos();
+        return false;
+    }
+
     function DeleteTask(atIndex) {
         if ($("#Tasks li").length == 1) {
+            InsertNewTask(0);
+            $("#Tasks li").eq(1).remove();
             return false;
         }
 
@@ -84,6 +104,14 @@ ViewBag.Title = "Create New Routine";
             var myIndex = $("#Tasks").find("input").eq(key).closest("li").index();
             var newName = input.name.replace(/\[\d*\]/, "[" + myIndex + "]");
             $("#Tasks").find("input").eq(key).attr('name', newName);
+        });
+    }
+
+    function UpdateRoutineFeedbackSequenceNos() {
+        $.each($("#RoutineFeedbacks").find("input"), function (key, input) {
+            var myIndex = $("#RoutineFeedbacks").find("input").eq(key).closest("li").index();
+            var newName = input.name.replace(/\[\d*\]/, "[" + myIndex + "]");
+            $("#RoutineFeedbacks").find("input").eq(key).attr('name', newName);
         });
     }
 
@@ -103,6 +131,16 @@ ViewBag.Title = "Create New Routine";
             event.preventDefault();
             var endIndex = $("#Tasks").children().size();
             InsertNewTask(endIndex);
+        });
+        $("#RoutineFeedbacks").on('click', 'button.RemoveRoutineFeedback', function (event) {
+            event.preventDefault();
+            var currentIndex = $(this).closest('li').index();
+            DeleteRoutineFeedback(currentIndex);
+        });
+        $("#AddFinalRoutineFeedback").on('click', function (event) {
+            event.preventDefault();
+            var endIndex = $("#RoutineFeedbacks").children().size();
+            InsertNewRoutineFeedback(endIndex);
         });
     });
 </script>
