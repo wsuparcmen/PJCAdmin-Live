@@ -62,7 +62,11 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
         /* TODO */
         public bool jobExists(string creatorUsername, string assigneeUsername, string routineTitle, DateTime startDate)
         {
-            return getAllJobsForRoutine(creatorUsername, assigneeUsername, routineTitle).Where(j => j.startTime.Equals(startDate)).Count() > 0;
+            List<Job> list = getAllJobsForRoutine(creatorUsername, assigneeUsername, routineTitle);
+            if (list.Count() == 0)
+                return false;
+
+            return list.Where(j => j.startTime.Equals(startDate)).Count() > 0;
         }
 
         public void dispose()
