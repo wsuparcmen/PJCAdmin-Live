@@ -452,12 +452,21 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
          */
         public bool routineExists(string creatorUsername, string routineName, string assigneeName)
         {
-            return getMostRecentRoutineModelsAssignedTo(creatorUsername, assigneeName).Where(r => r.routineTitle.Equals(routineName)).Count() > 0;
+            List<Routine> assignedRoutines = getMostRecentRoutinesAssignedTo(creatorUsername, assigneeName);
+            
+            if (assignedRoutines.Count() == 0)
+                return false;
+
+            return assignedRoutines.Where(r => r.routineTitle.Equals(routineName)).Count() > 0;
         }
         /* TODO */
         public bool routineVersionExists(string creatorUsername, string assigneeName, string routineName, DateTime updatedDate)
         {
             List<Routine> versions = getRoutinesAssignedToByName(creatorUsername, routineName, assigneeName);
+            
+            if (versions.Count() == 0)
+                return false;
+
             IEnumerable<Routine> matchedTimes = versions.Where(r => DateTime.Compare(r.updatedDate.AddMilliseconds(-r.updatedDate.Millisecond), updatedDate) == 0);
             return matchedTimes.Count() > 0;
         }
