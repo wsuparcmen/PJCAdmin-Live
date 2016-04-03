@@ -435,15 +435,13 @@ namespace PJCAdmin.Controllers
                 {
                     helper.deleteRoutine(mockUser, routineName, assigneeName, deleteAll);
 
-                    Response.Redirect("~/Routine/List?mockUser=" + mockUser);
-                    return View();
+                    return RedirectToAction("List",new {mockUser = mockUser});
                 }
             }
 
             helper.deleteRoutine(routineName, assigneeName, deleteAll);
 
-            Response.Redirect("~/Routine/List");
-            return View();
+            return RedirectToAction("List");
         }
 
         protected override void Dispose(bool disposing)
