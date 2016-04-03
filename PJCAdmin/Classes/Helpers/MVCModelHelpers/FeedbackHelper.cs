@@ -140,6 +140,8 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
             {
                 updateRoutineFeedback(routineID, model);
             }
+
+            helper.deleteOrphanedFeedbacks();
         }
         /* Updates the given feedback connected to the given 
          * routine.
