@@ -168,6 +168,23 @@ namespace PJCAdmin.Classes.Helpers
 
             return feedback;
         }
+        public void deleteOrphanedFeedbacks()
+        {
+            List<Feedback> orphans = new List<Feedback>();
+
+            foreach (Feedback f in db.Feedbacks)
+            {
+                if (f.Routines.Count() + f.Tasks.Count() == 0)
+                    orphans.Add(f);
+            }
+
+            foreach (Feedback f in orphans)
+            {
+                db.Feedbacks.Remove(f);
+            }
+
+            db.SaveChanges();
+        }
         #endregion
         #region Routine Feedback
         public IQueryable<Routine> getAllRoutines()
