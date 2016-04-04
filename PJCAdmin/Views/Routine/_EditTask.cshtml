@@ -1,27 +1,37 @@
 ﻿@model PJCAdmin.Models.TaskModel
 <li>
     <table>
-        <tr><td><input type="text" name="Tasks[@(Model.sequenceNo)].taskName" value="@Model.taskName" /> - <input type="text" name="Tasks[@(Model.sequenceNo)].taskDescription" value="@Model.taskDescription" /></td></tr>
-        <tr><td>Category: 
-            <select name="Tasks[@(Model.sequenceNo)].TaskCategory.categoryName" >
+        <tr><td> Task Name: <input type="text" name="Tasks[@(Model.sequenceNo)].taskName" value="@Model.taskName" /></td></tr>
+        <tr><td> Description: <input type="text" name="Tasks[@(Model.sequenceNo)].taskDescription" value="@Model.taskDescription" /></td></tr>
+        <tr>
+            <td>
+                Category:
+                <select name="Tasks[@(Model.sequenceNo)].TaskCategory.categoryName">
                     @foreach (string name in ViewData["TaskCategories"] as List<string>)
                     {
                         if (name == Model.TaskCategory.categoryName)
                         {
-                            <option value="@name" selected="selected" >@name</option>
+                            <option value="@name" selected="selected">@name</option>
                         }
                         else
                         {
                             <option value="@name">@name</option>
                         }
                     }
-            </select>
-        </td></tr> <!-- TODO Make Hidden: Not used? -->
-        <tr><td>Sequence Number: <input type="text" name="Tasks[@(Model.sequenceNo)].sequenceNo" value="@Model.sequenceNo" /></td></tr> <!-- TODO Make Hidden -->
-        <tr><td>
-            Timed? @Html.EditorFor(model => model.isTimed, "TemplateName","Tasks[" + (Model.sequenceNo) + "].isTimed") - 
-            @Html.EditorFor(model => model.expectedDuration, "TemplateTimeName", "Tasks[" + (Model.sequenceNo) + "].expectedDuration")
-            </td></tr>
+                </select>
+            </td>
+        </tr> <!-- TODO Make Hidden: Not used? -->
+        <tr><td> Sequence Number: <input type="text" name="Tasks[@(Model.sequenceNo)].sequenceNo" value="@Model.sequenceNo" /></td></tr> <!-- TODO Make Hidden -->
+        <tr>
+            <td>
+                Timed? @Html.EditorFor(model => model.isTimed, "TemplateName", "Tasks[" + (Model.sequenceNo) + "].isTimed")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Time Limit: @Html.EditorFor(model => model.expectedDuration, "TemplateTimeName", "Tasks[" + (Model.sequenceNo) + "].expectedDuration")
+            </td>
+        </tr>
     </table>
 
     <h4>Task Feedback</h4>
