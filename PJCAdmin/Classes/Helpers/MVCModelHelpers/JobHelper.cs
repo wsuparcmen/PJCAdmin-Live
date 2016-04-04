@@ -50,7 +50,8 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
             if (!routineHelper.routineVersionExists(creatorUsername, assigneeUsername, routineTitle, updatedDate))
                 return null;
 
-            Routine routineVersion = routineHelper.getRoutinesAssignedToByName(creatorUsername, routineTitle, assigneeUsername).Where(r => r.updatedDate.Equals(updatedDate)).First();
+            List<Routine> assignedRoutines = routineHelper.getRoutinesAssignedToByName(creatorUsername, routineTitle, assigneeUsername);
+            Routine routineVersion = assignedRoutines.Where(r => dateEquals(r.updatedDate, updatedDate)).First();
 
             return routineVersion.Jobs.ToList();
         }
@@ -67,6 +68,15 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
                 return false;
 
             return list.Where(j => j.startTime.Equals(startDate)).Count() > 0;
+        }
+
+        /* TODO */
+        private bool dateEquals(DateTime dt1, DateTime dt2)
+        {
+            dt1 = dt1.AddMilliseconds(-dt1.Millisecond);
+            dt2 = dt2.AddMilliseconds(-dt2.Millisecond);
+
+            return DateTime.Equals(dt1, dt2);
         }
 
         public void dispose()
