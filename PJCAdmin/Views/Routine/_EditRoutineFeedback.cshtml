@@ -3,17 +3,23 @@
     <table>
         <tr>
             <td>
-                Type: Positive @*@(Model.FeedbackType.feedbackTypeName)*@
+                Feedback Type: Positive @*@(Model.FeedbackType.feedbackTypeName)*@
                 <input type="hidden" name="Feedbacks[@ViewData["Index"]].FeedbackType.feedbackTypeName" value="POSITIVE" />
             </td>
+        </tr>
+        <tr>
             <td>
-                <input type="text" name="Feedbacks[@ViewData["Index"]].feedbackTitle" value="@(Model.feedbackTitle)" />
+                Title: <input type="text" name="Feedbacks[@ViewData["Index"]].feedbackTitle" value="@(Model.feedbackTitle)" />
             </td>
+        </tr>
+        <tr>
             <td>
-                <input type="text" name="Feedbacks[@ViewData["Index"]].feedbackMessage" value="@(Model.feedbackMessage)" />
+                Message: <input type="text" name="Feedbacks[@ViewData["Index"]].feedbackMessage" value="@(Model.feedbackMessage)" />
             </td>
+        </tr>
+        <tr>
             <td>
-                Media: Text
+                Media Type: Text
                 <input type="hidden" name="Feedbacks[@ViewData["Index"]].MediaType.mediaTypeName" value="Text" />
                 @*@(Model.MediaType.mediaTypeName)*@
             </td>
