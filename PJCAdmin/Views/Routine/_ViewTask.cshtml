@@ -1,16 +1,33 @@
 ﻿@model PJCAdmin.Models.Task
 <li>
+    <strong>@(Html.DisplayFor(model => model.taskName))</strong>
     <table>
-        <tr><td>@(Html.DisplayFor(model => model.taskName)) - @(Html.DisplayFor(model => model.taskDescription))</td></tr>
-        <tr><td>Category: @(Html.DisplayFor(model => model.TaskCategory.categoryName))</td></tr>
-        <tr><td>Sequence Number: @(Html.DisplayFor(model => model.sequenceNo))</td></tr>
-        <tr><td>
-            @if (Model.isTimed) { @("Timed - " + Model.expectedDuration) }
-            else { @("Not Timed - " + Model.expectedDuration) }
-            </td></tr>
+        <!--<tr>
+            <td>Name:</td>
+            <td>@(Html.DisplayFor(model => model.taskName))</td>
+        </tr>-->
+        <tr>
+            <td>Description:</td>
+            <td>@(Html.DisplayFor(model => model.taskDescription))</td>
+        </tr>
+        <tr>
+            <td>Category:</td>
+            <td>@(Html.DisplayFor(model => model.TaskCategory.categoryName))</td>
+        </tr>
+        <!--<tr>
+            <td>Sequence Number:</td>
+            <td>@(Html.DisplayFor(model => model.sequenceNo))</td>
+        </tr>-->
+        <tr>
+            <td>Timed:</td>
+            <td>
+                @if (Model.isTimed) { @("Timed - " + Model.expectedDuration) }
+                else { @("Not Timed - " + Model.expectedDuration) }
+            </td>
+        </tr>
     </table>
 
-    <h4>Task Feedback</h4>
+    <h4 style="margin-top:15px;">Task Feedback</h4>
     <table>
         @if (Model.Feedbacks.Count == 0)
         {
@@ -25,3 +42,4 @@
         }
     </table>
 </li>
+<br/><br/>
