@@ -467,7 +467,7 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
             if (versions.Count() == 0)
                 return false;
 
-            IEnumerable<Routine> matchedTimes = versions.Where(r => DateTime.Compare(r.updatedDate.AddMilliseconds(-r.updatedDate.Millisecond), updatedDate) == 0);
+            IEnumerable<Routine> matchedTimes = versions.Where(r => DateTime.Compare(r.updatedDate.AddMilliseconds(-r.updatedDate.Millisecond), updatedDate.AddMilliseconds(-updatedDate.Millisecond)) == 0);
             return matchedTimes.Count() > 0;
         }
         /* Returns whether or not any routines created by the
