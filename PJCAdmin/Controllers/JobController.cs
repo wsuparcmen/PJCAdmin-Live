@@ -55,6 +55,8 @@ namespace PJCAdmin.Controllers
                 return View();
             }
 
+            List<Routine> allRoutines;
+
             if (Roles.IsUserInRole("Administrator"))
             {
                 if (mockUser == null || mockUser.Equals("") || !accountHelper.userExists(mockUser))
@@ -63,12 +65,23 @@ namespace PJCAdmin.Controllers
                 }
 
                 ViewData["mockUser"] = mockUser;
-                return View(routineHelper.getMostRecentRoutines(mockUser));
+
+                allRoutines = routineHelper.getMostRecentRoutines(mockUser);
             }
             else
             {
-                return View(routineHelper.getMostRecentRoutines());
+                allRoutines = routineHelper.getMostRecentRoutines();
             }
+
+            List<Routine> routines = new List<Routine>();
+            foreach (Routine r in allRoutines)
+            {
+                List<Job> jobs = helper.getAllJobsForRoutine(r.creatorUserName, r.assigneeUserName, r.routineTitle);
+                if (jobs != null && jobs.Count() > 0)
+                    routines.Add(r);
+            }
+
+            return View(routines);
         }
 
         public ActionResult ListRoutineVersions(string routineName, string assigneeName, string mockUser = "")
@@ -82,6 +95,8 @@ namespace PJCAdmin.Controllers
             ViewData["routineName"] = routineName;
             ViewData["assigneeName"] = assigneeName;
 
+            List<Routine> allRoutines;
+
             if (Roles.IsUserInRole("Administrator"))
             {
                 if (mockUser == null || mockUser.Equals("") || !accountHelper.userExists(mockUser))
@@ -91,15 +106,25 @@ namespace PJCAdmin.Controllers
                     return RedirectToAction("ListRoutines", "Job", new { mockUser = mockUser });
 
                 ViewData["mockUser"] = mockUser;
-                return View(routineHelper.getRoutinesAssignedToByName(mockUser, routineName, assigneeName));
+                allRoutines = routineHelper.getRoutinesAssignedToByName(mockUser, routineName, assigneeName);
             }
             else
             {
                 if (!routineHelper.routineExists(routineName, assigneeName))
                     return RedirectToAction("ListRoutines", "Job");
 
-                return View(routineHelper.getRoutinesAssignedToByName(routineName, assigneeName));
+                allRoutines = routineHelper.getRoutinesAssignedToByName(routineName, assigneeName);
             }
+
+            List<Routine> routines = new List<Routine>();
+            foreach (Routine r in allRoutines)
+            {
+                List<Job> jobs = helper.getAllJobsForRoutineVersion(r.creatorUserName, r.assigneeUserName, r.routineTitle, r.updatedDate);
+                if (jobs != null && jobs.Count() > 0)
+                    routines.Add(r);
+            }
+
+            return View(routines);
         }
 
         public ActionResult ListJobs(string routineName, string assigneeName, DateTime updatedDate, string mockUser = "")
