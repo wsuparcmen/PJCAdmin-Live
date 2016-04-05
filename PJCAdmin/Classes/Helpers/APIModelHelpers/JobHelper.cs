@@ -43,13 +43,13 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
             {
                 Step s = new Step()
                 {
-                    sequenceNo = i,
+                    sequenceNo = (byte) (i + 1),
                     endTime = job.stepEndTimes[i]
                 };
 
                 foreach (StepNoteModel stepNote in job.stepNotes)
                 {
-                    if (stepNote.stepNo == i)
+                    if (stepNote.stepNo == i + 1)
                         s.Notes.Add(new Note() { 
                             noteTitle = stepNote.note.noteTitle,
                             noteMessage = stepNote.note.noteMessage
