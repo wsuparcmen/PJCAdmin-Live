@@ -24,12 +24,7 @@
         <tr><td><!--Sequence Number--><input type="hidden" name="Tasks[@(Model.sequenceNo - 1)].sequenceNo" class="seqNo" value="@Model.sequenceNo" /></td></tr>
         <tr>
             <td>
-                Timed? @Html.EditorFor(model => model.isTimed, "TemplateName", "Tasks[" + (Model.sequenceNo - 1) + "].isTimed")
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Time Limit: @Html.EditorFor(model => model.expectedDuration, "TemplateTimeName", "Tasks[" + (Model.sequenceNo - 1) + "].expectedDuration")
+                Timed? @Html.EditorFor(model => model.isTimed, "TemplateName", "Tasks[" + (Model.sequenceNo - 1) + "].isTimed") - Time Limit: @Html.EditorFor(model => model.expectedDuration, "TemplateTimeName", "Tasks[" + (Model.sequenceNo - 1) + "].expectedDuration")
             </td>
         </tr>
     </table>
