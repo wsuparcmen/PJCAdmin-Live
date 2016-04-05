@@ -31,18 +31,18 @@
 
     <h4>Task Feedback</h4>
     <ol id="TaskFeedbacks">
-        @*@foreach (PJCAdmin.Models.FeedbackModel feedback in Model.Feedbacks)
+        @*foreach (PJCAdmin.Models.FeedbackModel feedback in Model.Feedbacks)
         {
-            @Html.Partial("_ViewFeedback", feedback,new ViewDataDictionary(new{taskSequenceNo = Model.sequenceNo}));
+            @Html.Partial("_EditTaskFeedback", feedback,new ViewDataDictionary(new{taskSequenceNo = Model.sequenceNo}));
         }*@
         
-            @*{int index = 0;}
+            @{int index = 0;}
             @foreach (PJCAdmin.Models.FeedbackModel feedback in Model.Feedbacks)
             {
                 @Html.Partial("_EditTaskFeedback", feedback, new ViewDataDictionary { { "Index", @index++ } });
-            }*@
+            }
     </ol>
-    <!--<button id="AddFinalTaskFeedback" class="AddFinalTaskFeedback">Add Task Feedback</button>-->
+    <button id="AddFinalTaskFeedback" class="AddFinalTaskFeedback">Add Task Feedback</button>
 
     <table>
         <tr>
