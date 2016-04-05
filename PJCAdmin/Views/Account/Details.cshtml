@@ -82,7 +82,7 @@
     @if (Roles.IsUserInRole(Model.UserName, "Parent"))
             {
         <tr>
-            <td>@Html.ActionLink("View all Created Jobs", "List", "Routine", new { mockUser = Model.UserName}, null)</td>
+            <td>@Html.ActionLink("View all Created Routines", "List", "Routine", new { mockUser = Model.UserName}, null)</td>
         </tr>
         <tr>
             <td><b>Children</b></td>
