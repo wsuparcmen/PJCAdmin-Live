@@ -46,7 +46,7 @@
     @if (Roles.IsUserInRole(Model.UserName, "Job Coach"))
     {
         <tr>
-            <td>@Html.ActionLink("View all Created Jobs", "", "")</td>
+            <td>@Html.ActionLink("View all Created Routines", "List", "Routine", new { mockUser = Model.UserName}, null)</td>
         </tr>
         <tr>
             <td><b>Assigned Users</b></td>
@@ -60,17 +60,11 @@
                 <tr>
                     <td>
                         @Html.ActionLink(((List<MembershipUser>)ViewData["AssignedUsersNew"]).ElementAt(i).UserName, "Details", new { user = ((List<MembershipUser>)ViewData["AssignedUsersNew"]).ElementAt(i).UserName })
-                        <br />
                     </td>
-                </tr>
-                <tr>
-                    <td><b>Jobs Assigned</b><br /></td>
-                </tr>
-                <tr>
                     <td>
-                        @Html.ActionLink("Job 1 Sample", "", "")
-                        <br />
-                        <br />
+                        @Html.ActionLink("Assigned Routines", "ListByAssignedUser", "Routine", 
+                            new { assignedTo = ((List<MembershipUser>)ViewData["AssignedUsersNew"]).ElementAt(i).UserName,
+                                    mockUser = Model.UserName}, null)
                     </td>
                 </tr>
 
@@ -88,7 +82,7 @@
     @if (Roles.IsUserInRole(Model.UserName, "Parent"))
             {
         <tr>
-            <td>@Html.ActionLink("View all Created Jobs", "", "")</td>
+            <td>@Html.ActionLink("View all Created Jobs", "List", "Routine", new { mockUser = Model.UserName}, null)</td>
         </tr>
         <tr>
             <td><b>Children</b></td>
@@ -101,19 +95,13 @@
                 <tr>
                     <td>
                         @Html.ActionLink(((List<MembershipUser>)ViewData["Children"]).ElementAt(i).UserName, "Details", new { user = ((List<MembershipUser>)ViewData["Children"]).ElementAt(i).UserName })
-                        <br />
+                    </td>
+                    <td>
+                        @Html.ActionLink("Assigned Routines", "ListByAssignedUser", "Routine", 
+                            new { assignedTo = ((List<MembershipUser>)ViewData["Children"]).ElementAt(i).UserName,
+                                    mockUser = Model.UserName}, null)
                     </td>
                 </tr>
-                        <tr>
-                            <td><b>Jobs Assigned</b><br /></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                @Html.ActionLink("Job 1 Sample", "", "")
-                                <br />
-                                <br />
-                            </td>
-                        </tr>
             }
         }
         else
@@ -123,14 +111,15 @@
     }
 
     @if (Roles.IsUserInRole(Model.UserName, "User"))
-            {
-                if ((MembershipUser)ViewData["Job Coach"] != null)
-                {
+    {
+        if ((MembershipUser)ViewData["Job Coach"] != null)
+        {
             <tr>
                 <td><b>Job Coach</b></td>
                 <td>
                     @Html.ActionLink(((MembershipUser)ViewData["Job Coach"]).UserName, "Details", new { user = ((MembershipUser)ViewData["Job Coach"]).UserName })
-                    @Html.ActionLink("Jobs Assigned By", "", "")
+                    @Html.ActionLink("Routines Assigned By", "ListByAssignedUser", "Routine",
+                        new { assignedTo = Model.UserName, mockUser = ((MembershipUser)ViewData["Job Coach"]).UserName}, null)
                     <br />
                 </td>
             </tr>
@@ -141,14 +130,12 @@
                 <td><b>Parent</b></td>
                 <td>
                     @Html.ActionLink(((MembershipUser)ViewData["Parent"]).UserName, "Details", new { user = ((MembershipUser)ViewData["Parent"]).UserName })
-                    @Html.ActionLink("Jobs Assigned By", "", "")
+                    @Html.ActionLink("Routines Assigned By", "ListByAssignedUser", "Routine",
+                        new { assignedTo = Model.UserName, mockUser = ((MembershipUser)ViewData["Parent"]).UserName}, null)
                     <br />
                 </td>
             </tr>
-            <tr>
-                <td>@Html.ActionLink("View all assigned Jobs","","")</td>
-            </tr>
-          }
+        }
     }
 </table>
 <!--
