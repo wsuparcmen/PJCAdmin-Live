@@ -15,7 +15,6 @@ ViewBag.Title = "Users";
                 <tr>
                     <th>
                         @("Administrators") 
-                        @Html.ActionLink("Create New", "Create")
                     </th>
                 </tr>
                     //foreach (MembershipUser user in Model)
@@ -47,7 +46,6 @@ ViewBag.Title = "Users";
                 <tr>
                     <th>
                         @("Job Coaches")
-                        @Html.ActionLink("Create New", "Create")
                     </th>
                 </tr>
 
@@ -79,7 +77,6 @@ ViewBag.Title = "Users";
                 <tr>
                     <th>
                             @("Parents")
-                            @Html.ActionLink("Create New", "Create")
                     </th>
                 </tr>
                 foreach (MembershipUser user in ViewData["Parents"] as IEnumerable<MembershipUser>)
@@ -112,7 +109,6 @@ ViewBag.Title = "Users";
                 <tr>
                     <th>
                             @("Users") 
-                            @Html.ActionLink("Create New", "Create")
                     </th>                   
                 </tr>
                 foreach (MembershipUser user in ViewData["Users"] as IEnumerable<MembershipUser>)
