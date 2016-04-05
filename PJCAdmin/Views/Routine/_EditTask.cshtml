@@ -21,7 +21,7 @@
                 </select>
             </td>
         </tr> <!-- TODO Make Hidden: Not used? -->
-        <tr><td> Sequence Number: <input type="text" name="Tasks[@(Model.sequenceNo)].sequenceNo" value="@Model.sequenceNo" /></td></tr> <!-- TODO Make Hidden -->
+        <tr><td> Sequence Number: <input type="text" name="Tasks[@(Model.sequenceNo)].sequenceNo" class="seqNo" value="@Model.sequenceNo" /></td></tr> <!-- TODO Make Hidden -->
         <tr>
             <td>
                 Timed? @Html.EditorFor(model => model.isTimed, "TemplateName", "Tasks[" + (Model.sequenceNo) + "].isTimed")
