@@ -1,4 +1,4 @@
-﻿@model PJCAdmin.Models.job
+﻿@model PJCAdmin.Models.JobModel
 
 @{
     ViewBag.Title = "Delete";
@@ -17,28 +17,22 @@
         <h3>Job Title</h3>
         <div style="margin-left:50px;">
             <div class="display-field">
-                @Html.DisplayFor(model => model.jobTitle)
+                @ViewData["routineName"]
+            </div>
+        </div>
+        <h3>Assignee Name</h3>
+        <div style="margin-left:50px;">
+            <div class="display-field">
+                @ViewData["assigneeName"]
+            </div>
+        </div>
+        <h3>Start Date</h3>
+        <div style="margin-left:50px;">
+            <div class="display-field">
+                @ViewData["startDate"]
             </div>
         </div>
     </fieldset>
-    <h3>Assigned Tasks:</h3>
-    <div style="margin-left:50px;">
-        @foreach (var item in Model.tasks)
-        {
-            <table>
-                <tr>
-                    <td>
-                        @item.taskName
-                    </td>
-                    @*<td>
-                            @Html.ActionLink("Edit", "Edit", "Edit") |
-                            @Html.ActionLink("Details", "Details", "Edit") |
-                            @Html.ActionLink("Delete", "Delete", "Edit")
-                        </td>*@
-                </tr>
-            </table>
-        }
-    </div>
 
 </div>
 <br /><br />
@@ -46,6 +40,14 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+    <input type="hidden" name="routineName" value="@(ViewData["routineName"])" />
+    <input type="hidden" name="assigneeName" value="@(ViewData["assigneeName"])" />
+    <input type="hidden" name="startDate" value="@(ViewData["startDate"])" />
+    if (Roles.IsUserInRole("Administrator"))
+    {
+        <input type="hidden" name="mockUser" value="@(ViewData["mockUser"])" />
+    }
+    
     <p>
         <input type="submit" value="Delete" /> |
         @Html.ActionLink("Back to List", "Index")
