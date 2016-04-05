@@ -21,7 +21,7 @@
                 </select>
             </td>
         </tr> <!-- TODO Make Hidden: Not used? -->
-        <tr><td> Sequence Number: <input type="text" name="Tasks[@(Model.sequenceNo)].sequenceNo" class="seqNo" value="@Model.sequenceNo" /></td></tr> <!-- TODO Make Hidden -->
+        <tr><td><!--Sequence Number--><input type="hidden" name="Tasks[@(Model.sequenceNo)].sequenceNo" class="seqNo" value="@Model.sequenceNo" /></td></tr>
         <tr>
             <td>
                 Timed? @Html.EditorFor(model => model.isTimed, "TemplateName", "Tasks[" + (Model.sequenceNo) + "].isTimed")
@@ -35,12 +35,19 @@
     </table>
 
     <h4>Task Feedback</h4>
-    <table>
+    <ol id="TaskFeedbacks">
         @*@foreach (PJCAdmin.Models.FeedbackModel feedback in Model.Feedbacks)
         {
             @Html.Partial("_ViewFeedback", feedback,new ViewDataDictionary(new{taskSequenceNo = Model.sequenceNo}));
         }*@
-    </table>
+        
+            @*{int index = 0;}
+            @foreach (PJCAdmin.Models.FeedbackModel feedback in Model.Feedbacks)
+            {
+                @Html.Partial("_EditTaskFeedback", feedback, new ViewDataDictionary { { "Index", @index++ } });
+            }*@
+    </ol>
+    <!--<button id="AddFinalTaskFeedback" class="AddFinalTaskFeedback">Add Task Feedback</button>-->
 
     <table>
         <tr>

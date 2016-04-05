@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -496,6 +497,9 @@
     <Content Include="Views\Job\ListRoutines.cshtml" />
     <Content Include="Views\Job\ListRoutineVersions.cshtml" />
     <Content Include="Views\Job\ListJobs.cshtml" />
+    <Content Include="Views\Routine\_EditTaskFeedback.cshtml" />
+    <Content Include="Views\Routine\_NewTaskFeedback.cshtml" />
+    <Content Include="Views\Routine\_ViewTaskFeedback.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

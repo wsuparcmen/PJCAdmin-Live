@@ -1,15 +1,11 @@
 ﻿@model PJCAdmin.Models.Feedback
-<tr>
     <td>
-        Type: @(Model.FeedbackType.feedbackTypeName)
+        Feedback Type: @(Model.FeedbackType.feedbackTypeName)   
+        <br/> 
+        Title: @(Model.feedbackTitle)   
+        <br />
+        Message: @(Model.feedbackMessage)    
+        <br/>
+        Media Type: @(Model.MediaType.mediaTypeName)
+        <br/>
     </td>
-    <td>
-        Title: @(Model.feedbackTitle)
-    </td>
-    <td>
-        Message: @(Model.feedbackMessage)
-    </td>
-    <td>
-        Media: @(Model.MediaType.mediaTypeName)
-    </td>
-</tr>
