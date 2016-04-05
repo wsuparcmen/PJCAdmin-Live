@@ -219,6 +219,27 @@ namespace PJCAdmin.Classes.Helpers
 
             return j;
         }
+        public void deleteJob(Job j)
+        {
+            List<Note> jobNotes = j.Notes.ToList();
+            j.Notes.Clear();
+            foreach (Note n in jobNotes)
+                db.Notes.Remove(n);
+
+            List<Step> steps = j.Steps.ToList();
+            foreach (Step s in steps)
+            {
+                List<Note> stepNotes = s.Notes.ToList();
+                s.Notes.Clear();
+                foreach (Note n in stepNotes)
+                    db.Notes.Remove(n);
+
+                db.Steps.Remove(s);
+            }
+            
+            db.Jobs.Remove(j);
+            db.SaveChanges();
+        }
         #endregion
         #region Routines
         public Routine createRoutine(Routine r)
