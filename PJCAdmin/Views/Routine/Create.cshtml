@@ -62,22 +62,22 @@ ViewBag.Title = "Create New Routine";
     function InsertNewRoutineFeedback(atIndex) {
         if ($("#RoutineFeedbacks li").length > atIndex) {
             $('#RoutineFeedbacks li:eq(' + atIndex + ')').before('@Html.Partial("_NewRoutineFeedback", new PJCAdmin.Models.FeedbackModel())');
-            UpdateRoutineFeedbackSequenceNos();
         }
         else if ($("#RoutineFeedbacks li").length == atIndex) {
             $("#RoutineFeedbacks").append('@Html.Partial("_NewRoutineFeedback", new PJCAdmin.Models.FeedbackModel())');
         }
+        UpdateRoutineFeedbackSequenceNos();
         return false;
     }
 
     function InsertNewTask(atIndex) {
         if ($("#Tasks li").length > atIndex) {
             $('#Tasks li:eq(' + atIndex + ')').before('@Html.Partial("_NewTask", new PJCAdmin.Models.TaskModel(),new ViewDataDictionary{{"TaskCategories",ViewData["TaskCategories"]}})');
-            UpdateTaskSequenceNos();
         }
         else if ($("#Tasks li").length == atIndex){
             $("#Tasks").append('@Html.Partial("_NewTask", new PJCAdmin.Models.TaskModel(),new ViewDataDictionary{{"TaskCategories", ViewData["TaskCategories"]}})');
         }
+        UpdateTaskSequenceNos();
         return false;
     }
 
