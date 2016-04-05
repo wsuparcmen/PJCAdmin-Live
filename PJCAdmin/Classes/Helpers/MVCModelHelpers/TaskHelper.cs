@@ -80,7 +80,13 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
                 deleteTask(task);
 
             foreach (Task t in tasks)
-                modifyExistingTask(t, models.Where(m => m.sequenceNo == t.sequenceNo).First(), jobsExist);
+            {
+                List<TaskModel> matchingModels = models.Where(m => m.sequenceNo == t.sequenceNo).ToList();
+                if (matchingModels.Count() == 0)
+                    continue;
+
+                modifyExistingTask(t, matchingModels.First(), jobsExist);
+            }
 
             foreach (TaskModel model in models.Where(m => m.sequenceNo > tasks.Count()))
                 createTask(routineID, model);
