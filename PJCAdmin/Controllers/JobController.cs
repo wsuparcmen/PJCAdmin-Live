@@ -280,8 +280,43 @@ namespace PJCAdmin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string routineName, string assigneeName, DateTime startDate, string mockUser = "")
         {
-            /* TODO */
-            return View();
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            DateTime updatedDate;
+
+            if (Roles.IsUserInRole("Administrator"))
+            {
+                if (mockUser == null || mockUser.Equals("") || !accountHelper.userExists(mockUser))
+                {
+                    Response.Redirect("~/Job");
+                    return View();
+                }
+                else
+                {
+                    if (!helper.jobExists(mockUser, assigneeName, routineName, startDate))
+                        return HttpNotFound();
+
+                    updatedDate = helper.getJob(mockUser, assigneeName, routineName, startDate).Routine.updatedDate;
+                    helper.deleteJob(mockUser, assigneeName, routineName, startDate);
+                    
+                    return RedirectToAction("ListJobs", new { routineName = routineName, assigneeName = assigneeName,
+                            updatedDate = updatedDate, mockUser = mockUser });
+                }
+            }
+
+            if (!helper.jobExists(AccountHelper.getCurrentUsername(), assigneeName, routineName, startDate))
+                return HttpNotFound();
+
+            Job job = helper.getJob(AccountHelper.getCurrentUsername(), assigneeName, routineName, startDate);
+            updatedDate = job.Routine.updatedDate;      
+            helper.deleteJob(assigneeName, routineName, startDate);
+            
+            return RedirectToAction("ListJobs", new { routineName = routineName, assigneeName = assigneeName,
+                    updatedDate = updatedDate});
         }
 
         protected override void Dispose(bool disposing)

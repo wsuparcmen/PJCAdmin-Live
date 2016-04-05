@@ -69,6 +69,20 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
 
             return list.Where(j => j.startTime.Equals(startDate)).Count() > 0;
         }
+        /* TODO */
+        public void deleteJob(string creatorUsername, string assigneeUsername, string routineTitle, DateTime startDate)
+        {
+            if (!jobExists(creatorUsername, assigneeUsername, routineTitle, startDate))
+                return;
+
+            Job job = getJob(creatorUsername, assigneeUsername, routineTitle, startDate);
+            helper.deleteJob(job);
+        }
+        /* TODO */
+        public void deleteJob(string assigneeUsername, string routineTitle, DateTime startDate)
+        {
+            deleteJob(AccountHelper.getCurrentUsername(), assigneeUsername, routineTitle, startDate);
+        }
 
         /* TODO */
         private bool dateEquals(DateTime dt1, DateTime dt2)
