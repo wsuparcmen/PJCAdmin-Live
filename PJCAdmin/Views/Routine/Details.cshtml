@@ -36,17 +36,19 @@
 
 <h3 style="margin-top:20px;">Routine Feedback</h3>
 <table>
+    <tr>
     @if (Model.Feedbacks.Count == 0)
     {
-        <tr><td>No Feedback</td></tr>
+        <td>No Feedback</td>
     }
     else
     {
         foreach (PJCAdmin.Models.Feedback feedback in Model.Feedbacks)
         {
-            @Html.Partial("_ViewFeedback", feedback);
+                @Html.Partial("_ViewFeedback", feedback);
         }
     }
+    </tr>
 </table>
 
 <h3 style="margin-top:20px;">Tasks List</h3>
