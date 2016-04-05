@@ -102,8 +102,18 @@ ViewBag.Title = "Create New Routine";
     function UpdateTaskSequenceNos() {
         $.each($("#Tasks").find("input"), function (key, input) {
             var myIndex = $("#Tasks").find("input").eq(key).closest("li").index();
+            var sequenceNo = myIndex + 1;
             var newName = input.name.replace(/\[\d*\]/, "[" + myIndex + "]");
             $("#Tasks").find("input").eq(key).attr('name', newName);
+
+            if ($("#Tasks").find("input").eq(key).hasClass("seqNo")) {
+                $("#Tasks").find("input").eq(key).val(sequenceNo);
+            }
+        });
+        $.each($("#Tasks").find("select"), function (key, input) {
+            var myIndex = $("#Tasks").find("select").eq(key).closest("li").index();
+            var newName = input.name.replace(/\[\d*\]/, "[" + myIndex + "]");
+            $("#Tasks").find("select").eq(key).attr('name', newName);
         });
     }
 
