@@ -74,4 +74,16 @@
             $("#TaskFeedbacks").find("input").eq(key).attr('name', newName);
         });
     }
+    $(document).ready(function () {
+        $("#TaskFeedbacks").on('click', 'button.RemoveTaskFeedback', function (event) {
+            event.preventDefault();
+            var currentIndex = $(this).closest('li').index();
+            DeleteTaskFeedback(currentIndex);
+        });
+        $("#AddFinalTaskFeedback").on('click', function (event) {
+            event.preventDefault();
+            var endIndex = $("#TaskFeedbacks").children().size();
+            InsertNewTaskFeedback(endIndex);
+        });
+    });
 </script>
