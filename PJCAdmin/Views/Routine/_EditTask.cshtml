@@ -31,19 +31,19 @@
 
     <h4>Task Feedback</h4>
     <ol id="TaskFeedbacks">
-        @foreach (PJCAdmin.Models.FeedbackModel feedback in Model.Feedbacks)
+        @*foreach (PJCAdmin.Models.FeedbackModel feedback in Model.Feedbacks)
         {
             @Html.Partial("_EditTaskFeedback", feedback,new ViewDataDictionary(new{taskSequenceNo = Model.sequenceNo}));
-        }
+        }*@
         
-            @*{int index = 0;}
+            @{int index = 0;}
             @foreach (PJCAdmin.Models.FeedbackModel feedback in Model.Feedbacks)
             {
                 @Html.Partial("_EditTaskFeedback", feedback, new ViewDataDictionary { { "Index", @index++ } });
-            }*@
+            }
     </ol>
     <button id="AddFinalTaskFeedback" class="AddFinalTaskFeedback">Add Task Feedback</button>
-
+        
     <table>
         <tr>
             <td>
@@ -56,13 +56,13 @@
     </table>
 </li>
 
-<script>
+<!--<script>
     function InsertNewTaskFeedback(atIndex) {
         if ($("#TaskFeedbacks li").length > atIndex) {
-            $('#TaskFeedbacks li:eq(' + atIndex + ')').before('@Html.Partial("_NewTaskFeedback", new PJCAdmin.Models.FeedbackModel())');
+            $('#TaskFeedbacks li:eq(' + atIndex + ')').before('@*Html.Partial("_NewTaskFeedback", new PJCAdmin.Models.FeedbackModel())');*@
         }
         else if ($("#TaskFeedbacks li").length == atIndex) {
-            $("#TaskFeedbacks").append('@Html.Partial("_NewTaskFeedback", new PJCAdmin.Models.FeedbackModel())');
+            $("#TaskFeedbacks").append('@*Html.Partial("_NewTaskFeedback", new PJCAdmin.Models.FeedbackModel())');*@
         }
         UpdateTaskFeedbackSequenceNos();
         return false;
@@ -86,4 +86,4 @@
             InsertNewTaskFeedback(endIndex);
         });
     });
-</script>
+</script>-->

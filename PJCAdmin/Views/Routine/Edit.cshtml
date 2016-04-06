@@ -45,16 +45,15 @@
                 @Html.Partial("_EditRoutineFeedback", feedback, new ViewDataDictionary{{"Index",@index++}});
             }
         </ol>
-        <button id="AddFinalRoutineFeedback" class="AddFinalRoutineFeedback">Add Routine Feedback</button>
+        <button class="AddFinalRoutineFeedback">Add Routine Feedback</button>
 
         <h3>Tasks</h3>
         <ol id="Tasks">
             @foreach (PJCAdmin.Models.TaskModel task in Model.Tasks)
             {
                 @Html.Partial("_EditTask", task);
-                
+
             }
-}
         </ol>
         <button id="AddFinalTask" class="AddFinalTask">Add Task At End</button>
 
@@ -119,12 +118,31 @@
         });
     }
 
+    function UpdateTaskFeedbackSequenceNos() {
+        $.each($("#TaskFeedbacks").find("input"), function (key, input) {
+            var myIndex = $("#TaskFeedbacks").find("input").eq(key).closest("li").index();
+            var newName = input.name.replace(/\[\d*\]/, "[" + myIndex + "]");
+            $("#TaskFeedbacks").find("input").eq(key).attr('name', newName);
+        });
+    }
+
     function UpdateRoutineFeedbackSequenceNos() {
         $.each($("#RoutineFeedbacks").find("input"), function (key, input) {
             var myIndex = $("#RoutineFeedbacks").find("input").eq(key).closest("li").index();
             var newName = input.name.replace(/\[\d*\]/, "[" + myIndex + "]");
             $("#RoutineFeedbacks").find("input").eq(key).attr('name', newName);
         });
+    }
+
+    function InsertNewTaskFeedback(atIndex) {
+        if ($("#TaskFeedbacks li").length > atIndex) {
+            $('#TaskFeedbacks li:eq(' + atIndex + ')').before('@Html.Partial("_NewTaskFeedback", new PJCAdmin.Models.FeedbackModel())');
+        }
+        else if ($("#TaskFeedbacks li").length == atIndex) {
+            $("#TaskFeedbacks").append('@Html.Partial("_NewTaskFeedback", new PJCAdmin.Models.FeedbackModel())');
+        }
+        UpdateTaskFeedbackSequenceNos();
+        return false;
     }
 
     $(document).ready( function() {
@@ -143,6 +161,16 @@
             event.preventDefault();
             var endIndex = $("#Tasks").children().size();
             InsertNewTask(endIndex);
+        });
+        $("#TaskFeedbacks").on('click', 'button.RemoveTaskFeedback', function (event) {
+            event.preventDefault();
+            var currentIndex = $(this).closest('li').index();
+            DeleteTaskFeedback(currentIndex);
+        });
+        $(".AddFinalTaskFeedback").on('click', function (event) {
+            event.preventDefault();
+            var endIndex = $("#TaskFeedbacks").children().size();
+            InsertNewTaskFeedback(endIndex);
         });
         $("#RoutineFeedbacks").on('click', 'button.RemoveRoutineFeedback', function (event) {
             event.preventDefault();
