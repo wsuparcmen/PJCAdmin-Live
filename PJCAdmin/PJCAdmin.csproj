@@ -499,7 +499,6 @@
     <Content Include="Views\Job\ListJobs.cshtml" />
     <Content Include="Views\Routine\_EditTaskFeedback.cshtml" />
     <Content Include="Views\Routine\_NewTaskFeedback.cshtml" />
-    <Content Include="Views\Routine\_ViewTaskFeedback.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
