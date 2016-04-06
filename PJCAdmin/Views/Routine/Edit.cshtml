@@ -85,6 +85,17 @@
         return false;
     }
 
+    function InsertNewTaskFeedback(atIndex) {
+        if ($("#TaskFeedbacks li").length > atIndex) {
+            $('#TaskFeedbacks li:eq(' + atIndex + ')').before('@Html.Partial("_NewTaskFeedback", new PJCAdmin.Models.FeedbackModel())');
+        }
+        else if ($("#TaskFeedbacks li").length == atIndex) {
+            $("#TaskFeedbacks").append('@Html.Partial("_NewTaskFeedback", new PJCAdmin.Models.FeedbackModel())');
+        }
+        UpdateTaskFeedbackSequenceNos();
+        return false;
+    }
+
     function DeleteRoutineFeedback(atIndex) {
         $("#RoutineFeedbacks li").eq(atIndex).remove();
         UpdateRoutineFeedbackSequenceNos();
@@ -99,6 +110,14 @@
         $("#Tasks li").eq(atIndex).remove();
         UpdateTaskSequenceNos();
         return false;
+    }
+
+    function UpdateRoutineFeedbackSequenceNos() {
+        $.each($("#RoutineFeedbacks").find("input"), function (key, input) {
+            var myIndex = $("#RoutineFeedbacks").find("input").eq(key).closest("li").index();
+            var newName = input.name.replace(/\[\d*\]/, "[" + myIndex + "]");
+            $("#RoutineFeedbacks").find("input").eq(key).attr('name', newName);
+        });
     }
 
     function UpdateTaskSequenceNos() {
@@ -127,27 +146,18 @@
         });
     }
 
-    function UpdateRoutineFeedbackSequenceNos() {
-        $.each($("#RoutineFeedbacks").find("input"), function (key, input) {
-            var myIndex = $("#RoutineFeedbacks").find("input").eq(key).closest("li").index();
-            var newName = input.name.replace(/\[\d*\]/, "[" + myIndex + "]");
-            $("#RoutineFeedbacks").find("input").eq(key).attr('name', newName);
-        });
-    }
-
-    function InsertNewTaskFeedback(atIndex) {
-        if ($("#TaskFeedbacks li").length > atIndex) {
-            $('#TaskFeedbacks li:eq(' + atIndex + ')').before('@Html.Partial("_NewTaskFeedback", new PJCAdmin.Models.FeedbackModel())');
-        }
-        else if ($("#TaskFeedbacks li").length == atIndex) {
-            $("#TaskFeedbacks").append('@Html.Partial("_NewTaskFeedback", new PJCAdmin.Models.FeedbackModel())');
-        }
-        UpdateTaskFeedbackSequenceNos();
-        return false;
-    }
-
     $(document).ready( function() {
         //InsertNewTask(0);
+        $("#RoutineFeedbacks").on('click', 'button.RemoveRoutineFeedback', function (event) {
+            event.preventDefault();
+            var currentIndex = $(this).closest('li').index();
+            DeleteRoutineFeedback(currentIndex);
+        });
+        $("#AddFinalRoutineFeedback").on('click', function (event) {
+            event.preventDefault();
+            var endIndex = $("#RoutineFeedbacks").children().size();
+            InsertNewRoutineFeedback(endIndex);
+        });
         $("#Tasks").on('click', 'button.AddTask', function (event) {
             event.preventDefault();
             var currentIndex = $(this).closest('li').index();
@@ -172,16 +182,6 @@
             event.preventDefault();
             var endIndex = $("#TaskFeedbacks").children().size();
             InsertNewTaskFeedback(endIndex);
-        });
-        $("#RoutineFeedbacks").on('click', 'button.RemoveRoutineFeedback', function (event) {
-            event.preventDefault();
-            var currentIndex = $(this).closest('li').index();
-            DeleteRoutineFeedback(currentIndex);
-        });
-        $("#AddFinalRoutineFeedback").on('click', function (event) {
-            event.preventDefault();
-            var endIndex = $("#RoutineFeedbacks").children().size();
-            InsertNewRoutineFeedback(endIndex);
         });
     });
 </script>
