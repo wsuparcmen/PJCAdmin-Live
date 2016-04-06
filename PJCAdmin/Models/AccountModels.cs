@@ -70,7 +70,7 @@ namespace PJCAdmin.Models
 
         [Required]
         [DataType(DataType.PhoneNumber)]
-        [Display(Name = "Phone Number")]
+        [Display(Name = "Phone Number (###-###-####)")]
         public string PhoneNumber { get; set; }
 
         public virtual ICollection<Routine> jobs { get; set; }
