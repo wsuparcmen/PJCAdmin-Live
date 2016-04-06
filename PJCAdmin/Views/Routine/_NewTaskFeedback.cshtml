@@ -4,28 +4,28 @@
         <tr>\
             <td>\
                 Feedback Type: Positive@{PJCAdmin.Classes.Helpers.MVCModelHelpers.EnumHelper helper = new PJCAdmin.Classes.Helpers.MVCModelHelpers.EnumHelper();}\
-                @*(<!--<select name="Feedbacks['+atIndex+'].feedbackTypeName">\
+                @*(<!--<select name="Tasks['+taskIndex+'].Feedbacks['+atIndex+'].feedbackTypeName">\
                         @foreach (PJCAdmin.Models.FeedbackType type in helper.getAllFeedbackTypes()){
                             <option value="@type.feedbackTypeName">@type.feedbackTypeName</option>@("\\")
                         }
                     </select>-->\ )*@\
-                <input type="hidden" name="Feedbacks['+atIndex+'].FeedbackType.feedbackTypeName" value="POSITIVE" />\
+                <input type="hidden" name="Tasks['+taskIndex+'].Feedbacks['+atIndex+'].FeedbackType.feedbackTypeName" value="POSITIVE" />\
             </td>\
         </tr>\
         <tr>\
             <td>\
-                Title: <input type="text" name="Feedbacks['+atIndex+'].feedbackTitle" value="" />\
+                Title: <input type="text" name="Tasks['+taskIndex+'].Feedbacks['+atIndex+'].feedbackTitle" value="" />\
             </td>\
         </tr>\
         <tr>\
             <td>\
-                Message: <input type="text" name="Feedbacks['+atIndex+'].feedbackMessage" value="" />\
+                Message: <input type="text" name="Tasks['+taskIndex+'].Feedbacks['+atIndex+'].feedbackMessage" value="" />\
             </td>\
         </tr>\
         <tr>\
             <td>\
                 Media Type: Text\
-                <input type="hidden" name="Feedbacks['+atIndex+'].MediaType.mediaTypeName" value="Text" />\
+                <input type="hidden" name="Tasks['+taskIndex+'].Feedbacks['+atIndex+'].MediaType.mediaTypeName" value="Text" />\
             </td>\
         </tr>\
         <tr>\
