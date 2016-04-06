@@ -5,7 +5,7 @@
     ProfileCommon userProfile = (ProfileCommon)ProfileCommon.Create(Model.UserName, true);
 }
 
-<h2>User Details <small style="color:#808080">@Html.DisplayFor(model => model.UserName)</small></h2>
+<h2>User Details for <small style="color:#808080">@Html.DisplayFor(model => model.UserName)</small></h2>
 @if (Model.UserName == Membership.GetUser().UserName) {
     @Html.ActionLink("Change Password", "ChangePassword");
 }
@@ -118,9 +118,13 @@
                 <td><b>Job Coach</b></td>
                 <td>
                     @Html.ActionLink(((MembershipUser)ViewData["Job Coach"]).UserName, "Details", new { user = ((MembershipUser)ViewData["Job Coach"]).UserName })
-                    @Html.ActionLink("Routines Assigned By", "ListByAssignedUser", "Routine",
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.ActionLink("Routines Assigned By Job Coach", "ListByAssignedUser", "Routine",
                         new { assignedTo = Model.UserName, mockUser = ((MembershipUser)ViewData["Job Coach"]).UserName}, null)
-                    <br />
                 </td>
             </tr>
         }
@@ -130,9 +134,13 @@
                 <td><b>Parent</b></td>
                 <td>
                     @Html.ActionLink(((MembershipUser)ViewData["Parent"]).UserName, "Details", new { user = ((MembershipUser)ViewData["Parent"]).UserName })
-                    @Html.ActionLink("Routines Assigned By", "ListByAssignedUser", "Routine",
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.ActionLink("Routines Assigned By Parent", "ListByAssignedUser", "Routine",
                         new { assignedTo = Model.UserName, mockUser = ((MembershipUser)ViewData["Parent"]).UserName}, null)
-                    <br />
                 </td>
             </tr>
         }
