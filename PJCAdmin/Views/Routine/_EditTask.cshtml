@@ -1,5 +1,5 @@
 ﻿@model PJCAdmin.Models.TaskModel
-<li>
+<li class="Task">
     <table>
         <tr><td>Task Name: <input type="text" name="Tasks[@(Model.sequenceNo - 1)].taskName" value="@Model.taskName" /></td></tr>
         <tr><td>Description: <input type="text" name="Tasks[@(Model.sequenceNo - 1)].taskDescription" value="@Model.taskDescription" /></td></tr>
@@ -30,7 +30,7 @@
     </table>
 
     <h4>Task Feedback</h4>
-    <ol id="TaskFeedbacks">
+    <ol class="TaskFeedbacks">
         @*foreach (PJCAdmin.Models.FeedbackModel feedback in Model.Feedbacks)
         {
             @Html.Partial("_EditTaskFeedback", feedback,new ViewDataDictionary(new{taskSequenceNo = Model.sequenceNo}));
@@ -39,10 +39,10 @@
             @{int index = 0;}
             @foreach (PJCAdmin.Models.FeedbackModel feedback in Model.Feedbacks)
             {
-                @Html.Partial("_EditTaskFeedback", feedback, new ViewDataDictionary { { "Index", @index++ } });
+                @Html.Partial("_EditTaskFeedback", feedback, new ViewDataDictionary { { "TaskIndex", Model.sequenceNo - 1 }, {"Index", @index++} });
             }
     </ol>
-    <button id="AddFinalTaskFeedback" class="AddFinalTaskFeedback">Add Task Feedback</button>
+    <button class="AddFinalTaskFeedback">Add Task Feedback</button>
         
     <table>
         <tr>
