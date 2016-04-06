@@ -52,7 +52,9 @@
             @foreach (PJCAdmin.Models.TaskModel task in Model.Tasks)
             {
                 @Html.Partial("_EditTask", task);
+                
             }
+}
         </ol>
         <button id="AddFinalTask" class="AddFinalTask">Add Task At End</button>
 
