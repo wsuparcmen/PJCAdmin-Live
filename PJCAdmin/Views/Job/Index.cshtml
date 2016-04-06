@@ -7,7 +7,10 @@ ViewBag.Title = "Job - User Selection";
         <th>Select a user to view as...</th>
     </tr>
     <tr>
-        <th>Job Coaches</th>
+        <th>
+            <br/>
+            Job Coaches
+        </th>
     </tr>
 
     @foreach (MembershipUser user in ViewData["JobCoaches"] as IEnumerable<MembershipUser>)
@@ -23,7 +26,10 @@ ViewBag.Title = "Job - User Selection";
     }
 
     <tr>
-        <th>Parents</th>
+        <th>
+            <br/>
+            Parents
+        </th>
     </tr>
 
     @foreach (MembershipUser user in ViewData["Parents"] as IEnumerable<MembershipUser>)

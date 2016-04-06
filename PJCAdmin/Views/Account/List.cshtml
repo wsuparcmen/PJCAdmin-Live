@@ -14,7 +14,7 @@ ViewBag.Title = "Users";
             {
                 <tr>
                     <th>
-                        @("Administrators") 
+                        @("Administrators")
                     </th>
                 </tr>
                     //foreach (MembershipUser user in Model)
@@ -45,6 +45,7 @@ ViewBag.Title = "Users";
                 }
                 <tr>
                     <th>
+                        <br/>
                         @("Job Coaches")
                     </th>
                 </tr>
@@ -76,7 +77,8 @@ ViewBag.Title = "Users";
                 }
                 <tr>
                     <th>
-                            @("Parents")
+                        <br/>
+                        @("Parents")
                     </th>
                 </tr>
                 foreach (MembershipUser user in ViewData["Parents"] as IEnumerable<MembershipUser>)
@@ -108,7 +110,8 @@ ViewBag.Title = "Users";
                 }
                 <tr>
                     <th>
-                            @("Users") 
+                        <br/>
+                        @("Users") 
                     </th>                   
                 </tr>
                 foreach (MembershipUser user in ViewData["Users"] as IEnumerable<MembershipUser>)
