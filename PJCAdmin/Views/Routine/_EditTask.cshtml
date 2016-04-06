@@ -55,3 +55,23 @@
         </tr>
     </table>
 </li>
+
+<script>
+    function InsertNewTaskFeedback(atIndex) {
+        if ($("#TaskFeedbacks li").length > atIndex) {
+            $('#TaskFeedbacks li:eq(' + atIndex + ')').before('@Html.Partial("_NewTaskFeedback", new PJCAdmin.Models.FeedbackModel())');
+        }
+        else if ($("#TaskFeedbacks li").length == atIndex) {
+            $("#TaskFeedbacks").append('@Html.Partial("_NewTaskFeedback", new PJCAdmin.Models.FeedbackModel())');
+        }
+        UpdateTaskFeedbackSequenceNos();
+        return false;
+    }
+    function UpdateTaskFeedbackSequenceNos() {
+        $.each($("#TaskFeedbacks").find("input"), function (key, input) {
+            var myIndex = $("#TaskFeedbacks").find("input").eq(key).closest("li").index();
+            var newName = input.name.replace(/\[\d*\]/, "[" + myIndex + "]");
+            $("#TaskFeedbacks").find("input").eq(key).attr('name', newName);
+        });
+    }
+</script>
