@@ -23,17 +23,17 @@
         @Html.HiddenFor(m => m.routineTitle)
         <table>
             <tr><td>
-                Assigned to: @Html.DisplayFor(model => model.assigneeUserName)
+                Assigned to:</td><td>@Html.DisplayFor(model => model.assigneeUserName)
                 @Html.HiddenFor(m => m.assigneeUserName)
             </td></tr>
             <tr><td>
-                Timed? @Html.CheckBoxFor(m => m.isTimed) - Time Limit: @Html.EditorFor(m => m.expectedDuration)
+                Timed</td><td>@Html.CheckBoxFor(m => m.isTimed)</tr><tr><td>Time Limit:</td><td>@Html.EditorFor(m => m.expectedDuration)
             </td></tr>
             <tr><td>
-                Email on job completion? @Html.CheckBoxFor(m => m.isNotifiable)
+                Email on Job Completion:</td><td>@Html.CheckBoxFor(m => m.isNotifiable)
             </td></tr>
             <tr><td>
-                Disabled? @Html.CheckBoxFor(m => m.isDisabled)
+                Disabled:</td><td>@Html.CheckBoxFor(m => m.isDisabled)
             </td></tr>
         </table>
 
@@ -57,7 +57,7 @@
         </ol>
        
         <button id="AddFinalTask" class="AddFinalTask">Add Task At End</button>
-        <br />
+        <br /><br/>
         <input type="submit" value="Save" />
     </fieldset>
 }

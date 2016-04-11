@@ -1,9 +1,9 @@
 ﻿@model PJCAdmin.Models.TaskModel
 <li class="Task">\
     <table>\
-        <tr><td>Task Name: <input type="text" name="Tasks['+atIndex+'].taskName" value="" /></td></tr>\
-        <tr><td>Description: <input type="text" name="Tasks['+atIndex+'].taskDescription" value="" /></td></tr>\
-        <tr><td>Category: <select name="Tasks['+atIndex+'].TaskCategory.categoryName">\
+        <tr><td>Task Name:</td><td><input type="text" name="Tasks['+atIndex+'].taskName" value="" /></td></tr>\
+        <tr><td>Description:</td><td><input type="text" name="Tasks['+atIndex+'].taskDescription" value="" /></td></tr>\
+        <tr><td>Category:</td><td><select name="Tasks['+atIndex+'].TaskCategory.categoryName">\
                                 @foreach (string name in ViewData["TaskCategories"] as List<string>)
                                 {
                                     <option value="@name">@name</option>@("")
@@ -11,8 +11,8 @@
                           </select></td></tr> <!-- TODO Make Hidden: Not used? -->\
         <tr><td><!--Sequence Number:--><input type="hidden" name="Tasks['+atIndex+'].sequenceNo" class="seqNo" value="'+(atIndex + 1)+'" /></td></tr> <!-- TODO Make Hidden -->\
         <tr><td>\
-            Timed? <input type="checkbox" name="Tasks['+atIndex+'].isTimed" /></td></tr>\
-            <tr><td>Time Limit: <input type="text" name="Tasks['+atIndex+'].expectedDuration" value="" />\
+            Timed:</td><td><input type="checkbox" name="Tasks['+atIndex+'].isTimed" /></td></tr>\
+            <tr><td>Time Limit:</td><td><input type="text" name="Tasks['+atIndex+'].expectedDuration" value="" />\
             </td></tr>\
     </table>\
     \
