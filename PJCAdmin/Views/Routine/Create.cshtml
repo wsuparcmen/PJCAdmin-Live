@@ -81,9 +81,26 @@ ViewBag.Title = "Create New Routine";
         return false;
     }
 
+    function InsertNewTaskFeedback(taskIndex, atIndex) {
+        if ($(".TaskFeedbacks:eq(" + taskIndex + ") li").length > atIndex) {
+            $('.TaskFeedbacks:eq(' + taskIndex + ') li:eq(' + atIndex + ')').before('@Html.Partial("_NewTaskFeedback", new PJCAdmin.Models.FeedbackModel())');
+        }
+        else if ($(".TaskFeedbacks:eq(" + taskIndex + ") li").length == atIndex) {
+            $(".TaskFeedbacks:eq(" + taskIndex + ")").append('@Html.Partial("_NewTaskFeedback", new PJCAdmin.Models.FeedbackModel())');
+        }
+        UpdateTaskFeedbackSequenceNos();
+        return false;
+    }
+
     function DeleteRoutineFeedback(atIndex) {
         $("#RoutineFeedbacks li").eq(atIndex).remove();
         UpdateRoutineFeedbackSequenceNos();
+        return false;
+    }
+
+    function DeleteTaskFeedback(taskIndex, atIndex) {
+        $(".TaskFeedbacks:eq(" + taskIndex + ") li").eq(atIndex).remove();
+        UpdateTaskFeedbackSequenceNos();
         return false;
     }
 
@@ -114,6 +131,14 @@ ViewBag.Title = "Create New Routine";
             var myIndex = $("#Tasks").find("select").eq(key).closest("li").index();
             var newName = input.name.replace(/\[\d*\]/, "[" + myIndex + "]");
             $("#Tasks").find("select").eq(key).attr('name', newName);
+        });
+    }
+
+    function UpdateTaskFeedbackSequenceNos() {
+        $.each($(".Task li.TaskFeedback").find("input"), function (key, input) {
+            var myIndex = $(".Task li.TaskFeedback").find("input").eq(key).closest("li.TaskFeedback").index();
+            var newName = input.name.replace(/Feedbacks\[\d*\]/, "Feedbacks[" + myIndex + "]");
+            $(".Task li.TaskFeedback").find("input").eq(key).attr('name', newName);
         });
     }
 
@@ -151,6 +176,18 @@ ViewBag.Title = "Create New Routine";
             event.preventDefault();
             var endIndex = $("#RoutineFeedbacks").children().size();
             InsertNewRoutineFeedback(endIndex);
+        });
+        $("#Tasks").on('click', 'ol.TaskFeedbacks button.RemoveTaskFeedback', function (event) {
+            event.preventDefault();
+            var task = $(this).closest('li.Task');
+            var currentIndex = $(this).closest('li.TaskFeedback').index();
+            DeleteTaskFeedback(task.index(), currentIndex);
+        });
+        $("#Tasks").on('click', 'button.AddFinalTaskFeedback', function (event) {
+            event.preventDefault();
+            var task = $(this).closest('li.Task');
+            var endIndex = task.children('ol.TaskFeedbacks').children().size();
+            InsertNewTaskFeedback(task.index(), endIndex);
         });
     });
 </script>
