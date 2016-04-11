@@ -178,7 +178,7 @@
         });
         $("#AddFinalTask").on('click', function (event) {
             event.preventDefault();
-            var endIndex = $("#Tasks").children().size();
+            var endIndex = $("#Tasks").children().size() + $("#Tasks .TaskFeedbacks").children().size();
             InsertNewTask(endIndex);
         });
         $("#Tasks").on('click', 'ol.TaskFeedbacks button.RemoveTaskFeedback', function (event) {
