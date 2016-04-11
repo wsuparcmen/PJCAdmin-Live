@@ -3,7 +3,7 @@
     <table>\
         <tr>\
             <td>\
-                Feedback Type: Positive@{PJCAdmin.Classes.Helpers.MVCModelHelpers.EnumHelper helper = new PJCAdmin.Classes.Helpers.MVCModelHelpers.EnumHelper();}\
+                Feedback Type:</td><td> Positive@{PJCAdmin.Classes.Helpers.MVCModelHelpers.EnumHelper helper = new PJCAdmin.Classes.Helpers.MVCModelHelpers.EnumHelper();}\
                 @*(<!--<select name="Tasks['+taskIndex+'].Feedbacks['+atIndex+'].feedbackTypeName">\
                         @foreach (PJCAdmin.Models.FeedbackType type in helper.getAllFeedbackTypes()){
                             <option value="@type.feedbackTypeName">@type.feedbackTypeName</option>@("\\")
@@ -14,25 +14,21 @@
         </tr>\
         <tr>\
             <td>\
-                Title: <input type="text" name="Tasks['+taskIndex+'].Feedbacks['+atIndex+'].feedbackTitle" value="" />\
+                Title:</td><td> <input type="text" name="Tasks['+taskIndex+'].Feedbacks['+atIndex+'].feedbackTitle" value="" />\
             </td>\
         </tr>\
         <tr>\
             <td>\
-                Message: <input type="text" name="Tasks['+taskIndex+'].Feedbacks['+atIndex+'].feedbackMessage" value="" />\
+                Message:</td><td> <input type="text" name="Tasks['+taskIndex+'].Feedbacks['+atIndex+'].feedbackMessage" value="" />\
             </td>\
         </tr>\
         <tr>\
             <td>\
-                Media Type: Text\
+                Media Type:</td><td> Text\
                 <input type="hidden" name="Tasks['+taskIndex+'].Feedbacks['+atIndex+'].MediaType.mediaTypeName" value="Text" />\
             </td>\
         </tr>\
-        <tr>\
-            <td>\
-                <button class="RemoveTaskFeedback">Remove This Task Feedback</button>\
-            </td>\
-        </tr>\
     </table>\
+    <button class="RemoveTaskFeedback">Remove This Task Feedback</button>\
 </li>\
  
