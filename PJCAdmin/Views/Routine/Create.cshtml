@@ -21,10 +21,10 @@ ViewBag.Title = "Create New Routine";
     <fieldset>
         <table>
             <tr><td>
-                Title: @Html.EditorFor(m => m.routineTitle)
+                Title:</td><td> @Html.EditorFor(m => m.routineTitle)
             </td></tr>
             <tr><td>
-                Assigned to: <select name="assigneeUserName">
+                Assigned to:</td><td> <select name="assigneeUserName">
                                 @foreach (MembershipUser user in ViewData["Assignees"] as List<MembershipUser>)
                                 {
                                     <option value="@(user.UserName)">
@@ -34,13 +34,13 @@ ViewBag.Title = "Create New Routine";
                           </select>
             </td></tr>
             <tr><td>
-                Timed? @Html.CheckBoxFor(m => m.isTimed) - Time Limit: @Html.EditorFor(m => m.expectedDuration)
+                Timed:</td><td> @Html.CheckBoxFor(m => m.isTimed) </td></tr><tr><td>Time Limit:</td><td> @Html.EditorFor(m => m.expectedDuration)
             </td></tr>
             <tr><td>
-                Email on job completion? @Html.CheckBoxFor(m => m.isNotifiable)
+                Email on Job Completion:</td><td> @Html.CheckBoxFor(m => m.isNotifiable)
             </td></tr>
             <tr><td>
-                Disabled? @Html.CheckBoxFor(m => m.isDisabled)
+                Disabled:</td><td> @Html.CheckBoxFor(m => m.isDisabled)
             </td></tr>
         </table>
 
@@ -164,7 +164,7 @@ ViewBag.Title = "Create New Routine";
         });
         $("#AddFinalTask").on('click', function (event) {
             event.preventDefault();
-            var endIndex = $("#Tasks").children().size();
+            var endIndex = $("#Tasks").children().size() + $("#Tasks .TaskFeedbacks").children().size();
             InsertNewTask(endIndex);
         });
         $("#RoutineFeedbacks").on('click', 'button.RemoveRoutineFeedback', function (event) {
