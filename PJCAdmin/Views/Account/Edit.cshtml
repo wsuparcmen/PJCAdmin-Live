@@ -235,6 +235,7 @@
             }
             
         </ol>
+        <a href="javascript:history.back()">Cancel</a>
         <input type="submit" value="Save" />
     </fieldset>
 }
@@ -433,8 +434,3 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-
-<p>
-    <!--atHtml.ActionLink("Back to User Details", "Details", new { user = Model.UserName }) |-->
-    @Html.ActionLink("Back to List", "List")
-</p>

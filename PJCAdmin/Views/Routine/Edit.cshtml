@@ -58,6 +58,7 @@
        
         <button id="AddFinalTask" class="AddFinalTask">Add Task At End</button>
         <br /><br/>
+        <a href="javascript:history.back()">Cancel</a>
         <input type="submit" value="Save" />
     </fieldset>
 }
@@ -191,5 +192,6 @@
             var endIndex = task.children('ol.TaskFeedbacks').children().size();
             InsertNewTaskFeedback(task.index(), endIndex);
         });
+    
     });
 </script>
