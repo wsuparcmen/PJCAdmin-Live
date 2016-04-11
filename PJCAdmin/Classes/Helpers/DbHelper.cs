@@ -36,6 +36,7 @@ namespace PJCAdmin.Classes.Helpers
         }
         public void deleteUserName(string userName)
         {
+            db.AuthTokens.Remove(db.AuthTokens.Where(at => at.userName.Equals(userName)).First());
             db.UserNames.Remove(db.UserNames.Find(userName));
             db.SaveChanges();
         }
