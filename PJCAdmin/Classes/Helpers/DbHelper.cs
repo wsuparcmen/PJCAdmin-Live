@@ -36,7 +36,13 @@ namespace PJCAdmin.Classes.Helpers
         }
         public void deleteUserName(string userName)
         {
-            db.AuthTokens.Remove(db.AuthTokens.Where(at => at.userName.Equals(userName)).First());
+            IQueryable<AuthToken> tokens = db.AuthTokens.Where(at => at.userName.Equals(userName));
+            if (tokens.Count() > 0)
+            {
+                foreach (AuthToken t in tokens)
+                    db.AuthTokens.Remove(t);
+            }
+
             foreach (Routine r in db.UserNames.Find(userName).Routines.ToList())
             {
                 deleteRoutine(r);
