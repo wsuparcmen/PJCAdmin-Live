@@ -45,7 +45,7 @@ namespace PJCAdmin.Models
     {
         public RegisterModel()
         {
-            this.jobs = new HashSet<job>();
+            this.jobs = new HashSet<Routine>();
         }
 
         [Required]
@@ -70,9 +70,9 @@ namespace PJCAdmin.Models
 
         [Required]
         [DataType(DataType.PhoneNumber)]
-        [Display(Name = "Phone Number")]
+        [Display(Name = "Phone Number (###-###-####)")]
         public string PhoneNumber { get; set; }
 
-        public virtual ICollection<job> jobs { get; set; }
+        public virtual ICollection<Routine> jobs { get; set; }
     }
 }

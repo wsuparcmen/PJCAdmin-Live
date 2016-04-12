@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -166,13 +167,38 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\APIAuth.cs" />
+    <Compile Include="Classes\Helpers\APIModelHelpers\Auth.cs" />
+    <Compile Include="Classes\Helpers\APIModelHelpers\JobHelper.cs" />
+    <Compile Include="Classes\Helpers\APIModelHelpers\ModelCopier.cs" />
+    <Compile Include="Classes\Helpers\APIModelHelpers\RoutineHelper.cs" />
+    <Compile Include="Classes\Helpers\APIModelHelpers\UserInfoHelper.cs" />
+    <Compile Include="Classes\Helpers\DbHelper.cs" />
+    <Compile Include="Classes\Helpers\DebugHelper.cs" />
+    <Compile Include="Classes\Helpers\MVCModelHelpers\AccountHelper.cs" />
+    <Compile Include="Classes\Helpers\MVCModelHelpers\EnumHelper.cs" />
+    <Compile Include="Classes\Helpers\MVCModelHelpers\FeedbackHelper.cs" />
+    <Compile Include="Classes\Helpers\MVCModelHelpers\JobHelper.cs" />
+    <Compile Include="Classes\Helpers\MVCModelHelpers\ModelCopier.cs" />
+    <Compile Include="Classes\Helpers\MVCModelHelpers\RoutineHelper.cs" />
+    <Compile Include="Classes\Helpers\MVCModelHelpers\TaskHelper.cs" />
     <Compile Include="Classes\TokenIsInvalidException.cs" />
-    <Compile Include="Controllers\AuthTestController.cs" />
-    <Compile Include="Controllers\DeleteHelloController.cs" />
-    <Compile Include="Controllers\HelloController.cs" />
-    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="ControllersAPI\JobCoachController.cs" />
+    <Compile Include="ControllersAPI\JobController.cs" />
+    <Compile Include="ControllersAPI\ParentController.cs" />
+    <Compile Include="ControllersAPI\TestController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="ControllersAPI\AuthTestController.cs" />
+    <Compile Include="ControllersAPI\DeleteHelloController.cs" />
+    <Compile Include="ControllersAPI\HelloController.cs" />
+    <Compile Include="Controllers\JobController.cs" />
+    <Compile Include="ControllersAPI\LoginController.cs" />
+    <Compile Include="Controllers\PromptController.cs" />
+    <Compile Include="Controllers\PromptTypeController.cs" />
+    <Compile Include="ControllersAPI\RoutineController.cs" />
+    <Compile Include="Controllers\RoutineController.cs" />
     <Compile Include="Controllers\TaskCategoryController.cs" />
+    <Compile Include="Controllers\TaskController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UserTypeController.cs" />
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -180,11 +206,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Classes\Email.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\JobController.cs" />
-    <Compile Include="Controllers\PromptController.cs" />
-    <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\UnauthorizedController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -198,10 +220,17 @@
     <Compile Include="Models\AuthToken.cs">
       <DependentUpon>PJCModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\APIModels.cs" />
     <Compile Include="Models\Debug.cs">
       <DependentUpon>PJCModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmailOutbox.cs">
+      <DependentUpon>PJCModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Feedback.cs">
+      <DependentUpon>PJCModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FeedbackType.cs">
       <DependentUpon>PJCModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\GenericToken.cs" />
@@ -209,31 +238,31 @@
     <Compile Include="Models\Hello.cs">
       <DependentUpon>PJCModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\job.cs">
+    <Compile Include="Models\Job.cs">
+      <DependentUpon>PJCModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\JobModels.cs" />
+    <Compile Include="Models\MediaType.cs">
       <DependentUpon>PJCModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Membership.cs">
       <DependentUpon>PJCModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Profile.cs">
+    <Compile Include="Models\Note.cs">
       <DependentUpon>PJCModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\prompt.cs">
-      <DependentUpon>PJCModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\prompttype.cs">
-      <DependentUpon>PJCModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PromptTypeController.cs" />
-    <Compile Include="Models\PJCModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PJCModel.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PJCModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PJCModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Profile.cs">
+      <DependentUpon>PJCModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PJCModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PJCModel.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PJCModel.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -243,22 +272,23 @@
     <Compile Include="Models\Role.cs">
       <DependentUpon>PJCModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\task.cs">
+    <Compile Include="Models\Routine.cs">
       <DependentUpon>PJCModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\taskcategory.cs">
+    <Compile Include="Models\RoutineModels.cs" />
+    <Compile Include="Models\Step.cs">
+      <DependentUpon>PJCModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Task.cs">
+      <DependentUpon>PJCModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TaskCategory.cs">
       <DependentUpon>PJCModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
       <DependentUpon>PJCModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserName.cs">
-      <DependentUpon>PJCModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\usertask.cs">
-      <DependentUpon>PJCModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\usertaskprompt.cs">
       <DependentUpon>PJCModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -406,8 +436,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Job\Index.cshtml" />
     <Content Include="Views\Job\Details.cshtml" />
-    <Content Include="Views\Job\Create.cshtml" />
-    <Content Include="Views\Job\Edit.cshtml" />
     <Content Include="Views\Job\Delete.cshtml" />
     <Content Include="Views\PromptType\Index.cshtml" />
     <Content Include="Views\PromptType\Details.cshtml" />
@@ -433,7 +461,6 @@
     <Content Include="Views\Prompt\Details.cshtml" />
     <Content Include="Views\Prompt\Edit.cshtml" />
     <Content Include="Views\Prompt\Delete.cshtml" />
-    <Content Include="Views\Job\_taskList.cshtml" />
     <Content Include="Views\Account\List.cshtml" />
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
@@ -452,6 +479,26 @@
     <Content Include="Views\TaskCategory\Create.cshtml" />
     <Content Include="Views\TaskCategory\Edit.cshtml" />
     <Content Include="Views\TaskCategory\Delete.cshtml" />
+    <Content Include="Views\Account\Unlock.cshtml" />
+    <Content Include="Views\Routine\Details.cshtml" />
+    <Content Include="Views\Routine\_ViewTask.cshtml" />
+    <Content Include="Views\Routine\List.cshtml" />
+    <Content Include="Views\Routine\Create.cshtml" />
+    <Content Include="Views\Routine\Edit.cshtml" />
+    <Content Include="Views\Routine\Delete.cshtml" />
+    <Content Include="Views\Routine\_EditTask.cshtml" />
+    <Content Include="Views\Routine\_ViewFeedback.cshtml" />
+    <Content Include="Views\Routine\_NewTask.cshtml" />
+    <Content Include="Views\Test\List.cshtml" />
+    <Content Include="Views\Test\Edit.cshtml" />
+    <Content Include="Views\Routine\ListByAssignedUser.cshtml" />
+    <Content Include="Views\Routine\_EditRoutineFeedback.cshtml" />
+    <Content Include="Views\Routine\_NewRoutineFeedback.cshtml" />
+    <Content Include="Views\Job\ListRoutines.cshtml" />
+    <Content Include="Views\Job\ListRoutineVersions.cshtml" />
+    <Content Include="Views\Job\ListJobs.cshtml" />
+    <Content Include="Views\Routine\_NewTaskFeedback.cshtml" />
+    <Content Include="Views\Routine\_EditTaskFeedback.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -513,6 +560,10 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PreBuildEvent>call "$(ProjectDir)buildPJCAdminFix_1.bat" "$(ProjectDir)"
+call "$(ProjectDir)buildPJCAdminFix_2.bat" "$(ProjectDir)"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

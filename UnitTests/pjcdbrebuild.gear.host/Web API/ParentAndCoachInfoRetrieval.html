@@ -1,0 +1,85 @@
+<html>
+<head><title>Parent And JobCoach Info Retrieval Unit Test</title></head>
+<body>
+  <div>
+    <h4>Login's Parent Info</h4>
+    <ul id="getParentInfoResults"></ul>
+    <p id="getParentInfoPF" style="color:limegreen;"></p>
+    <h4>Login's JobCoach Info</h4>
+    <ul id="getJobCoachInfoResults"></ul>
+    <p id="getJobCoachInfoPF" style="color:limegreen;"></p>
+  </div>
+
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+  <script>
+    var uri = 'http://pjcdbrebuild.gear.host/api/';
+    var loginToken = "";
+    var uName = 'UnitTesterChild';
+    var uPass = 'password';
+    
+    $(document).ready(function () {
+      login();
+    });
+
+    function login() {
+      var login = {
+        'UserName':uName,
+        'Password':uPass};
+      $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        data: login,
+        url: uri + "Login",
+        success: function(data){
+          loginToken = data;
+          $('#data').html(data);
+          getParentInfo();
+        },
+        error: function(){
+          alert('Login Failure');
+        }
+      });
+    }
+    
+    function getParentInfo() {
+      $.getJSON(uri + "Parent",
+        {token: loginToken},
+        function (data) {
+          // On success, 'data' contains Parent Info.
+          $('<li>', { text: formatInfo(data) }).appendTo($('#getParentInfoResults'));
+        }
+      ).always(function(){
+        if ($('#getParentInfoResults li').length == 1){
+          $('#getParentInfoPF').html('Success!');
+        } else {
+          $('#getParentInfoPF').html('Failure: Non-singular info result');
+          $('#getParentInfoPF').css('color','red');
+        }
+
+        getJobCoachInfo();
+      });
+    }
+
+    function getJobCoachInfo() {
+      $.getJSON(uri + "JobCoach",
+        {token: loginToken},
+        function (data) {
+          // On success, 'data' contains JobCoach Info.
+          $('<li>', { text: formatInfo(data) }).appendTo($('#getJobCoachInfoResults'));
+        }
+      ).always(function(){
+        if ($('#getJobCoachInfoResults li').length == 1){
+          $('#getJobCoachInfoPF').html('Success!');
+        } else {
+          $('#getJobCoachInfoPF').html('Failure: Non-singular info result');
+          $('#getJobCoachInfoPF').css('color','red');
+        }
+
+
+      });
+    }
+
+    function formatInfo(item) {
+      return item.userName + ' - Email: ' + item.email + " - Phone: " + item.phone;
+    }
+  </script>

@@ -1,0 +1,47 @@
+﻿@model PJCAdmin.Models.Task
+<li class="Task">
+    <strong>@(Html.DisplayFor(model => model.taskName))</strong>
+    <table>
+        <!--<tr>
+            <td>Name:</td>
+            <td>@(Html.DisplayFor(model => model.taskName))</td>
+        </tr>-->
+        <tr>
+            <td>Description:</td>
+            <td>@(Html.DisplayFor(model => model.taskDescription))</td>
+        </tr>
+        <!--<tr>
+            <td>Category:</td>
+            <td>@(Html.DisplayFor(model => model.TaskCategory.categoryName))</td>
+        </tr>-->
+        <!--<tr>
+            <td>Sequence Number:</td>
+            <td>@(Html.DisplayFor(model => model.sequenceNo))</td>
+        </tr>-->
+        <tr>
+            <td>Timed:</td>
+            <td>
+                @if (Model.isTimed) { @("Timed - " + Model.expectedDuration) }
+                else { @("Not Timed - " + Model.expectedDuration) }
+            </td>
+        </tr>
+    </table>
+
+    <h4 style="margin-top:15px;">Task Feedback</h4>
+    <table>
+        <tr>
+        @if (Model.Feedbacks.Count == 0)
+        {
+            <td>No Feedback</td>
+        }
+        else
+        {
+            foreach (PJCAdmin.Models.Feedback feedback in Model.Feedbacks)
+            {
+                @Html.Partial("_ViewFeedback", feedback);
+            }
+        }
+        <tr>
+    </table>
+</li>
+<br/><br/>

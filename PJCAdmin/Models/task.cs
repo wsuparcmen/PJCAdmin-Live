@@ -11,26 +11,38 @@ namespace PJCAdmin.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.Serialization;
     
-    public partial class task
+    [DataContract]
+    public partial class Task
     {
-        public task()
+        public Task()
         {
-            this.prompts = new HashSet<prompt>();
-            this.usertasks = new HashSet<usertask>();
-            this.usertaskprompts = new HashSet<usertaskprompt>();
-            this.jobs = new HashSet<job>();
+            this.Feedbacks = new HashSet<Feedback>();
         }
     
-        public int taskID { get; set; }
-        public int taskCategoryID { get; set; }
+        [IgnoreDataMember]
+        public int routineID { get; set; }
+        [DataMember]
+        public byte sequenceNo { get; set; }
+        [IgnoreDataMember]
+        public byte taskCategoryID { get; set; }
+        [DataMember]
         public string taskName { get; set; }
-        public string description { get; set; }
+        [DataMember]
+        public string taskDescription { get; set; }
+        [DataMember]
+        public bool isTimed { get; set; }
+        [DataMember]
+        public Nullable<System.TimeSpan> expectedDuration { get; set; }
+        [IgnoreDataMember]
+        public int taskID { get; set; }
     
-        public virtual ICollection<prompt> prompts { get; set; }
-        public virtual taskcategory taskcategory { get; set; }
-        public virtual ICollection<usertask> usertasks { get; set; }
-        public virtual ICollection<usertaskprompt> usertaskprompts { get; set; }
-        public virtual ICollection<job> jobs { get; set; }
+        [IgnoreDataMember]
+        public virtual Routine Routine { get; set; }
+        [DataMember]
+        public virtual TaskCategory TaskCategory { get; set; }
+        [DataMember]
+        public virtual ICollection<Feedback> Feedbacks { get; set; }
     }
 }

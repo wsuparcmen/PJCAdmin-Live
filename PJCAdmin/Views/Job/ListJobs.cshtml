@@ -1,0 +1,74 @@
+﻿@model IEnumerable<PJCAdmin.Models.Job>
+
+@{
+ViewBag.Title = "Job - Job Selection";
+}
+
+@if (Roles.IsUserInRole("Administrator") && !(ViewData["mockUser"] as string).Equals(""))
+{
+    <h1>
+        Viewing as: @(ViewData["mockUser"] as string)
+    </h1>
+    <p>@Html.ActionLink("View as different user","Index")</p>
+}
+
+<br />
+
+<h1>
+    Viewing Routine: @(ViewData["routineName"] as string) - Assigned to: @(ViewData["assigneeName"] as string) 
+    - Updated on: @(ViewData["updatedDate"] as Nullable<DateTime>)
+</h1>
+<p>
+    @if (Roles.IsUserInRole("Administrator")){
+        @Html.ActionLink("View different routine", "ListRoutines", new { mockUser = ViewData["mockUser"] as string })
+    }
+    else{
+        @Html.ActionLink("View different routine", "ListRoutines")
+    }
+</p>
+<p>
+    @if (Roles.IsUserInRole("Administrator")){
+        @Html.ActionLink("View different version", "ListRoutineVersions", new { 
+            mockUser = ViewData["mockUser"] as string,
+            routineName = ViewData["routineName"] as string,
+            assigneeName = ViewData["assigneeName"] as string})
+    }
+    else{
+        @Html.ActionLink("View different version", "ListRoutineVersions", new { 
+            routineName = ViewData["routineName"] as string,
+            assigneeName = ViewData["assigneeName"] as string})
+    }
+</p>
+
+<table>
+    <tr>
+        <th>Select the desired Job...</th>
+    </tr>
+
+    @foreach (PJCAdmin.Models.Job job in Model)
+    {
+        <tr>
+            <td>
+                Started on: @Html.DisplayFor(modelItem => job.startTime) 
+            </td>
+            <td>
+                @if (Roles.IsUserInRole("Administrator"))
+                {
+                    @Html.ActionLink("View Job", "Details", new { 
+                        mockUser = ViewData["mockUser"] as string,
+                        routineName = job.Routine.routineTitle,
+                        assigneeName = job.Routine.assigneeUserName,
+                        startDate = job.startTime})
+                }
+                else
+                {
+                    @Html.ActionLink("View Job", "Details", new {
+                        routineName = job.Routine.routineTitle,
+                        assigneeName = job.Routine.assigneeUserName,
+                        startDate = job.startTime})
+                }
+            </td>
+        </tr>
+    }
+</table>
+

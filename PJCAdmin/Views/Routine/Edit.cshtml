@@ -1,0 +1,198 @@
+﻿@model PJCAdmin.Models.RoutineModel
+
+@{
+    ViewBag.Title = "Edit Routine - Testing";
+    //ProfileCommon userProfile = (ProfileCommon)ProfileCommon.Create(Model.UserName, true);
+}
+
+@if (Roles.IsUserInRole("Administrator") && !(ViewData["mockUser"] as string).Equals(""))
+{
+    <h1>
+        Viewing as: @(ViewData["mockUser"] as string)
+    </h1>
+    <p>@Html.ActionLink("View as different user","List")</p>
+}
+<h2>Edit Routine <small style="color:#808080">@Html.DisplayFor(model => model.routineTitle)</small></h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    <fieldset>
+        @Html.HiddenFor(m => m.routineTitle)
+        <table>
+            <tr><td>
+                Assigned to:</td><td>@Html.DisplayFor(model => model.assigneeUserName)
+                @Html.HiddenFor(m => m.assigneeUserName)
+            </td></tr>
+            <tr><td>
+                Timed</td><td>@Html.CheckBoxFor(m => m.isTimed)</tr><tr><td>Time Limit:</td><td>@Html.EditorFor(m => m.expectedDuration)
+            </td></tr>
+            <tr><td>
+                Email on Job Completion:</td><td>@Html.CheckBoxFor(m => m.isNotifiable)
+            </td></tr>
+            <tr><td>
+                Disabled:</td><td>@Html.CheckBoxFor(m => m.isDisabled)
+            </td></tr>
+        </table>
+
+        <h3>Routine Feedback</h3>
+        <ol id="RoutineFeedbacks">
+            @{int index = 0;}
+            @foreach (PJCAdmin.Models.FeedbackModel feedback in Model.Feedbacks)
+            {
+                @Html.Partial("_EditRoutineFeedback", feedback, new ViewDataDictionary{{"Index",@index++}});
+            }
+        </ol>
+        <button id="AddFinalRoutineFeedback" class="AddFinalRoutineFeedback">Add Routine Feedback</button>
+
+        <h3>Tasks</h3>
+        <hr/>
+        <ol id="Tasks">
+            @foreach (PJCAdmin.Models.TaskModel task in Model.Tasks)
+            {
+                @Html.Partial("_EditTask", task);
+
+            }
+        </ol>
+       
+        <button id="AddFinalTask" class="AddFinalTask">Add Task At End</button>
+        <br /><br/>
+        <input type="submit" value="Save" />
+        <a href="javascript:history.back()">Cancel</a>
+    </fieldset>
+}
+
+<script>
+    function InsertNewRoutineFeedback(atIndex) {
+        if ($("#RoutineFeedbacks li").length > atIndex) {
+            $('#RoutineFeedbacks li:eq(' + atIndex + ')').before('@Html.Partial("_NewRoutineFeedback", new PJCAdmin.Models.FeedbackModel())');
+        }
+        else if ($("#RoutineFeedbacks li").length == atIndex) {
+            $("#RoutineFeedbacks").append('@Html.Partial("_NewRoutineFeedback", new PJCAdmin.Models.FeedbackModel())');
+        }
+        UpdateRoutineFeedbackSequenceNos();
+        return false;
+    }
+
+    function InsertNewTask(atIndex) {
+        if ($("#Tasks li").length > atIndex) {
+            $('#Tasks li:eq(' + atIndex + ')').before('@Html.Partial("_NewTask", new PJCAdmin.Models.TaskModel(),ViewData)');
+        }
+        else if ($("#Tasks li").length == atIndex){
+            $("#Tasks").append('@Html.Partial("_NewTask", new PJCAdmin.Models.TaskModel(),ViewData)');
+        }
+        UpdateTaskSequenceNos();
+        return false;
+    }
+
+    function InsertNewTaskFeedback(taskIndex, atIndex) {
+        if ($(".TaskFeedbacks:eq("+taskIndex+") li").length > atIndex) {
+            $('.TaskFeedbacks:eq('+taskIndex+') li:eq(' + atIndex + ')').before('@Html.Partial("_NewTaskFeedback", new PJCAdmin.Models.FeedbackModel())');
+        }
+        else if ($(".TaskFeedbacks:eq("+taskIndex+") li").length == atIndex) {
+            $(".TaskFeedbacks:eq("+taskIndex+")").append('@Html.Partial("_NewTaskFeedback", new PJCAdmin.Models.FeedbackModel())');
+        }
+        UpdateTaskFeedbackSequenceNos();
+        return false;
+    }
+
+    function DeleteRoutineFeedback(atIndex) {
+        $("#RoutineFeedbacks li").eq(atIndex).remove();
+        UpdateRoutineFeedbackSequenceNos();
+        return false;
+    }
+
+    function DeleteTask(atIndex) {
+        if ($("#Tasks li").length == 1) {
+            return false;
+        }
+
+        $("#Tasks li").eq(atIndex).remove();
+        UpdateTaskSequenceNos();
+        return false;
+    }
+
+    function DeleteTaskFeedback(taskIndex, atIndex) {
+        $(".TaskFeedbacks:eq(" + taskIndex + ") li").eq(atIndex).remove();
+        UpdateTaskFeedbackSequenceNos();
+        return false;
+    }
+
+    function UpdateRoutineFeedbackSequenceNos() {
+        $.each($("#RoutineFeedbacks").find("input"), function (key, input) {
+            var myIndex = $("#RoutineFeedbacks").find("input").eq(key).closest("li").index();
+            var newName = input.name.replace(/\[\d*\]/, "[" + myIndex + "]");
+            $("#RoutineFeedbacks").find("input").eq(key).attr('name', newName);
+        });
+    }
+
+    function UpdateTaskSequenceNos() {
+        $.each($("#Tasks").find("input"), function (key, input) {
+            var myIndex = $("#Tasks").find("input").eq(key).closest("li.Task").index();
+            var sequenceNo = myIndex + 1;
+            var newName = input.name.replace(/Tasks\[\d*\]/, "Tasks[" + myIndex + "]");
+            $("#Tasks").find("input").eq(key).attr('name', newName);
+
+            if ($("#Tasks").find("input").eq(key).hasClass("seqNo")) {
+                $("#Tasks").find("input").eq(key).val(sequenceNo);
+            }
+        });
+        $.each($("#Tasks").find("select"), function (key, input) {
+            var myIndex = $("#Tasks").find("select").eq(key).closest("li.Task").index();
+            var newName = input.name.replace(/Tasks\[\d*\]/, "Tasks[" + myIndex + "]");
+            $("#Tasks").find("select").eq(key).attr('name', newName);
+        });
+    }
+
+    function UpdateTaskFeedbackSequenceNos() {
+        $.each($(".Task li.TaskFeedback").find("input"), function (key, input) {
+            var myIndex = $(".Task li.TaskFeedback").find("input").eq(key).closest("li.TaskFeedback").index();
+            var newName = input.name.replace(/Feedbacks\[\d*\]/, "Feedbacks[" + myIndex + "]");
+            $(".Task li.TaskFeedback").find("input").eq(key).attr('name', newName);
+        });
+    }
+
+    $(document).ready( function() {
+        //InsertNewTask(0);
+        $("#RoutineFeedbacks").on('click', 'button.RemoveRoutineFeedback', function (event) {
+            event.preventDefault();
+            var currentIndex = $(this).closest('li').index();
+            DeleteRoutineFeedback(currentIndex);
+        });
+        $("#AddFinalRoutineFeedback").on('click', function (event) {
+            event.preventDefault();
+            var endIndex = $("#RoutineFeedbacks").children().size();
+            InsertNewRoutineFeedback(endIndex);
+        });
+        $("#Tasks").on('click', 'button.AddTask', function (event) {
+            event.preventDefault();
+            var currentIndex = $(this).closest('li').index();
+            InsertNewTask(currentIndex);
+        });
+        $("#Tasks").on('click', 'button.RemoveTask', function (event) {
+            event.preventDefault();
+            var currentIndex = $(this).closest('li').index();
+            DeleteTask(currentIndex);
+        });
+        $("#AddFinalTask").on('click', function (event) {
+            event.preventDefault();
+            var endIndex = $("#Tasks").children().size() + $("#Tasks .TaskFeedbacks").children().size();
+            InsertNewTask(endIndex);
+        });
+        $("#Tasks").on('click', 'ol.TaskFeedbacks button.RemoveTaskFeedback', function (event) {
+            event.preventDefault();
+            var task = $(this).closest('li.Task');
+            var currentIndex = $(this).closest('li.TaskFeedback').index();
+            DeleteTaskFeedback(task.index(), currentIndex);
+        });
+        $("#Tasks").on('click', 'button.AddFinalTaskFeedback', function (event) {
+            event.preventDefault();
+            var task = $(this).closest('li.Task');
+            var endIndex = task.children('ol.TaskFeedbacks').children().size();
+            InsertNewTaskFeedback(task.index(), endIndex);
+        });
+    
+    });
+</script>

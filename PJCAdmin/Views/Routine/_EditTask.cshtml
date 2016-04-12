@@ -1,0 +1,58 @@
+﻿@model PJCAdmin.Models.TaskModel
+<li class="Task">
+    <table>
+        <tr><td>Task Name:</td><td><input type="text" name="Tasks[@(Model.sequenceNo - 1)].taskName" value="@Model.taskName" /></td></tr>
+        <tr><td>Description:</td><td><input type="text" name="Tasks[@(Model.sequenceNo - 1)].taskDescription" value="@Model.taskDescription" /></td></tr>
+        <tr>
+            <td>
+                Category:</td><td>
+                <select name="Tasks[@(Model.sequenceNo - 1)].TaskCategory.categoryName">
+                    @foreach (string name in ViewData["TaskCategories"] as List<string>)
+                    {
+                        if (name == Model.TaskCategory.categoryName)
+                        {
+                            <option value="@name" selected="selected">@name</option>
+                        }
+                        else
+                        {
+                            <option value="@name">@name</option>
+                        }
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr><td><!--Sequence Number--><input type="hidden" name="Tasks[@(Model.sequenceNo - 1)].sequenceNo" class="seqNo" value="@Model.sequenceNo" /></td></tr>
+        <tr>
+            <td>
+                Timed:</td><td> @Html.EditorFor(model => model.isTimed, "TemplateName", "Tasks[" + (Model.sequenceNo - 1) + "].isTimed")</tr><tr><td>Time Limit:</td><td>@Html.EditorFor(model => model.expectedDuration, "TemplateTimeName", "Tasks[" + (Model.sequenceNo - 1) + "].expectedDuration")
+            </td>
+        </tr>
+    </table>
+
+    <h4>Task Feedback</h4>
+    <ol class="TaskFeedbacks">
+        @*foreach (PJCAdmin.Models.FeedbackModel feedback in Model.Feedbacks)
+        {
+            @Html.Partial("_EditTaskFeedback", feedback,new ViewDataDictionary(new{taskSequenceNo = Model.sequenceNo}));
+        }*@
+        
+            @{int index = 0;}
+            @foreach (PJCAdmin.Models.FeedbackModel feedback in Model.Feedbacks)
+            {
+                @Html.Partial("_EditTaskFeedback", feedback, new ViewDataDictionary { { "TaskIndex", Model.sequenceNo - 1 }, {"Index", @index++} });
+            }
+    </ol>
+    <p><button class="AddFinalTaskFeedback" style="font-size:10pt;">Add Task Feedback</button></p>
+        
+    <table>
+        <tr>
+            <td>
+                <button class="AddTask">Add New Task Before</button>
+            </td>
+            <td>
+                <button class="RemoveTask">Remove This Task</button>
+            </td>
+        </tr>
+    </table>
+    <hr/>
+</li>

@@ -4,139 +4,319 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 using System.Web.Mvc;
 using PJCAdmin.Models;
+using PJCAdmin.Classes.Helpers;
+using PJCAdmin.Classes.Helpers.MVCModelHelpers;
 
 namespace PJCAdmin.Controllers
 {
     public class JobController : Controller
     {
+        private AccountHelper accountHelper;
+        private RoutineHelper routineHelper;
+        private JobHelper helper;
         private pjcEntities db = new pjcEntities();
+
+        public JobController()
+        {
+            helper = new JobHelper();
+            DbHelper context = helper.getDBHelper();
+            accountHelper = new AccountHelper(context);
+            routineHelper = new RoutineHelper(context);
+        }
 
         //
         // GET: /Job/
 
-        public ActionResult Index()
+        public ActionResult Index() //Lists mockUsers or redirect
         {
-            return View(db.jobs.ToList());
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            if (!Roles.IsUserInRole("Administrator"))
+                return RedirectToAction("ListRoutines", "Job");
+
+            ViewData["JobCoaches"] = accountHelper.getListOfUsersInRole("Job Coach");
+            ViewData["Parents"] = accountHelper.getListOfUsersInRole("Parent");
+
+            return View();
+        }
+
+        public ActionResult ListRoutines(string mockUser = "")
+        {
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            List<Routine> allRoutines;
+
+            if (Roles.IsUserInRole("Administrator"))
+            {
+                if (mockUser == null || mockUser.Equals("") || !accountHelper.userExists(mockUser))
+                {
+                    return RedirectToAction("Index", "Job");
+                }
+
+                ViewData["mockUser"] = mockUser;
+
+                allRoutines = routineHelper.getMostRecentRoutines(mockUser);
+            }
+            else
+            {
+                allRoutines = routineHelper.getMostRecentRoutines();
+            }
+
+            List<Routine> routines = new List<Routine>();
+            foreach (Routine r in allRoutines)
+            {
+                List<Job> jobs = helper.getAllJobsForRoutine(r.creatorUserName, r.assigneeUserName, r.routineTitle);
+                if (jobs != null && jobs.Count() > 0)
+                    routines.Add(r);
+            }
+
+            return View(routines);
+        }
+
+        public ActionResult ListRoutineVersions(string routineName, string assigneeName, string mockUser = "")
+        {
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            ViewData["routineName"] = routineName;
+            ViewData["assigneeName"] = assigneeName;
+
+            List<Routine> allRoutines;
+
+            if (Roles.IsUserInRole("Administrator"))
+            {
+                if (mockUser == null || mockUser.Equals("") || !accountHelper.userExists(mockUser))
+                    return RedirectToAction("Index", "Job");
+
+                if (!routineHelper.routineExists(mockUser, routineName, assigneeName))
+                    return RedirectToAction("ListRoutines", "Job", new { mockUser = mockUser });
+
+                ViewData["mockUser"] = mockUser;
+                allRoutines = routineHelper.getRoutinesAssignedToByName(mockUser, routineName, assigneeName);
+            }
+            else
+            {
+                if (!routineHelper.routineExists(routineName, assigneeName))
+                    return RedirectToAction("ListRoutines", "Job");
+
+                allRoutines = routineHelper.getRoutinesAssignedToByName(routineName, assigneeName);
+            }
+
+            List<Routine> routines = new List<Routine>();
+            foreach (Routine r in allRoutines)
+            {
+                List<Job> jobs = helper.getAllJobsForRoutineVersion(r.creatorUserName, r.assigneeUserName, r.routineTitle, r.updatedDate);
+                if (jobs != null && jobs.Count() > 0)
+                    routines.Add(r);
+            }
+
+            return View(routines);
+        }
+
+        public ActionResult ListJobs(string routineName, string assigneeName, DateTime updatedDate, string mockUser = "")
+        {
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            ViewData["routineName"] = routineName;
+            ViewData["assigneeName"] = assigneeName;
+            ViewData["updatedDate"] = updatedDate;
+
+            if (Roles.IsUserInRole("Administrator"))
+            {
+                if (mockUser == null || mockUser.Equals("") || !accountHelper.userExists(mockUser))
+                    return RedirectToAction("Index", "Job");
+
+                if (!routineHelper.routineExists(mockUser, routineName, assigneeName))
+                    return RedirectToAction("ListRoutines", "Job", new { mockUser = mockUser });
+
+                if (!routineHelper.routineVersionExists(mockUser, assigneeName, routineName, updatedDate))
+                    return RedirectToAction("ListRoutineVersions", "Job", new
+                    {
+                        mockUser = mockUser,
+                        routineName = routineName,
+                        assigneeName = assigneeName
+                    });
+
+                ViewData["mockUser"] = mockUser;
+                return View(helper.getAllJobsForRoutineVersion(mockUser, assigneeName, routineName, updatedDate));
+            }
+            else
+            {
+                if (!routineHelper.routineExists(mockUser, routineName, assigneeName))
+                    return RedirectToAction("ListRoutines", "Job");
+
+                if (!routineHelper.routineVersionExists(mockUser, assigneeName, routineName, updatedDate))
+                    return RedirectToAction("ListRoutineVersions", "Job", new
+                    {
+                        routineName = routineName,
+                        assigneeName = assigneeName
+                    });
+
+                string thisUsername = AccountHelper.getCurrentUsername();
+                return View(helper.getAllJobsForRoutineVersion(thisUsername, assigneeName, routineName, updatedDate));
+            }
         }
 
         //
         // GET: /Job/Details/5
 
-        public ActionResult Details(int id = 0)
+        public ActionResult Details(string routineName, string assigneeName, DateTime startDate, string mockUser = "")
         {
-            job job = db.jobs.Find(id);
-            if (job == null)
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
-                return HttpNotFound();
-            }
-            return View(job);
-        }
-
-        //
-        // GET: /Job/Create
-
-        public ActionResult Create()
-        {
-            ViewData["Tasks"] = db.tasks.ToList();
-
-            return View();
-        }
-
-        //
-        // POST: /Job/Create
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(job job, string[] taskList)
-        {
-            if (ModelState.IsValid)
-            {
-
-
-
-                foreach (var item in taskList)
-                {
-                    if (item != "false")
-                        job.tasks.Add(db.tasks.Find(Convert.ToInt32(item)));
-                }
-
-                db.jobs.Add(job);
-
-                db.SaveChanges();
-
-                return RedirectToAction("Index");
+                Response.Redirect("~/Unauthorized");
+                return View();
             }
 
-            return View(job);
-        }
+            ViewData["routineName"] = routineName;
+            ViewData["assigneeName"] = assigneeName;
 
-        //
-        // GET: /Job/Edit/5
-
-        public ActionResult Edit(int id = 0)
-        {
-            ViewData["Tasks"] = db.tasks.ToList();
-
-            job job = db.jobs.Find(id);
-            if (job == null)
+            if (Roles.IsUserInRole("Administrator"))
             {
-                return HttpNotFound();
-            }
-            return View(job);
-        }
+                if (mockUser == null || mockUser.Equals("") || !accountHelper.userExists(mockUser))
+                    return RedirectToAction("Index", "Job");
 
-        //
-        // POST: /Job/Edit/5
+                if (!routineHelper.routineExists(mockUser, routineName, assigneeName))
+                    return RedirectToAction("ListRoutines", "Job", new { mockUser = mockUser });
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(job job, string[] taskList)
-        {
-            if (ModelState.IsValid)
-            {
-                db.jobs.Find(job.jobID).tasks.Clear();
-                db.SaveChanges();
-                if (taskList != null)
-                {
-                    foreach (var item in taskList)
+                if (!helper.jobExists(mockUser, assigneeName, routineName, startDate))
+                    return RedirectToAction("ListRoutineVersions", "Job", new
                     {
-                        if (item != "false")
-                            db.jobs.Find(job.jobID).tasks.Add((db.tasks.Find(Convert.ToInt32(item))));
+                        mockUser = mockUser,
+                        routineName = routineName,
+                        assigneeName = assigneeName
+                    });
 
-                    }
-                }
-                db.SaveChanges();
+                ViewData["mockUser"] = mockUser;
+                return View(helper.getJob(mockUser, assigneeName, routineName, startDate));
             }
-            //return View(job);
-            return RedirectToAction("Index");
+            else
+            {
+                string thisUsername = AccountHelper.getCurrentUsername();
+                if (!routineHelper.routineExists(thisUsername, routineName, assigneeName))
+                    return RedirectToAction("ListRoutines", "Job");
+
+                if (!helper.jobExists(thisUsername, assigneeName, routineName, startDate))
+                    return RedirectToAction("ListRoutineVersions", "Job", new
+                    {
+                        routineName = routineName,
+                        assigneeName = assigneeName
+                    });
+
+                return View(helper.getJob(thisUsername, assigneeName, routineName, startDate));
+            }
         }
 
         //
         // GET: /Job/Delete/5
 
-        public ActionResult Delete(int id = 0)
+        public ActionResult Delete(string routineName, string assigneeName, DateTime startDate, string mockUser = "")
         {
-            job job = db.jobs.Find(id);
-            if (job == null)
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
-                return HttpNotFound();
+                Response.Redirect("~/Unauthorized");
+                return View();
             }
-            return View(job);
-        }
 
-        //
-        // POST: /Job/Delete/5
+            ViewData["routineName"] = routineName;
+            ViewData["assigneeName"] = assigneeName;
+            ViewData["startDate"] = startDate;
+
+            if (Roles.IsUserInRole("Administrator"))
+            {
+                if (mockUser == null || mockUser.Equals("") || !accountHelper.userExists(mockUser))
+                    return RedirectToAction("Index", "Job");
+
+                if (!routineHelper.routineExists(mockUser, routineName, assigneeName))
+                    return RedirectToAction("ListRoutines", "Job", new { mockUser = mockUser });
+
+                if (!helper.jobExists(mockUser, assigneeName, routineName, startDate))
+                    return RedirectToAction("ListRoutineVersions", "Job", new
+                    {
+                        mockUser = mockUser,
+                        routineName = routineName,
+                        assigneeName = assigneeName
+                    });
+
+                ViewData["mockUser"] = mockUser;
+                return View();
+            }
+            else
+            {
+                string thisUsername = AccountHelper.getCurrentUsername();
+                if (!routineHelper.routineExists(thisUsername, routineName, assigneeName))
+                    return RedirectToAction("ListRoutines", "Job");
+
+                if (!helper.jobExists(thisUsername, assigneeName, routineName, startDate))
+                    return RedirectToAction("ListRoutineVersions", "Job", new
+                    {
+                        routineName = routineName,
+                        assigneeName = assigneeName
+                    });
+
+                return View();
+            }
+        }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(string routineName, string assigneeName, DateTime startDate, string mockUser = "")
         {
-            job job = db.jobs.Find(id);
-            db.jobs.Remove(job);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            DateTime updatedDate;
+
+            if (Roles.IsUserInRole("Administrator"))
+            {
+                if (mockUser == null || mockUser.Equals("") || !accountHelper.userExists(mockUser))
+                {
+                    Response.Redirect("~/Job");
+                    return View();
+                }
+                else
+                {
+                    if (!helper.jobExists(mockUser, assigneeName, routineName, startDate))
+                        return HttpNotFound();
+
+                    updatedDate = helper.getJob(mockUser, assigneeName, routineName, startDate).Routine.updatedDate;
+                    helper.deleteJob(mockUser, assigneeName, routineName, startDate);
+                    
+                    return RedirectToAction("ListJobs", new { routineName = routineName, assigneeName = assigneeName,
+                            updatedDate = updatedDate, mockUser = mockUser });
+                }
+            }
+
+            if (!helper.jobExists(AccountHelper.getCurrentUsername(), assigneeName, routineName, startDate))
+                return HttpNotFound();
+
+            Job job = helper.getJob(AccountHelper.getCurrentUsername(), assigneeName, routineName, startDate);
+            updatedDate = job.Routine.updatedDate;      
+            helper.deleteJob(assigneeName, routineName, startDate);
+            
+            return RedirectToAction("ListJobs", new { routineName = routineName, assigneeName = assigneeName,
+                    updatedDate = updatedDate});
         }
 
         protected override void Dispose(bool disposing)

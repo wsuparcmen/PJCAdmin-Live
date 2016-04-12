@@ -1,0 +1,60 @@
+﻿@model PJCAdmin.Models.Routine
+
+@{
+    ViewBag.Title = "Routine Details";
+    //ProfileCommon userProfile = (ProfileCommon)ProfileCommon.Create(Model.UserName, true);
+}
+
+<h2>Routine Details for <small style="color:#808080">@Html.DisplayFor(model => model.routineTitle)</small></h2>
+<table>
+    <tr>
+        <td>Assigned To:</td>
+        <td>@Html.DisplayFor(model => model.assigneeUserName)</td>
+    </tr>
+    <tr>
+        <td>User Access:</td>
+        <td>
+            @if (Model.isDisabled) { @("Disabled") }
+            else { @("Enabled") }
+        </td>
+    </tr>
+    <tr>
+        <td>Timed:</td>
+        <td>
+            @if (Model.isTimed) { @("Timed - " + Model.expectedDuration) }
+            else { @("Not Timed - " + Model.expectedDuration) }
+        </td>
+    </tr>
+    <tr>
+        <td>Email:</td>
+        <td>
+            @if (Model.isNotifiable) { @("Will email on job completion") }
+            else { @("Won't email on job completion") }
+        </td>
+    </tr>
+</table>
+
+<h3 style="margin-top:20px;">Routine Feedback</h3>
+<table>
+    <tr>
+    @if (Model.Feedbacks.Count == 0)
+    {
+        <td>No Feedback</td>
+    }
+    else
+    {
+        foreach (PJCAdmin.Models.Feedback feedback in Model.Feedbacks)
+        {
+                @Html.Partial("_ViewFeedback", feedback);
+        }
+    }
+    </tr>
+</table>
+
+<h3 style="margin-top:20px;">Tasks List</h3>
+<ol id="Tasks">
+    @foreach (PJCAdmin.Models.Task task in Model.Tasks)
+    {
+        @Html.Partial("_ViewTask", task);
+    }
+</ol>

@@ -6,9 +6,9 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
 using PJCAdmin.Models;
-using System.Data;
 using PJCAdmin.Classes;
-using System.Web.Profile;
+using PJCAdmin.Classes.Helpers;
+using PJCAdmin.Classes.Helpers.MVCModelHelpers;
 
 namespace PJCMobile.Controllers
 {
@@ -17,6 +17,13 @@ namespace PJCMobile.Controllers
     public class AccountController : Controller
     {
         private pjcEntities db = new pjcEntities();
+        private AccountHelper helper;
+        private DebugHelper debug = new DebugHelper();
+
+        public AccountController()
+        {
+            helper = new AccountHelper();
+        }
         //
         // GET: /Account/Index
 
@@ -27,252 +34,299 @@ namespace PJCMobile.Controllers
 
         public ActionResult List(int id = 0)
         {
-            if (Roles.IsUserInRole("Administrator"))
-                return View(System.Web.Security.Membership.GetAllUsers());
-            else if (Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent"))
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
-                List<MembershipUser> lstUsers = new List<MembershipUser>();
-                foreach (PJCAdmin.Models.User usr in db.Users.Find(System.Web.Security.Membership.GetUser().ProviderUserKey).Users)
-                {
-                    lstUsers.Add(System.Web.Security.Membership.GetUser(usr.UserName));
-                }
-                return View(lstUsers);
-            }
-            else
                 Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            if (Roles.IsUserInRole("Administrator"))
+            {
+                ViewData["Admins"] = helper.getListOfUsersInRole("Administrator");
+                ViewData["Job Coaches"] = helper.getListOfUsersInRole("Job Coach");
+                ViewData["Parents"] = helper.getListOfUsersInRole("Parent");
+                ViewData["Users"] = helper.getListOfUsersInRole("User");
+                
+                return View();
+            }
+
+            string thisUsername = AccountHelper.getCurrentUsername();
+            
+            if (Roles.IsUserInRole("Job Coach"))
+                ViewData["AssignedUsers"] = helper.getListOfUsersAssignedToJobCoach(thisUsername);
+
+            if (Roles.IsUserInRole("Parent"))
+                ViewData["Children"] = helper.getListOfUsersChildOfParent(thisUsername);
+            
             return View();
         }
 
         public ActionResult Details(string user = "")
         {
-            if (Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent"))
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
-                MembershipUser account = System.Web.Security.Membership.GetUser(user);
-                if (account == null)
-                {
-                    return HttpNotFound();
-                }
-                List<MembershipUser> lstUsers = new List<MembershipUser>();
-                foreach (PJCAdmin.Models.User usr in db.Users.Find(System.Web.Security.Membership.GetUser(user).ProviderUserKey).Users)
-                {
-                    lstUsers.Add(System.Web.Security.Membership.GetUser(usr.UserName));
-                }
-                ViewData["AssignedUsers"] = lstUsers;
-                if (db.Users.Find(account.ProviderUserKey).jobs.Count > 0)
-                    ViewData["SelectedJob"] = db.Users.Find(account.ProviderUserKey).jobs.ElementAt(0);
-                else
-                    ViewData["SelectedJob"] = new PJCAdmin.Models.job();
-                return View(account);
-            }
-            else
                 Response.Redirect("~/Unauthorized");
-            return View();
+                return View();
+            }
+
+            if (!(Roles.IsUserInRole("Administrator") || helper.isThisUserUsersParent(user) || helper.isThisUserUsersJobCoach(user)))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            if (!helper.userExists(user))
+                return HttpNotFound();
+
+            if (Roles.IsUserInRole(user,"Administrator")){
+                ViewData["Role"] = "Administrator";
+            }
+            else if (Roles.IsUserInRole(user,"Job Coach")){
+                ViewData["Role"] = "Job Coach";
+                ViewData["AssignedUsersNew"] = helper.getListOfUsersAssignedToJobCoach(user);
+                //ViewData["CreatedRoutines"] = getListOfCreatedRoutines(user);
+            }
+            else if (Roles.IsUserInRole(user,"Parent")){
+                ViewData["Role"] = "Parent";
+                ViewData["Children"] = helper.getListOfUsersChildOfParent(user);
+                //ViewData["CreatedRoutines"] = getListOfCreatedRoutines(user);
+            }
+            else if (Roles.IsUserInRole(user,"User")){
+                ViewData["Role"] = "User";
+                ViewData["Job Coach"] = helper.getUsersJobCoach(user);
+                ViewData["Parent"] = helper.getUsersParent(user);
+                //ViewData["AssignedRoutines"] = getListOfAssignedRoutines(user);
+            }
+
+            return View(System.Web.Security.Membership.GetUser(user));
         }
 
         public ActionResult Edit(string user = "")
         {
-            if (Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent"))
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
-                MembershipUser account = System.Web.Security.Membership.GetUser(user);
-                ViewData["SelectedUsers"] = db.Users.Find(account.ProviderUserKey).Users.ToList();
-                ViewData["Users"] = db.Users.ToList();
-                ViewData["Jobs"] = db.jobs.ToList();
-                if (db.Users.Find(account.ProviderUserKey).jobs.Count > 0)
-                    ViewData["SelectedJob"] = db.Users.Find(account.ProviderUserKey).jobs.ElementAt(0);
-                else
-                    ViewData["SelectedJob"] = new PJCAdmin.Models.job();
-                if (account == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(account);
-            }
-            else
                 Response.Redirect("~/Unauthorized");
-            return View();
+                return View();
+            }
+
+            if (!(Roles.IsUserInRole("Administrator") || helper.isThisUserUsersParent(user) || helper.isThisUserUsersJobCoach(user)))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            string thisUsername = AccountHelper.getCurrentUsername();
+
+            if (!helper.userExists(user))
+                return HttpNotFound();
+
+            if (Roles.IsUserInRole("Administrator")){
+                ViewData["AvailableJobCoaches"] = helper.getListOfUsersInRole("Job Coach");
+                ViewData["AvailableParents"] = helper.getListOfUsersInRole("Parent");
+                ViewData["AvailableUsers"] = helper.getListOfUnassignedUsers();
+                ViewData["AvailableChildren"] = helper.getListOfUnassignedChildren();
+            }
+            else if (Roles.IsUserInRole("Job Coach")){
+                //ViewData["AvailableRoutines"] = getListOfCreatedRoutines(thisUsername);
+            }
+            else if (Roles.IsUserInRole("Parent")){
+                //ViewData["AvailableRoutines"] = getListOfCreatedRoutines(thisUsername);
+            }
+
+            if (Roles.IsUserInRole(user, "Administrator")){
+                ViewData["Role"] = "Administrator";
+            }
+            else if (Roles.IsUserInRole(user, "Job Coach"))
+            {
+                ViewData["Role"] = "Job Coach";
+                ViewData["AssignedUsers"] = helper.getListOfUsersAssignedToJobCoach(user);
+            }
+            else if (Roles.IsUserInRole(user, "Parent"))
+            {
+                ViewData["Role"] = "Parent";
+                ViewData["Children"] = helper.getListOfUsersChildOfParent(user);
+            }
+            else if (Roles.IsUserInRole(user, "User"))
+            {
+                ViewData["Role"] = "User";
+                ViewData["JobCoach"] = helper.getUsersJobCoach(user);
+                ViewData["Parent"] = helper.getUsersParent(user);
+            }
+
+            return View(System.Web.Security.Membership.GetUser(user));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(string UserName, string Email, string usertype, string[] selectedUsers, string job, string applyJobTemplate, string phonenumber)
+        public ActionResult Edit(string userName, string email, string phoneNumber, string userRole, string[] assignedUsers, string[] assignedChildren, string jobCoach, string parent) 
         {
-            if (Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent"))
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
-                MembershipUser user = System.Web.Security.Membership.GetUser(UserName);
-
-                ProfileBase profile = ProfileBase.Create(UserName,true);
-                profile.SetPropertyValue("PhoneNumber", phonenumber);
-                profile.Save();
-                
-                //Assigned Users
-                db.Users.Find(user.ProviderUserKey).Users.Clear();
-                if (selectedUsers != null)
-                {
-                    foreach (string id in selectedUsers)
-                    {
-                        db.Users.Find(user.ProviderUserKey).Users.Add(db.Users.Find(Guid.Parse(id)));
-                    }
-                }
-                //Jobs
-                db.Users.Find(user.ProviderUserKey).jobs.Clear();
-                if (job != "")
-                db.Users.Find(user.ProviderUserKey).jobs.Add(db.jobs.Find(Convert.ToInt32(job)));
-
-
-                if (Convert.ToBoolean(applyJobTemplate))
-                {
-                    foreach (PJCAdmin.Models.task t in db.jobs.Find(Convert.ToInt32(job)).tasks)
-                    {
-                        db.Users.Find(user.ProviderUserKey).usertasks.Add(new usertask { task = t, User = db.Users.Find(user.ProviderUserKey), daysOfWeek = "" });
-                    }
-                }
-
-                db.SaveChanges();
-                user.Email = Email;
-                System.Web.Security.Membership.UpdateUser(user);
-                foreach (string aRole in Roles.GetAllRoles())
-                {
-                    //Only Let the user be in one role
-                    try
-                    {
-                        Roles.RemoveUserFromRole(user.UserName, aRole);
-                    }
-                    catch
-                    {
-                        // Don't Worry About It.... :)
-                    }
-                }
-                Roles.AddUserToRole(user.UserName, usertype);
-                return RedirectToAction("List");
-            }
-            else
                 Response.Redirect("~/Unauthorized");
-            return View();
+                return View();
+            }
+
+            if (!(Roles.IsUserInRole("Administrator") || helper.isThisUserUsersParent(userName) || helper.isThisUserUsersJobCoach(userName)))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            helper.updatePhoneNumber(userName, phoneNumber);
+            helper.updateEmail(userName, email);
+            
+            if (Roles.IsUserInRole("Administrator"))
+            {
+                helper.updateUserRole(userName, userRole);
+
+                helper.updateAssignedUsers(userName, null);
+                helper.updateAssignedChildren(userName, null);
+                helper.updateJobCoach(userName, null);
+                helper.updateParent(userName, null);
+
+                if (Roles.IsUserInRole(userName, "Administrator")){
+                    //placeholder
+                }
+                else if (Roles.IsUserInRole(userName, "Job Coach")){
+                    helper.updateAssignedUsers(userName, assignedUsers);
+                }
+                else if (Roles.IsUserInRole(userName, "Parent")){
+                    helper.updateAssignedChildren(userName, assignedChildren);
+                    
+                }
+                else if (Roles.IsUserInRole(userName, "User")){
+
+                    helper.updateJobCoach(userName, jobCoach);
+                    helper.updateParent(userName, parent);
+                }
+            }
+            
+            return RedirectToAction("List");
         }
 
         public ActionResult AdminResetPassword(string user)
         {
-            if (ModelState.IsValid && Roles.IsUserInRole("Administrator"))
+            if (!(ModelState.IsValid && Roles.IsUserInRole("Administrator")))
             {
-
-                MembershipUser currentUser = System.Web.Security.Membership.GetUser(user);
-                string newpassword = currentUser.ResetPassword();
-                //Send email to user with new password
-                try
-                {
-                    EmailOutbox outEmail = db.EmailOutboxes.Where(s => s.purpose == "password reset").FirstOrDefault();
-
-                    string fromAddress = outEmail.emailAddress; //"wsuparcmen@gmail.com";
-                    string fromName = outEmail.emailName;
-                    string password = outEmail.emailPassword; //"Parcmen!";
-                    string emailBody = "Your password for the Pocket Job Coach has been reset to the temporary password '" + newpassword + "'. Please login and change your password now at http://pjc.gear.host";
-                    string server = outEmail.smtpServerName; //"smtp.gmail.com";
-                    int port = outEmail.portNumber;
-                    int timeout = outEmail.smtpTimeout;
-                    Email.send(fromAddress, fromName, currentUser.Email, "Pocket Job Coach Password Reset", emailBody, password, server, port, timeout);
-                    Response.Redirect("~/Account/List");
-                }
-                catch (Exception e)
-                {
-                    db.Debugs.Add(new Debug() { debugMessage = e.ToString().Substring(0, 199) });
-                    db.SaveChanges();
-                    
-                    Response.Redirect("~/Unauthorized");
-                }
-                ModelState.AddModelError("", "Password has been reset for " + currentUser.UserName);
-
-            }
-            else
                 Response.Redirect("~/Unauthorized");
-            return View();
+                return View();
+            }
 
+            MembershipUser currentUser = System.Web.Security.Membership.GetUser(user);
+            
+            if (currentUser.IsLockedOut)
+                currentUser.UnlockUser();
+
+            string newpassword = currentUser.ResetPassword();
+            //Send email to user with new password
+            try
+            {
+                EmailOutbox outEmail = helper.getEmailOutboxForPurpose("password reset");
+
+                string emailBody = "Your password for the Pocket Job Coach has been reset to the temporary password '" + newpassword + "'. Please login and change your password now at http://pjc.gear.host";
+                Email.send(outEmail, currentUser.Email, "Pocket Job Coach Password Reset", emailBody);
+
+                Response.Redirect("~/Account/List");
+            }
+            catch (Exception e)
+            {
+                debug.createDebugMessageInDatabase(e.ToString());
+                    
+                Response.Redirect("~/Unauthorized");
+            }
+            ModelState.AddModelError("", "Password has been reset for " + currentUser.UserName);
+
+            return View();
         }
 
         public ActionResult Create()
         {
-            if (ModelState.IsValid && Roles.IsUserInRole("Administrator"))
+            if (!(ModelState.IsValid && Roles.IsUserInRole("Administrator")))
             {
-                ViewData["Users"] = db.Users.ToList();
-                ViewData["Jobs"] = db.jobs.ToList();
-
+                Response.Redirect("~/Unauthorized");
                 return View();
             }
-            else
-                Response.Redirect("~/Unauthorized");
+
+            ViewData["AvailableJobCoaches"] = helper.getListOfUsersInRole("Job Coach");
+            ViewData["AvailableParents"] = helper.getListOfUsersInRole("Parent");
+            ViewData["AvailableUsers"] = helper.getListOfUnassignedUsers();
+            ViewData["AvailableChildren"] = helper.getListOfUnassignedChildren();
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(RegisterModel model, string usertype, string[] selectedUsers, string job)
+        public ActionResult Create(RegisterModel model, string userRole, string[] assignedUsers, string[] assignedChildren, string jobCoach, string parent)
         {
+            if (!(Roles.IsUserInRole("Administrator")))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
             // Attempt to register the user
             MembershipCreateStatus createStatus;
             System.Web.Security.Membership.CreateUser(model.UserName, model.Password, model.Email, passwordQuestion: null, passwordAnswer: null, isApproved: true, providerUserKey: null, status: out createStatus);
 
-            if (createStatus == MembershipCreateStatus.Success)
-            {
-                MembershipUser user = System.Web.Security.Membership.GetUser(model.UserName);
-
-                ProfileBase profile = ProfileBase.Create(model.UserName,true);
-                profile.SetPropertyValue("PhoneNumber", model.PhoneNumber);
-                profile.Save();
-
-                db.Users.Find(user.ProviderUserKey).Users.Clear();
-                if (selectedUsers != null)
-                {
-                    foreach (string id in selectedUsers)
-                    {
-                        db.Users.Find(user.ProviderUserKey).Users.Add(db.Users.Find(Guid.Parse(id)));
-                    }
-                }
-                //Job Management
-                
-                db.Users.Find(user.ProviderUserKey).jobs.Clear();
-                if (job != "")
-                    db.Users.Find(user.ProviderUserKey).jobs.Add(db.jobs.Find(Convert.ToInt32(job)));
-
-                db.SaveChanges();
-
-                foreach (string aRole in Roles.GetAllRoles())
-                {
-                    //Only Let the user be in one role
-                    try
-                    {
-                        Roles.RemoveUserFromRole(model.UserName, aRole);
-                    }
-                    catch
-                    {
-                        // Don't Worry About It.... :)
-                    }
-                }
-                Roles.AddUserToRole(model.UserName, usertype);
-                return RedirectToAction("List", "Account");
-            }
-            else
+            if (createStatus != MembershipCreateStatus.Success)
             {
                 ModelState.AddModelError("", "Unable to create user!");
+                ModelState.AddModelError("", createStatus.ToString());
+
+                // If we got this far, something failed, redisplay form
+                return View();
             }
-            // If we got this far, something failed, redisplay form
-            return View();
+                
+            MembershipUser user = System.Web.Security.Membership.GetUser(model.UserName);
+
+            helper.createUserNameRecord(user.ProviderUserKey);
+            helper.updatePhoneNumber(model.UserName, model.PhoneNumber);
+            helper.updateUserRole(model.UserName, userRole);
+                
+            if (Roles.IsUserInRole(model.UserName, "Administrator"))
+            {
+                //placeholder
+            }
+            else if (Roles.IsUserInRole(model.UserName, "Job Coach"))
+            {
+                helper.updateAssignedUsers(model.UserName, assignedUsers);
+            }
+            else if (Roles.IsUserInRole(model.UserName, "Parent"))
+            {
+                helper.updateAssignedChildren(model.UserName, assignedChildren);
+            }
+            else if (Roles.IsUserInRole(model.UserName, "User"))
+            {
+                helper.updateJobCoach(model.UserName, jobCoach);
+                helper.updateParent(model.UserName, parent);
+            }
+
+            //return RedirectToAction("List", "Account");
+            return RedirectToAction("Details", new { user = model.UserName});
         }
 
         public ActionResult Delete(string username)
         {
-            if (username != "")
+            if (!(Roles.IsUserInRole("Administrator")))
             {
-                if (System.Web.Security.Membership.GetUser().UserName.Equals(username))
-                {
-                    Response.Redirect("~/Unauthorized");
-                    return View();
-                }
-
-                ViewData["user"] = username;
+                Response.Redirect("~/Unauthorized");
                 return View();
             }
-            else
+
+            if (username == null || username.Equals(""))
+            {
                 Response.Redirect("~/Account/List");
-            //Will Never Get here
+                return View();
+            }
+
+            if (System.Web.Security.Membership.GetUser().UserName.Equals(username))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            ViewData["user"] = username;
             return View();
         }
 
@@ -280,15 +334,47 @@ namespace PJCMobile.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(string username, int nothing = 0)
         {
-            System.Web.Security.Membership.DeleteUser(username);
+            if (!(Roles.IsUserInRole("Administrator")))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            helper.deleteUser(username);
+
             Response.Redirect("~/Account/List");
             //Will Never Get Here
             return View();
         }
 
-        [HttpPost]
         public ActionResult Unlock(string username)
         {
+            if (!(Roles.IsUserInRole("Administrator")))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            if (username == null || username.Equals(""))
+            {
+                Response.Redirect("~/Account/List");
+                return View();
+            }
+
+            ViewData["user"] = username;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Unlock(string username, int nothing = 0)
+        {
+            if (!(Roles.IsUserInRole("Administrator")))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
             System.Web.Security.Membership.GetUser(username).UnlockUser();
             Response.Redirect("~/Account/List");
             return View();
@@ -312,37 +398,26 @@ namespace PJCMobile.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid)
+            if (!(ModelState.IsValid))
+                return View(model);
+
+            if (!(System.Web.Security.Membership.ValidateUser(model.UserName, model.Password)))
             {
-
-                if (System.Web.Security.Membership.ValidateUser(model.UserName, model.Password))
-                {
-                    if (!Roles.IsUserInRole(model.UserName, "User"))
-                    {
-                        FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                        if (Url.IsLocalUrl(returnUrl))
-                        {
-                            return Redirect(returnUrl);
-                        }
-                        else
-                        {
-                            return RedirectToAction("Index", "Home");
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "This login can only be used with the Pocket Job Coach Mobile App.");
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
-                }
-
+                ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                return View(model);
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            if (Roles.IsUserInRole(model.UserName, "User"))
+            {
+                ModelState.AddModelError("", "This login can only be used with the Pocket Job Coach Mobile App.");
+                return View(model);
+            }
+
+            FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+            if (Url.IsLocalUrl(returnUrl))
+                return Redirect(returnUrl);
+            else
+                return RedirectToAction("Index", "Home");
         }
 
         //
@@ -370,34 +445,28 @@ namespace PJCMobile.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(ChangePasswordModel model)
         {
-            if (ModelState.IsValid)
+            if (!(ModelState.IsValid))
+                return View(model);
+
+            // ChangePassword will throw an exception rather
+            // than return false in certain failure scenarios.
+            bool changePasswordSucceeded;
+            try
             {
-
-                // ChangePassword will throw an exception rather
-                // than return false in certain failure scenarios.
-                bool changePasswordSucceeded;
-                try
-                {
-                    MembershipUser currentUser = System.Web.Security.Membership.GetUser(User.Identity.Name, userIsOnline: true);
-                    changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);
-                }
-                catch (Exception)
-                {
-                    changePasswordSucceeded = false;
-                }
-
-                if (changePasswordSucceeded)
-                {
-                    return RedirectToAction("ChangePasswordSuccess");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
-                }
+                MembershipUser currentUser = System.Web.Security.Membership.GetUser(User.Identity.Name, userIsOnline: true);
+                changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);
+            }
+            catch (Exception){
+                changePasswordSucceeded = false;
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            if (changePasswordSucceeded)
+                return RedirectToAction("ChangePasswordSuccess");
+            else
+            {
+                ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+                return View(model);
+            }
         }
 
         //
@@ -408,17 +477,18 @@ namespace PJCMobile.Controllers
             return View();
         }
 
+        //Below Here
         public ActionResult AssignedTasks(string user)
         {
-            ViewData["User"] = System.Web.Security.Membership.GetUser(user);
-            ViewData["Tasks"] = db.Users.Find(System.Web.Security.Membership.GetUser(user).ProviderUserKey).usertasks.ToList();
+            //ViewData["User"] = System.Web.Security.Membership.GetUser(user);
+            //ViewData["Tasks"] = db.Users.Find(System.Web.Security.Membership.GetUser(user).ProviderUserKey).usertasks.ToList();
 
             return View();
         }
 
         public ActionResult RemoveAssignedTask(string username, int taskid)
         {
-            if (username != "")
+            /*if (username != "")
             {
                 ViewData["user"] = username;
                 ViewData["task"] = db.tasks.Find(taskid);
@@ -427,6 +497,7 @@ namespace PJCMobile.Controllers
             else
                 Response.Redirect("~/Account/AssignedTasks");
             //Will Never Get here
+             */
             return View();
         }
 
@@ -434,7 +505,7 @@ namespace PJCMobile.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult RemoveAssignedTask(string username, int taskid, int nothing = 0)
         {
-            db.Users.Find(System.Web.Security.Membership.GetUser(username).ProviderUserKey).usertaskprompts.ToList().RemoveAll(delegate(usertaskprompt p)
+            /*db.Users.Find(System.Web.Security.Membership.GetUser(username).ProviderUserKey).usertaskprompts.ToList().RemoveAll(delegate(usertaskprompt p)
             {
                 return p.taskID == taskid;
             });
@@ -442,12 +513,13 @@ namespace PJCMobile.Controllers
             db.SaveChanges();
             Response.Redirect("~/Account/AssignedTasks?user=" + username);
             //Will Never Get Here
+             */
             return View();
         }
 
         public ActionResult ManagePrompts(string username, int taskid)
         {
-            ViewBag.Task = db.tasks.Find(taskid).taskName;
+            /*ViewBag.Task = db.tasks.Find(taskid).taskName;
             ViewBag.Username = username;
             ViewData["Prompts"] = db.tasks.Find(taskid).prompts.ToList();
             List<prompt> selectedPrompts = new List<prompt>();
@@ -458,13 +530,14 @@ namespace PJCMobile.Controllers
                 selectedPrompts.Add(p.prompt);
             }
             ViewData["SelectedPrompts"] = selectedPrompts;
+             * */
             return View();
         }
 
         [HttpPost]
         public ActionResult ManagePrompts(string username, int taskid, string[] prompts, string[] promptsh)
         {
-            List<usertaskprompt> p = db.Users.Find(System.Web.Security.Membership.GetUser(username).ProviderUserKey).usertaskprompts.ToList().FindAll(delegate(usertaskprompt prompt)
+            /*List<usertaskprompt> p = db.Users.Find(System.Web.Security.Membership.GetUser(username).ProviderUserKey).usertaskprompts.ToList().FindAll(delegate(usertaskprompt prompt)
             {
                 return prompt.taskID == taskid;
             }).ToList();
@@ -491,21 +564,24 @@ namespace PJCMobile.Controllers
 
             db.SaveChanges();
             Response.Redirect("~/Account/AssignedTasks?user=" + username);
+             */
             return View();
         }
 
         public ActionResult EditAssignedTask(string username, int taskID)
         {
-            Guid userid = (Guid) System.Web.Security.Membership.GetUser(username).ProviderUserKey;
+            /*Guid userid = (Guid) System.Web.Security.Membership.GetUser(username).ProviderUserKey;
             int taskid = Convert.ToInt32(taskID);
             usertask ut = db.usertasks.Find(userid,taskid);
             return View("EditAssignedTask", ut);
+             */
+            return View();
         }
 
         [HttpPost]
         public ActionResult EditAssignedTask(string userid, int taskID, string[] daysofweek, string starttime, string endtime, string feedback)
         {
-            Guid user = Guid.Parse(userid);
+            /*Guid user = Guid.Parse(userid);
             int taskid = Convert.ToInt32(taskID);
             usertask ut = db.usertasks.Find(user, taskid);
             string schedule = "";
@@ -527,25 +603,27 @@ namespace PJCMobile.Controllers
 
             db.SaveChanges();
             Response.Redirect("~/Account/AssignedTasks?user=" + ut.User.UserName);
+             * */
             return View();
         }
 
         public ActionResult AddAssignedTask(string username)
         {
-            ViewData["Username"] = username;
+            /*ViewData["Username"] = username;
             List<task> t = new List<task>();
             foreach (usertask ut in db.Users.Find(System.Web.Security.Membership.GetUser(username).ProviderUserKey).usertasks)
             {
                 t.Add(ut.task);
             }
             ViewData["Tasks"] = db.tasks.ToList().Except(t).ToList();
+             */
             return View();
         }
 
         [HttpPost]
         public ActionResult AddAssignedTask(string username, int taskID, string[] daysofweek, string starttime, string endtime, string feedback)
         {
-            usertask ut = new usertask();
+            /*usertask ut = new usertask();
             string schedule = "";
             foreach (string day in daysofweek)
             {
@@ -568,6 +646,7 @@ namespace PJCMobile.Controllers
             db.Users.Find(System.Web.Security.Membership.GetUser(username).ProviderUserKey).usertasks.Add(ut);
             db.SaveChanges();
             Response.Redirect("~/Account/AssignedTasks?user=" + username);
+             */
             return View();
         }
 
@@ -610,5 +689,13 @@ namespace PJCMobile.Controllers
             }
         }
         #endregion
+
+        protected override void Dispose(bool disposing)
+        {
+            db.Dispose();
+            helper.dispose();
+            debug.dispose();
+            base.Dispose(disposing);
+        }
     }
 }

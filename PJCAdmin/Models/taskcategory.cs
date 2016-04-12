@@ -11,17 +11,22 @@ namespace PJCAdmin.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.Serialization;
     
-    public partial class taskcategory
+    [DataContract]
+    public partial class TaskCategory
     {
-        public taskcategory()
+        public TaskCategory()
         {
-            this.tasks = new HashSet<task>();
+            this.Tasks = new HashSet<Task>();
         }
     
-        public int categoryID { get; set; }
+        [IgnoreDataMember]
+        public byte taskCategoryID { get; set; }
+        [DataMember]
         public string categoryName { get; set; }
     
-        public virtual ICollection<task> tasks { get; set; }
+        [IgnoreDataMember]
+        public virtual ICollection<Task> Tasks { get; set; }
     }
 }

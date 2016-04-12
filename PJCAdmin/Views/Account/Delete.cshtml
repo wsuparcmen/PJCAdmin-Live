@@ -9,6 +9,7 @@
 <form action="~/Account/Delete" method="post">
     @Html.AntiForgeryToken()
     <input type="hidden" name="username" value="@ViewData["user"]"/>
+    <a href="javascript:history.back()">Cancel</a>
     <input type="submit" value="Yes" />
 </form>
 <br />

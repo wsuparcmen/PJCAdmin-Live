@@ -16,7 +16,7 @@
         <header>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <a href="http://pjc.gear.host"><img src="~/Content/pjclogo.png" /></a>
+                    <a href="~/"><img src="~/Content/pjclogo.png" /></a>
                 </div>
                 <div class="float-right">
                     <section id="login">
@@ -27,8 +27,10 @@
                         <ul id="menu">
                             <li>@Html.ActionLink("Home", "Index", "Home")</li>
                             <li>@Html.ActionLink("Users", "List", "Account")</li>
+                            <li>@Html.ActionLink("Routines", "List", "Routine")</li>
                             <li>@Html.ActionLink("Jobs", "Index", "Job")</li>
-                            <li>@Html.ActionLink("Tasks", "Index", "Task")</li>
+                            <!--Need to update notes link to notes pages once set up notes functionality-->
+                            <li>@Html.ActionLink("Notes", "Index", "Home")</li>
                         </ul>
                     </nav>
                     }

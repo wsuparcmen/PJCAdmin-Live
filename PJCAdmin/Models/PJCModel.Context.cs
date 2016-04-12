@@ -26,22 +26,24 @@ namespace PJCAdmin.Models
         }
     
         public DbSet<Application> Applications { get; set; }
-        public DbSet<job> jobs { get; set; }
+        public DbSet<AuthTest> AuthTests { get; set; }
+        public DbSet<Debug> Debugs { get; set; }
+        public DbSet<EmailOutbox> EmailOutboxes { get; set; }
+        public DbSet<Hello> Helloes { get; set; }
         public DbSet<Membership> Memberships { get; set; }
         public DbSet<Profile> Profiles { get; set; }
-        public DbSet<prompt> prompts { get; set; }
-        public DbSet<prompttype> prompttypes { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<task> tasks { get; set; }
-        public DbSet<taskcategory> taskcategories { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<usertask> usertasks { get; set; }
-        public DbSet<usertaskprompt> usertaskprompts { get; set; }
-        public DbSet<EmailOutbox> EmailOutboxes { get; set; }
-        public DbSet<Debug> Debugs { get; set; }
-        public DbSet<Hello> Helloes { get; set; }
-        public DbSet<UserName> UserNames { get; set; }
-        public DbSet<AuthTest> AuthTests { get; set; }
         public DbSet<AuthToken> AuthTokens { get; set; }
+        public DbSet<UserName> UserNames { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<FeedbackType> FeedbackTypes { get; set; }
+        public DbSet<Job> Jobs { get; set; }
+        public DbSet<MediaType> MediaTypes { get; set; }
+        public DbSet<Note> Notes { get; set; }
+        public DbSet<Routine> Routines { get; set; }
+        public DbSet<Step> Steps { get; set; }
+        public DbSet<Task> Tasks { get; set; }
+        public DbSet<TaskCategory> TaskCategories { get; set; }
     }
 }
