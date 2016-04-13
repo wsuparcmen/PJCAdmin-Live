@@ -25,19 +25,29 @@
     <fieldset>
         @Html.HiddenFor(m => m.routineTitle)
         <table>
-            <tr><td>
-                Assigned to:</td><td>@Html.DisplayFor(model => model.assigneeUserName)
-                @Html.HiddenFor(m => m.assigneeUserName)
-            </td></tr>
-            <tr><td>
-                Timed</td><td>@Html.CheckBoxFor(m => m.isTimed)</tr><tr><td>Time Limit:</td><td>@Html.EditorFor(m => m.expectedDuration)
-            </td></tr>
-            <tr><td>
-                Email on Job Completion:</td><td>@Html.CheckBoxFor(m => m.isNotifiable)
-            </td></tr>
-            <tr><td>
-                Disabled:</td><td>@Html.CheckBoxFor(m => m.isDisabled)
-            </td></tr>
+            <tr>
+                <td>Assigned to:</td>
+                <td>
+                    @Html.DisplayFor(model => model.assigneeUserName)
+                    @Html.HiddenFor(m => m.assigneeUserName)
+                </td>
+            </tr>
+            <tr>
+                <td>Timed:</td>
+                <td>@Html.CheckBoxFor(m => m.isTimed)</td>
+            </tr>
+            <tr>
+                <td>Expected Duration:</td>
+                <td>@Html.EditorFor(m => m.expectedDuration)</td>
+            </tr>
+            <tr>
+                <td>Email on Job Completion:</td>
+                <td>@Html.CheckBoxFor(m => m.isNotifiable)</td>
+            </tr>
+            <tr>
+                <td>Disabled:</td>
+                <td>@Html.CheckBoxFor(m => m.isDisabled)</td>
+            </tr>
         </table>
 
         <h3>Routine Feedback</h3>
