@@ -6,9 +6,14 @@
 }
 
 <h2>User Details for <small style="color:#808080">@Html.DisplayFor(model => model.UserName)</small></h2>
+
+<br/>
+@Html.ActionLink("Edit User Details", "Edit", new { user = Model.UserName })
 @if (Model.UserName == Membership.GetUser().UserName) {
+    <span>|</span>
     @Html.ActionLink("Change Password", "ChangePassword");
 }
+
 <table>
     <tr><td><b>Username</b></td><td>@Html.DisplayFor(model => model.UserName)</td></tr>
     <tr>
@@ -152,7 +157,4 @@
 </p>
     -->
 
-<p>
-    @Html.ActionLink("Edit", "Edit", new { user = Model.UserName }) |
-    @Html.ActionLink("Back to User List", "List")
-</p>
+<p>@Html.ActionLink("Back to User List", "List")</p>
