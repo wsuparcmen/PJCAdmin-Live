@@ -8,6 +8,8 @@ ViewBag.Title = "Routines";
         Viewing as: @(ViewData["mockUser"] as string)
     </h1>
     <p>@Html.ActionLink("View as Different User","List")</p>
+
+    <hr />
 }
 @if (!Roles.IsUserInRole("Administrator") || !(ViewData["mockUser"] as string).Equals(""))
 {
@@ -79,7 +81,7 @@ ViewBag.Title = "Routines";
         {
             <tr>
                 <th>
-                    Select a user to view their routines...
+                    Select a user to view routines as...
                 </th>
             </tr>
             <tr>

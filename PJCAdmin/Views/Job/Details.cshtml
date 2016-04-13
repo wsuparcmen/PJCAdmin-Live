@@ -9,54 +9,42 @@
     <h1>
         Viewing as: @(ViewData["mockUser"] as string)
     </h1>
-    <p>@Html.ActionLink("View as different user","Index")</p>
+    <p>@Html.ActionLink("View as Different User","Index")</p>
+    <hr/>
 }
+
+<h2>Job Title - @Html.DisplayFor(modelItem => Model.Routine.routineTitle)</h2>
 
 <p>
     @if (Roles.IsUserInRole("Administrator")){
-        @Html.ActionLink("View different routine", "ListRoutines", new { mockUser = ViewData["mockUser"] as string })
-    }
-    else{
-        @Html.ActionLink("View different routine", "ListRoutines")
-    }
-</p>
-<p>
-    @if (Roles.IsUserInRole("Administrator")){
-        @Html.ActionLink("View different version", "ListRoutineVersions", new { 
+        @Html.ActionLink("View Different Routine", "ListRoutines", new { mockUser = ViewData["mockUser"] as string })
+        <span>|</span>
+        @Html.ActionLink("View Different Version", "ListRoutineVersions", new{
             mockUser = ViewData["mockUser"] as string,
             routineName = ViewData["routineName"] as string,
             assigneeName = ViewData["assigneeName"] as string})
+        <span>|</span>
+        @Html.ActionLink("Delete Job", "Delete", new{
+            mockUser = ViewData["mockUser"] as string,
+            routineName = Model.Routine.routineTitle,
+            assigneeName = Model.Routine.assigneeUserName,
+            startDate = Model.startTime})
     }
-    else{
-        @Html.ActionLink("View different version", "ListRoutineVersions", new { 
+    else {
+        @Html.ActionLink("View Different Routine", "ListRoutines")
+
+        @Html.ActionLink("View Different Version", "ListRoutineVersions", new{
             routineName = ViewData["routineName"] as string,
             assigneeName = ViewData["assigneeName"] as string})
+
+        @Html.ActionLink("Delete Job", "Delete", new{
+            routineName = Model.Routine.routineTitle,
+            assigneeName = Model.Routine.assigneeUserName,
+            startDate = Model.startTime})
     }
 </p>
 
 <table>
-    <tr>
-        <th>Job Title - @Html.DisplayFor(modelItem => Model.Routine.routineTitle)</th>
-    </tr>
-    <tr>
-        <td>
-            @if (Roles.IsUserInRole("Administrator"))
-            {
-                @Html.ActionLink("Delete Job", "Delete", new { 
-                    mockUser = ViewData["mockUser"] as string,
-                    routineName = Model.Routine.routineTitle,
-                    assigneeName = Model.Routine.assigneeUserName,
-                    startDate = Model.startTime})
-            }
-            else
-            {
-                @Html.ActionLink("Delete Job", "Delete", new {
-                    routineName = Model.Routine.routineTitle,
-                    assigneeName = Model.Routine.assigneeUserName,
-                    startDate = Model.startTime})
-            }
-        </td>
-    </tr>
     @if (Model.Notes.Count > 0)
     {
         <tr>
@@ -65,25 +53,33 @@
             </td>
         </tr>
     }
+    <tr><th>Overview</th></tr>
     <tr><td>Assigned To:</td><td> @Html.DisplayFor(modelItem => Model.Routine.assigneeUserName)</td></tr>
-    <tr><td>Disabled:</td><td> @Html.DisplayFor(modelItem => Model.Routine.isDisabled)</td></tr>
-    <tr><td>Timed:</td><td> @Html.DisplayFor(modelItem => Model.Routine.isTimed)</td></tr>
+    <tr>
+        <td>User Access:</td>
+        <td>
+            @if (Model.Routine.isDisabled){ @("Disabled") }
+            else { @("Enabled") }
+        </td>
+    </tr>
+    <tr>
+        <td>Timed:</td>
+        <td> 
+            @if (Model.Routine.isTimed){ @("Yes") }
+            else { @("No") }
+        </td>
+    </tr>
     <tr><td>Started At:</td><td> @Html.DisplayFor(modelItem => Model.startTime)</td></tr>
     <tr><td>Ended At:</td><td> @Html.DisplayFor(modelItem => Model.Steps.Last().endTime)</td></tr>
-    <tr><td></td></tr>
     <tr>
-        <th></th>
-        <th>Routine Info</th>
-        <th></th>
-        <th>Job Info</th>
+        <td>Expected Duration:</td>
+        <td>
+            @if (Model.Routine.isTimed) { @Html.DisplayFor(modelItem => Model.Routine.expectedDuration) }
+            else { @("None") }
+        </td>
     </tr>
-    <tr>
-        <td>Duration</td>
-        <td>Expected: @Html.DisplayFor(modelItem => Model.Routine.expectedDuration)</td>
-        <td></td>
-        <td>Completed In: @(Model.Steps.Last().endTime - Model.startTime)</td>
-    </tr>
-    <tr><td></td></tr>
+    <tr><td>Completed In:</td><td> @(Model.Steps.Last().endTime - Model.startTime)</td></tr>
+    <tr><td><br/></td></tr>
     <tr><th>Steps</th></tr>
 
     @foreach (PJCAdmin.Models.Step step in Model.Steps)
@@ -100,39 +96,29 @@
             stepStartTime = Model.Steps.Where(s => s.sequenceNo == (byte)(step.sequenceNo - 1)).First().endTime;
         }
         <tr>
-            <th>
-                Name: @Html.DisplayFor(modelItem => task.taskName)
-            </th>
+            <td><strong>@Html.DisplayFor(modelItem => task.sequenceNo). @Html.DisplayFor(modelItem => task.taskName)</strong></td>
         </tr>
         <tr>
+            <td>Description:</td><td> @Html.DisplayFor(modelItem => task.taskDescription)</td>
+        </tr>
+        <tr>
+            <td>Timed:</td>
             <td>
-                Description: @Html.DisplayFor(modelItem => task.taskDescription)
+                @if (task.isTimed) { @("Yes") }
+                else { @("No") }
+            </td>
+        </tr>
+        <tr><td>Started at:</td><td> @Html.DisplayFor(modelItem => stepStartTime)</td></tr>
+        <tr><td>Completed at:</td><td> @Html.DisplayFor(modelItem => step.endTime)</td></tr>
+        <tr>
+            <td>Expected Duration:</td>
+            <td>
+                @if (task.isTimed) { @Html.DisplayFor(modelItem => task.expectedDuration) }
+                else { @("None") }
             </td>
         </tr>
         <tr>
-            <td>
-                Is Timed? @Html.DisplayFor(modelItem => task.isTimed)
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Started at: @Html.DisplayFor(modelItem => stepStartTime) 
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Completed at: @Html.DisplayFor(modelItem => step.endTime)
-            </td>
-        </tr>
-        <tr>
-            <th></th><th>Routine Info</th>
-            <th></th><th>Job Info</th>
-        </tr>
-        <tr>
-            <td>Duration - </td>
-            <td>Expected: @Html.DisplayFor(modelItem => task.expectedDuration)</td>
-            <td></td>
-            <td>Completed In: @(step.endTime - stepStartTime)</td>
+            <td>Completed In:</td><td> @(step.endTime - stepStartTime)</td>
         </tr>
         if (step.Notes.Count() > 0)
         {
@@ -142,6 +128,6 @@
             </td>
         </tr>
         }
+        <tr><td><br/></td></tr>
     }
 </table>
-
