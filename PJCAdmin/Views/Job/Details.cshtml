@@ -54,7 +54,7 @@
         </tr>
     }
     <tr><th>Overview</th></tr>
-    <tr><td>Assigned To:</td><td> @Html.DisplayFor(modelItem => Model.Routine.assigneeUserName)</td></tr>
+    <tr><td>Assigned to:</td><td> @Html.DisplayFor(modelItem => Model.Routine.assigneeUserName)</td></tr>
     <tr>
         <td>User Access:</td>
         <td>
@@ -69,8 +69,8 @@
             else { @("No") }
         </td>
     </tr>
-    <tr><td>Started At:</td><td> @Html.DisplayFor(modelItem => Model.startTime)</td></tr>
-    <tr><td>Ended At:</td><td> @Html.DisplayFor(modelItem => Model.Steps.Last().endTime)</td></tr>
+    <tr><td>Started at:</td><td> @Html.DisplayFor(modelItem => Model.startTime)</td></tr>
+    <tr><td>Ended at:</td><td> @Html.DisplayFor(modelItem => Model.Steps.Last().endTime)</td></tr>
     <tr>
         <td>Expected Duration:</td>
         <td>
@@ -78,7 +78,7 @@
             else { @("None") }
         </td>
     </tr>
-    <tr><td>Completed In:</td><td> @(Model.Steps.Last().endTime - Model.startTime)</td></tr>
+    <tr><td>Completed in:</td><td> @(Model.Steps.Last().endTime - Model.startTime)</td></tr>
     <tr><td><br/></td></tr>
     <tr><th>Steps</th></tr>
 
@@ -118,7 +118,7 @@
             </td>
         </tr>
         <tr>
-            <td>Completed In:</td><td> @(step.endTime - stepStartTime)</td>
+            <td>Completed in:</td><td> @(step.endTime - stepStartTime)</td>
         </tr>
         if (step.Notes.Count() > 0)
         {

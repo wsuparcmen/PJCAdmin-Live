@@ -8,6 +8,8 @@ ViewBag.Title = "Routines";
         Viewing as: @(ViewData["mockUser"] as string)
     </h1>
     <p>@Html.ActionLink("View as Different User","List")</p>
+
+    <hr/>
 }
 @if (!(ViewData["AssignedTo"] == null))
 {
@@ -108,6 +110,13 @@ ViewBag.Title = "Routines";
                     </td>
                 </tr>
             }
+
+            <tr>
+                <td>
+                    <p>@if (Roles.IsUserInRole("Administrator")){ @Html.ActionLink("Back to All Routines", "List", new { mockUser = ViewData["mockUser"] as string }) }
+                    else { @Html.ActionLink("Back to All Routines", "List") }</p>
+                </td>
+            </tr>
         }
         else //Assigned User is set
         {
@@ -149,4 +158,3 @@ ViewBag.Title = "Routines";
     }
 </table>
 <br/>
-<p><a href="javascript:history.back()">Back to All Routines</a></p>
