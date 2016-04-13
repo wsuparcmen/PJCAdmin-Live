@@ -52,7 +52,7 @@
 </table>
 
 <h3 style="margin-top:20px;">Tasks List</h3>
-<ol id="Tasks">
+<ol id="Tasks" style="padding:0px 15px;">
     @foreach (PJCAdmin.Models.Task task in Model.Tasks)
     {
         @Html.Partial("_ViewTask", task);

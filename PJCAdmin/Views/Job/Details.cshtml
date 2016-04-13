@@ -65,11 +65,11 @@
             </td>
         </tr>
     }
-    <tr><td>Assigned To: @Html.DisplayFor(modelItem => Model.Routine.assigneeUserName)</td></tr>
-    <tr><td>Is Disabled? @Html.DisplayFor(modelItem => Model.Routine.isDisabled)</td></tr>
-    <tr><td>Is Timed? @Html.DisplayFor(modelItem => Model.Routine.isTimed)</td></tr>
-    <tr><td>Started At: @Html.DisplayFor(modelItem => Model.startTime)</td></tr>
-    <tr><td>Ended At: @Html.DisplayFor(modelItem => Model.Steps.Last().endTime)</td></tr>
+    <tr><td>Assigned To:</td><td> @Html.DisplayFor(modelItem => Model.Routine.assigneeUserName)</td></tr>
+    <tr><td>Disabled:</td><td> @Html.DisplayFor(modelItem => Model.Routine.isDisabled)</td></tr>
+    <tr><td>Timed:</td><td> @Html.DisplayFor(modelItem => Model.Routine.isTimed)</td></tr>
+    <tr><td>Started At:</td><td> @Html.DisplayFor(modelItem => Model.startTime)</td></tr>
+    <tr><td>Ended At:</td><td> @Html.DisplayFor(modelItem => Model.Steps.Last().endTime)</td></tr>
     <tr><td></td></tr>
     <tr>
         <th></th>
