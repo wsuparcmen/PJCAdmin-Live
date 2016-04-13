@@ -8,14 +8,21 @@ ViewBag.Title = "Delete Routine";
         Viewing as: @(ViewData["mockUser"] as string)
     </h1>
     <p>@Html.ActionLink("View as different user","List")</p>
+
+    <hr/>
 }
+
 <h2>Delete Routine</h2>
+
 view: Routine and Assignee
+
 <h4>
     Are you sure you want to delete Routine: "@ViewData["Routine"]" - Assigned to: @ViewData["Assignee"] from the system?
     <small>This action is irreversible.</small>
 </h4>
+
 <br />
+
 <form action="~/Routine/Delete" method="post">
     @Html.AntiForgeryToken()
     <input type="hidden" name="routineName" value="@ViewData["Routine"]" />
@@ -30,6 +37,7 @@ view: Routine and Assignee
 
 <br />
 <br />
+
 @Html.ActionLink("Cancel", "Details", 
     new {routineName = ViewData["Routine"], 
         assigneeName = ViewData["Assignee"], 

@@ -6,6 +6,7 @@
 }
 
 <h2>Routine Details for <small style="color:#808080">@Html.DisplayFor(model => model.routineTitle)</small></h2>
+
 <table>
     <tr>
         <td>Assigned to:</td>
@@ -21,8 +22,15 @@
     <tr>
         <td>Timed:</td>
         <td>
-            @if (Model.isTimed) { @("Timed - " + Model.expectedDuration) }
-            else { @("Not Timed - " + Model.expectedDuration) }
+            @if (Model.isTimed) { @("Yes") }
+            else { @("No") }
+        </td>
+    </tr>
+    <tr>
+        <td>Expected Duration:</td>
+        <td>
+            @if(Model.expectedDuration != null) { @(Model.expectedDuration) }
+            else { @("None") }
         </td>
     </tr>
     <tr>
@@ -35,6 +43,7 @@
 </table>
 
 <h3 style="margin-top:20px;">Routine Feedback</h3>
+
 <table>
     <tr>
     @if (Model.Feedbacks.Count == 0)
@@ -52,6 +61,7 @@
 </table>
 
 <h3 style="margin-top:20px;">Tasks List</h3>
+
 <ol id="Tasks" style="padding:0px 15px;">
     @foreach (PJCAdmin.Models.Task task in Model.Tasks)
     {

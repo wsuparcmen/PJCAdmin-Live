@@ -10,6 +10,7 @@
         Viewing as: @(ViewData["mockUser"] as string)
     </h1>
     <p>@Html.ActionLink("View as Different User","Index")</p>
+
     <hr/>
 }
 
@@ -74,7 +75,7 @@
     <tr>
         <td>Expected Duration:</td>
         <td>
-            @if (Model.Routine.isTimed) { @Html.DisplayFor(modelItem => Model.Routine.expectedDuration) }
+            @if (Model.Routine.expectedDuration != null) { @Html.DisplayFor(modelItem => Model.Routine.expectedDuration) }
             else { @("None") }
         </td>
     </tr>
@@ -113,7 +114,7 @@
         <tr>
             <td>Expected Duration:</td>
             <td>
-                @if (task.isTimed) { @Html.DisplayFor(modelItem => task.expectedDuration) }
+                @if (task.expectedDuration != null) { @Html.DisplayFor(modelItem => task.expectedDuration) }
                 else { @("None") }
             </td>
         </tr>
