@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Notes";
+}
+
+<h2>User Notes</h2>
+<table>
+        @foreach (MembershipUser user in ViewData["Users"] as IEnumerable<MembershipUser>)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => user.UserName)
+                </td>
+                <td>
+
+                </td>
+            </tr>
+        }
+</table>
