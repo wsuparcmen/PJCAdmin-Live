@@ -179,6 +179,7 @@
     <Compile Include="Classes\Helpers\MVCModelHelpers\FeedbackHelper.cs" />
     <Compile Include="Classes\Helpers\MVCModelHelpers\JobHelper.cs" />
     <Compile Include="Classes\Helpers\MVCModelHelpers\ModelCopier.cs" />
+    <Compile Include="Classes\Helpers\MVCModelHelpers\NoteHelper.cs" />
     <Compile Include="Classes\Helpers\MVCModelHelpers\RoutineHelper.cs" />
     <Compile Include="Classes\Helpers\MVCModelHelpers\TaskHelper.cs" />
     <Compile Include="Classes\TokenIsInvalidException.cs" />

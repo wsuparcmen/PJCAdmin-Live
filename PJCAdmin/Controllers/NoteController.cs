@@ -15,15 +15,17 @@ namespace PJCAdmin.Controllers
         // GET: /Note/
         private AccountHelper accountHelper;
         private RoutineHelper routineHelper;
+        private NoteHelper helper;
 
         public NoteController()
         {
             routineHelper = new RoutineHelper();
             DbHelper context = routineHelper.getDBHelper();
             accountHelper = new AccountHelper(context);
+            helper = new NoteHelper(context);
         }
 
-        public ActionResult ListUsers(string mockUser = "")
+        public ActionResult ListUsers()
         {
             if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
@@ -45,6 +47,31 @@ namespace PJCAdmin.Controllers
 
             if (Roles.IsUserInRole("Parent"))
                 ViewData["Users"] = accountHelper.getListOfUsersChildOfParent(thisUsername);
+
+            return View();
+        }
+
+        public ActionResult List(string user)
+        {
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            if (!(Roles.IsUserInRole("Administrator") || accountHelper.isThisUserUsersParent(user) || accountHelper.isThisUserUsersJobCoach(user)))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            if (!accountHelper.userExists(user) || !Roles.IsUserInRole(user,"User"))
+                return HttpNotFound();
+
+            ViewData["UserNotes"] = helper.getUserNotes(user);
+            ViewData["JobNotes"] = helper.getJobNotes(user);
+            ViewData["StepNotes"] = helper.getStepNotes(user);
+            ViewData["user"] = user;
 
             return View();
         }
