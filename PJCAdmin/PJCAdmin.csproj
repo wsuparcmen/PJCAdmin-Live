@@ -500,9 +500,9 @@
     <Content Include="Views\Job\ListJobs.cshtml" />
     <Content Include="Views\Routine\_NewTaskFeedback.cshtml" />
     <Content Include="Views\Routine\_EditTaskFeedback.cshtml" />
-    <Content Include="Views\Notes\Details.cshtml" />
-    <Content Include="Views\Notes\Delete.cshtml" />
-    <Content Include="Views\Notes\List.cshtml" />
+    <Content Include="Views\Note\Details.cshtml" />
+    <Content Include="Views\Note\Delete.cshtml" />
+    <Content Include="Views\Note\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
