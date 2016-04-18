@@ -121,6 +121,13 @@ namespace PJCAdmin.Classes.Helpers
             db.Entry<UserName>(user).State = System.Data.EntityState.Modified;
             db.SaveChanges();
         }
+        public void removeUsersAndChildren(UserName un)
+        {
+            un.UserName11.Clear();
+            un.UserName12.Clear();
+            db.Entry<UserName>(un).State = System.Data.EntityState.Modified;
+            db.SaveChanges();
+        }
         #endregion
         #region EmailOutboxes
         public IQueryable<EmailOutbox> getAllEmailOutboxes()
