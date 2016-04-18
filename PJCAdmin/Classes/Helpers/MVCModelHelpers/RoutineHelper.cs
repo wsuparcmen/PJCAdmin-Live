@@ -161,6 +161,10 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
         {
             return routineExists(AccountHelper.getCurrentUsername(), routineName, assigneeName);
         }
+        public bool routineVersionExists(string assigneeName, string routineName, DateTime updatedDate)
+        {
+            return routineVersionExists(AccountHelper.getCurrentUsername(), assigneeName, routineName, updatedDate);
+        }
         /* Returns whether or not any routines created by the 
          * currently logged in user that match the given name
          * are active.

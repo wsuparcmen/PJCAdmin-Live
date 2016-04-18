@@ -160,10 +160,10 @@ namespace PJCAdmin.Controllers
             }
             else
             {
-                if (!routineHelper.routineExists(mockUser, routineName, assigneeName))
+                if (!routineHelper.routineExists(routineName, assigneeName))
                     return RedirectToAction("ListRoutines", "Job");
 
-                if (!routineHelper.routineVersionExists(mockUser, assigneeName, routineName, updatedDate))
+                if (!routineHelper.routineVersionExists(assigneeName, routineName, updatedDate))
                     return RedirectToAction("ListRoutineVersions", "Job", new
                     {
                         routineName = routineName,
@@ -171,6 +171,7 @@ namespace PJCAdmin.Controllers
                     });
 
                 string thisUsername = AccountHelper.getCurrentUsername();
+
                 return View(helper.getAllJobsForRoutineVersion(thisUsername, assigneeName, routineName, updatedDate));
             }
         }
