@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using PJCAdmin.Classes.Helpers.MVCModelHelpers;
 using PJCAdmin.Classes.Helpers;
+using PJCAdmin.Models;
 
 namespace PJCAdmin.Controllers
 {
@@ -74,6 +75,45 @@ namespace PJCAdmin.Controllers
             ViewData["user"] = user;
 
             return View();
+        }
+
+        public ActionResult UserNoteDetails(string user, Note note)
+        {
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            ViewData["user"] = user;
+
+            return View(note);
+        }
+
+        public ActionResult JobNoteDetails(string user, Note note)
+        {
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            ViewData["user"] = user;
+
+            return View(note);
+        }
+
+        public ActionResult StepNoteDetails(string user, Note note)
+        {
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            ViewData["user"] = user;
+
+            return View(note);
         }
     }
 }
