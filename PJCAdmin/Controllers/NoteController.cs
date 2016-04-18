@@ -77,6 +77,7 @@ namespace PJCAdmin.Controllers
             return View();
         }
 
+        //if Note note doesn't work, pass noteID and pull from context.
         public ActionResult UserNoteDetails(string user, Note note)
         {
             if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
@@ -114,6 +115,35 @@ namespace PJCAdmin.Controllers
             ViewData["user"] = user;
 
             return View(note);
+        }
+
+        public ActionResult Delete(string user, Note note)
+        {
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            ViewData["user"] = user;
+
+            return View(note);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(string user, Note note, int nothing = 0)
+        {
+            if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            helper.deleteNote(note);
+
+            Response.Redirect("~/Note/List?user=" + user);
+            return View();
         }
     }
 }

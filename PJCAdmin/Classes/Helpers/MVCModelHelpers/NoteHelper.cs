@@ -29,46 +29,24 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
         public List<Note> getUserNotes(string userName)
         {
             UserName un = helper.findUserName(userName);
-
-            if (un.Notes.Count() == 0)
-                return new List<Note>();
-
-            return un.Notes.ToList();
+            return helper.getUserNotes(un);            
         }
 
         public List<Note> getJobNotes(string userName)
         {
             UserName un = helper.findUserName(userName);
-            List<Note> lst = new List<Note>();
-
-            foreach (Routine r in un.Routines)
-            {
-                foreach (Job j in r.Jobs)
-                {
-                    lst.AddRange(j.Notes);
-                }
-            }
-
-            return lst;
+            return helper.getJobNotes(un);
         }
 
         public List<Note> getStepNotes(string userName)
         {
             UserName un = helper.findUserName(userName);
-            List<Note> lst = new List<Note>();
+            return helper.getStepNotes(un);
+        }
 
-            foreach (Routine r in un.Routines)
-            {
-                foreach (Job j in r.Jobs)
-                {
-                    foreach (Step s in j.Steps)
-                    {
-                        lst.AddRange(s.Notes);
-                    }
-                }
-            }
-
-            return lst;
+        public void deleteNote(Note note)
+        {
+            helper.deleteNote(note);
         }
     }
 }

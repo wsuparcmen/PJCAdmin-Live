@@ -336,6 +336,51 @@ namespace PJCAdmin.Classes.Helpers
             db.SaveChanges();
         }
         #endregion
+        #region Notes
+        public List<Note> getUserNotes(UserName un)
+        {
+            if (un.Notes.Count() == 0)
+                return new List<Note>();
+
+            return un.Notes.ToList();
+        }
+        public List<Note> getJobNotes(UserName un)
+        {
+            List<Note> lst = new List<Note>();
+
+            foreach (Routine r in un.Routines)
+            {
+                foreach (Job j in r.Jobs)
+                {
+                    lst.AddRange(j.Notes);
+                }
+            }
+
+            return lst;
+        }
+        public List<Note> getStepNotes(UserName un)
+        {
+            List<Note> lst = new List<Note>();
+
+            foreach (Routine r in un.Routines)
+            {
+                foreach (Job j in r.Jobs)
+                {
+                    foreach (Step s in j.Steps)
+                    {
+                        lst.AddRange(s.Notes);
+                    }
+                }
+            }
+
+            return lst;
+        }
+        public void deleteNote(Note note)
+        {
+            db.Notes.Remove(note);
+            db.SaveChanges();
+        }
+        #endregion
         #region AuthTokens
         public IQueryable<AuthToken> getAllAuthTokens()
         {
