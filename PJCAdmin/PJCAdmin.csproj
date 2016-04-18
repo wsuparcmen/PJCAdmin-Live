@@ -192,6 +192,7 @@
     <Compile Include="ControllersAPI\HelloController.cs" />
     <Compile Include="Controllers\JobController.cs" />
     <Compile Include="ControllersAPI\LoginController.cs" />
+    <Compile Include="Controllers\NoteController.cs" />
     <Compile Include="Controllers\PromptController.cs" />
     <Compile Include="Controllers\PromptTypeController.cs" />
     <Compile Include="ControllersAPI\RoutineController.cs" />
