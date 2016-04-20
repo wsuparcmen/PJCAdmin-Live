@@ -4,17 +4,38 @@
     ViewBag.Title = "Note Details";
 }
 
-<!DOCTYPE html>
+<h2>Note Details for <small style="color:#808080">@Html.DisplayFor(model => model.)</small></h2>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-    
-    </div>
-</body>
-</html>
+Link to "View Different Note"
 
+<table>
+    <tr>
+        <th>Overview</th>
+    </tr>
+    <tr>
+        <td>User:</td>
+        <td>USERNAME</td>
+    </tr>
+    @//if(note has routine){
+    <tr>
+        <td>Routine:</td>
+        <td>ROUTINENAME</td>
+    </tr>
+    }
+    @//if(note has step){
+    <tr>
+        <td>Step:</td>
+        <td>STEPNAME</td>
+    </tr>
+    }
+    <tr>
+        <td>Time Created:</td>
+        <td>TIMECREATED</td>
+    </tr>
+    <tr>
+        <td>Description:</td>
+        <td>NOTECONTENT</td>
+    </tr>
+</table>
+
+<!--Link to resolve/add feedback/delete?-->
