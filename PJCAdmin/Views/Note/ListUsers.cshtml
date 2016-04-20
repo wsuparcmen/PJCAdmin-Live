@@ -6,16 +6,15 @@
 <table>
     @if (ViewData["Users"] != null)
     {
-    
+
         if (((List<MembershipUser>)ViewData["Users"]).Count > 0)
         {
 
-            for (int i = 0; i < ((List<MembershipUser>
-                )ViewData["Users"]).Count; i++)
+            foreach (MembershipUser user in ViewData["Users"] as IEnumerable<MembershipUser>)
             {
                 <tr>
                     <td>
-                        @Html.ActionLink(((List<MembershipUser>)ViewData["Users"]).ElementAt(i).UserName, "List", new { user = ((List<MembershipUser>)ViewData["Users"]).ElementAt(i).UserName })
+                        @Html.ActionLink(user.UserName, "List", new { user = (user.UserName) })
                     </td>
                 </tr>
             }

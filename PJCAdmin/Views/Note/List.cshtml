@@ -18,6 +18,27 @@ View Notes for Different User
     <tr>
         <th>User Notes</th>
     </tr>
+        @if (ViewData["Users"] != null)
+        {
+
+            if (((List<MembershipUser>)ViewData["Users"]).Count > 0)
+            {
+
+                @*for (int i = 0; i < ((List<MembershipUser>
+                    )ViewData["Users"]).Count; i++)*@
+                    foreach (MembershipUser user in ViewData["Users"] as IEnumerable<MembershipUser>)
+                    {
+                <tr>
+                    <td>
+                        @Html.ActionLink(user.UserName, "List", new { user = (user.UserName)});
+                    </td>
+                </tr>
+                }
+            }
+            @*Html.DisplayFor(modelItem => user.UserName)
+                @Html.ActionLink(user.Username, "List", new { user = user.UserName }) |
+            *@
+        }
     <tr>
         <td>Note Name...</td>
         <td>Details</td>
