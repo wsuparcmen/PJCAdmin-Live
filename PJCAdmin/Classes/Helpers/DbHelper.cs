@@ -348,7 +348,7 @@ namespace PJCAdmin.Classes.Helpers
         {
             List<Note> lst = new List<Note>();
 
-            foreach (Routine r in un.Routines)
+            foreach (Routine r in un.Routines1)
             {
                 foreach (Job j in r.Jobs)
                 {
@@ -362,7 +362,7 @@ namespace PJCAdmin.Classes.Helpers
         {
             List<Note> lst = new List<Note>();
 
-            foreach (Routine r in un.Routines)
+            foreach (Routine r in un.Routines1)
             {
                 foreach (Job j in r.Jobs)
                 {
