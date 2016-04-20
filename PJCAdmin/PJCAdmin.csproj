@@ -170,6 +170,7 @@
     <Compile Include="Classes\Helpers\APIModelHelpers\Auth.cs" />
     <Compile Include="Classes\Helpers\APIModelHelpers\JobHelper.cs" />
     <Compile Include="Classes\Helpers\APIModelHelpers\ModelCopier.cs" />
+    <Compile Include="Classes\Helpers\APIModelHelpers\UserNoteHelper.cs" />
     <Compile Include="Classes\Helpers\APIModelHelpers\RoutineHelper.cs" />
     <Compile Include="Classes\Helpers\APIModelHelpers\UserInfoHelper.cs" />
     <Compile Include="Classes\Helpers\DbHelper.cs" />
@@ -185,6 +186,7 @@
     <Compile Include="Classes\TokenIsInvalidException.cs" />
     <Compile Include="ControllersAPI\JobCoachController.cs" />
     <Compile Include="ControllersAPI\JobController.cs" />
+    <Compile Include="ControllersAPI\NoteController.cs" />
     <Compile Include="ControllersAPI\ParentController.cs" />
     <Compile Include="ControllersAPI\TestController.cs" />
     <Compile Include="Controllers\AccountController.cs" />

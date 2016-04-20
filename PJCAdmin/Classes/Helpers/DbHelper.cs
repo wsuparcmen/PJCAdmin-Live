@@ -380,6 +380,14 @@ namespace PJCAdmin.Classes.Helpers
             db.Notes.Remove(note);
             db.SaveChanges();
         }
+        public void createUserNote(string creatorUserName, Note n)
+        {
+            UserName un = findUserName(creatorUserName);
+
+            un.Notes.Add(n);
+            db.Entry<UserName>(un).State = System.Data.EntityState.Modified;
+            db.SaveChanges();
+        }
         #endregion
         #region AuthTokens
         public IQueryable<AuthToken> getAllAuthTokens()
