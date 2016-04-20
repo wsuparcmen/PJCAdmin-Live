@@ -47,25 +47,25 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
                     endTime = job.stepEndTimes[i]
                 };
 
-                /*foreach (StepNoteModel stepNote in job.stepNotes)
+                foreach (StepNoteModel stepNote in job.stepNotes)
                 {
                     if (stepNote.stepNo == i + 1)
                         s.Notes.Add(new Note() { 
                             noteTitle = stepNote.note.noteTitle,
                             noteMessage = stepNote.note.noteMessage
                         });
-                }*/
+                }
 
                 j.Steps.Add(s);
             }
 
-            /*foreach (NoteModel jobNote in job.jobNotes)
+            foreach (NoteModel jobNote in job.jobNotes)
             {
                 j.Notes.Add(new Note() { 
                     noteTitle = jobNote.noteTitle,
                     noteMessage = jobNote.noteMessage
                 });
-            }*/
+            }
 
             j = helper.createJob(j);
 
