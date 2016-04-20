@@ -1,10 +1,7 @@
-﻿@{
+﻿
+@{
     ViewBag.Title = "Notes";
 }
-
-<!--HTML for the layout of note details:-->
-
-
 <h2>Viewing Notes for @ViewData["user"]</h2>
 
 <p>@Html.ActionLink("View Notes For Different User", "ListUsers")</p>
@@ -13,50 +10,53 @@
     <tr>
         <th>User Notes</th>
     </tr>
-        @if (ViewData["Users"] != null)
-        {
-
-            if (((List<MembershipUser>)ViewData["Users"]).Count > 0)
-            {
-
-                @*for (int i = 0; i < ((List<MembershipUser>
-                    )ViewData["Users"]).Count; i++)*@
-                    foreach (MembershipUser user in ViewData["Users"] as IEnumerable<MembershipUser>)
-                    {
-                <tr>
-                    <td>
-                        @Html.ActionLink(user.UserName, "List", new { user = (user.UserName)});
-                    </td>
-                </tr>
-                }
-            }
-            @*Html.DisplayFor(modelItem => user.UserName)
-                @Html.ActionLink(user.Username, "List", new { user = user.UserName }) |
-            *@
-        }
+    @foreach (PJCAdmin.Models.Note note in ViewData["UserNotes"] as IEnumerable<PJCAdmin.Models.Note>)
+    {
+        <tr>
+            <td>
+                @note.noteTitle
+            </td>
+            <td>
+                @Html.ActionLink("Details", "UserNoteDetails", new { user = ViewData["user"], note = note.noteTitle })
+            </td>
+            
+        </tr>
+        
+    }
+    <tr><td><br /></td></tr>
     <tr>
-        <td>Note Name...</td>
-        <td>Details</td>
+        <th>Job Notes</th>
     </tr>
-
-    <tr><td><br/></td></tr>
+   @foreach (PJCAdmin.Models.Note note in ViewData["JobNotes"] as IEnumerable<PJCAdmin.Models.Note>)
+   {
     <tr>
-        <th>Routine Notes</th>
+        <td>
+            @note.noteTitle
+        </td>
+        <td>
+            Routine name
+        </td>
+        <td>
+            @Html.ActionLink("Details", "JobNoteDetails", new { user = ViewData["user"], note = note.noteTitle })
+        </td>
     </tr>
-    <tr>
-        <td>Note Name...</td>
-        <td>Routine Name...</td>
-        <td>Details</td>
-    </tr>
-
-    <tr><td><br/></td></tr>
+   }
+    <tr><td><br /></td></tr>
     <tr>
         <th>Step Notes</th>
     </tr>
-    <tr>
-        <td>Note Name...</td>
-        <td>Routine Name...</td>
-        <td>Step Name...</td>
-        <td>Details</td>
-    </tr>
+    @foreach (PJCAdmin.Models.Note note in ViewData["StepNotes"] as IEnumerable<PJCAdmin.Models.Note>)
+    {
+        <tr>
+            <td>
+                @note.noteTitle
+            </td>
+            <td>
+                Routine name
+            </td>
+            <td>
+                @Html.ActionLink("Details", "StepNoteDetails", new {user = ViewData["user"], note = note.noteTitle })
+            </td>
+        </tr>
+    }
 </table>
