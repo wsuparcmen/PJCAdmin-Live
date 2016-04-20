@@ -4,9 +4,9 @@
     ViewBag.Title = "Note Details";
 }
 
-<h2>Note Details for <small style="color:#808080">@Html.DisplayFor(model => model.)</small></h2>
+<h2>Note Details for <small style="color:#808080">@Html.DisplayFor(model => model.noteTitle)</small></h2>
 
-Link to "View Different Note"
+<p>Link to "View Different Note"</p>
 
 <table>
     <tr>
@@ -16,13 +16,13 @@ Link to "View Different Note"
         <td>User:</td>
         <td>USERNAME</td>
     </tr>
-    @//if(note has routine){
+    @*if(note has routine){*@
     <tr>
         <td>Routine:</td>
         <td>ROUTINENAME</td>
     </tr>
     }
-    @//if(note has step){
+    @*if(note has step){*@
     <tr>
         <td>Step:</td>
         <td>STEPNAME</td>
