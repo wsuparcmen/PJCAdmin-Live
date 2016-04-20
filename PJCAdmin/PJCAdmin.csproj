@@ -504,6 +504,7 @@
     <Content Include="Views\Note\Details.cshtml" />
     <Content Include="Views\Note\Delete.cshtml" />
     <Content Include="Views\Note\ListUsers.cshtml" />
+    <Content Include="Views\Note\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

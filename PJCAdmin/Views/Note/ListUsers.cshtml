@@ -4,15 +4,25 @@
 
 <h2>User Notes</h2>
 <table>
-        @foreach (MembershipUser user in ViewData["Users"] as IEnumerable<MembershipUser>)
+    @if (ViewData["Users"] != null)
+    {
+    
+        if (((List<MembershipUser>)ViewData["Users"]).Count > 0)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => user.UserName)
-                </td>
-                <td>
 
-                </td>
-            </tr>
+            for (int i = 0; i < ((List<MembershipUser>
+                )ViewData["Users"]).Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(((List<MembershipUser>)ViewData["Users"]).ElementAt(i).UserName, "List", new { user = ((List<MembershipUser>)ViewData["Users"]).ElementAt(i).UserName })
+                    </td>
+                </tr>
+            }
         }
+                @*Html.DisplayFor(modelItem => user.UserName)
+                @Html.ActionLink(user.Username, "List", new { user = user.UserName }) |
+                *@
+    }
+    
 </table>
