@@ -12,9 +12,9 @@
 <body>
     <!--HTML for the layout of note details:-->
 
-    <h2>Viewing Notes for USERNAME</h2>
+    <h2>Viewing Notes for @ViewData["user"]</h2>
 
-    View Notes for Different User
+    @Html.ActionLink("View Notes For Different User", "ListUsers")
 
     <table>
         <tr><td><br/></td></tr>
