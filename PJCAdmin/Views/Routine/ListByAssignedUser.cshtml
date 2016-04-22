@@ -98,6 +98,15 @@ ViewBag.Title = "Routines";
         if (ViewData["AssignedTo"] == null) //Assigned User is not chosen
         {
             <tr>
+                <td>
+                    <p>
+                        @if (Roles.IsUserInRole("Administrator")){ @Html.ActionLink("View All Routines", "List", new { mockUser = ViewData["mockUser"] as string }) }
+                         else { @Html.ActionLink("View All Routines", "List") }
+                    </p>
+                </td>
+            </tr>
+
+            <tr>
                 <th>
                     Assignees
                 </th>
@@ -111,13 +120,7 @@ ViewBag.Title = "Routines";
                     </td>
                 </tr>
             }
-
-            <tr>
-                <td>
-                    <p>@if (Roles.IsUserInRole("Administrator")){ @Html.ActionLink("Back to All Routines", "List", new { mockUser = ViewData["mockUser"] as string }) }
-                    else { @Html.ActionLink("Back to All Routines", "List") }</p>
-                </td>
-            </tr>
+            
         }
         else //Assigned User is set
         {

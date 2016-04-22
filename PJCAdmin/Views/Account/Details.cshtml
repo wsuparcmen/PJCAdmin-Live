@@ -7,12 +7,15 @@
 
 <h2>User Details for <small style="color:#808080">@Html.DisplayFor(model => model.UserName)</small></h2>
 
-<br/>
-@Html.ActionLink("Edit User Details", "Edit", new { user = Model.UserName })
-@if (Model.UserName == Membership.GetUser().UserName) {
+<p>
+    @Html.ActionLink("Edit User Details", "Edit", new { user = Model.UserName })
+    @if (Model.UserName == Membership.GetUser().UserName) {
+        <span>|</span>
+        @Html.ActionLink("Change Password", "ChangePassword");
+    }
     <span>|</span>
-    @Html.ActionLink("Change Password", "ChangePassword");
-}
+    @Html.ActionLink("View Different User", "List")
+</p>
 
 <table>
     <tr><td><b>Username</b></td><td>@Html.DisplayFor(model => model.UserName)</td></tr>
@@ -157,4 +160,4 @@
 </p>
     -->
 
-<p>@Html.ActionLink("Back to User List", "List")</p>
+<p></p>

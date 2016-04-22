@@ -5,7 +5,35 @@
     //ProfileCommon userProfile = (ProfileCommon)ProfileCommon.Create(Model.UserName, true);
 }
 
+@if (Roles.IsUserInRole("Administrator") && !(ViewData["mockUser"] as string).Equals(""))
+{
+    <h1>
+        Viewing as: @(ViewData["mockUser"] as string)
+    </h1>
+    <p>@Html.ActionLink("View as Different User", "List")</p>
+
+    <hr />
+}
+
 <h2>Routine Details for <small style="color:#808080">@Html.DisplayFor(model => model.routineTitle)</small></h2>
+
+<p>
+    <a href="javascript:history.back()">View Different Routine</a> |
+    @if (Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent"))
+    {
+        @Html.ActionLink("Edit Routine", "Edit", new { routineName = Model.routineTitle, assigneeName = Model.assigneeUserName })
+        <span>|</span>
+        @Html.ActionLink("Delete Routine", "Delete", new { routineName = Model.routineTitle, assigneeName = Model.assigneeUserName })
+    }
+    else //mockUser is set
+    {
+        @Html.ActionLink("Edit Routine", "Edit", new { routineName = Model.routineTitle, assigneeName = Model.assigneeUserName, mockUser = ViewData["mockUser"] as string })
+        <span>|</span>
+        @Html.ActionLink("Delete Routine", "Delete", new { routineName = Model.routineTitle, assigneeName = Model.assigneeUserName, mockUser = ViewData["mockUser"] as string })
+    }
+</p>
+
+<h3 style="margin-top:20px;">Overview</h3>
 
 <table>
     <tr>
