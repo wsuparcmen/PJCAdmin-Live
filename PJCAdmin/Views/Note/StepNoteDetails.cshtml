@@ -1,17 +1,35 @@
-﻿@{
-    Layout = null;
+﻿@model PJCAdmin.Models.Note
+
+@{
+    ViewBag.Title = "Note Details";
 }
 
-<!DOCTYPE html>
+<h2>Step Note Details for <small style="color:#808080">Note Name</small></h2>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-    
-    </div>
-</body>
-</html>
+<p>@Html.ActionLink("View Different Note", "List", new { user = ViewData["user"] }) | Delete Note</p>
+
+<table>
+    <tr>
+        <th>Overview</th>
+    </tr>
+    <tr>
+        <td>User:</td>
+        <td>@ViewData["user"]</td>
+    </tr>
+    <tr>
+        <td>Time Created:</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Routine Name:</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Step Name:</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Message:</td>
+        <td></td>
+    </tr>
+</table>
