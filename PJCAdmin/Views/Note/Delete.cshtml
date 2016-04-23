@@ -5,7 +5,7 @@
 <h2>Delete Note</h2>
 
 <h4>
-    Are you sure you want to delete Note: "@ViewData["note"]" - Assigned to: @ViewData["user"] from the system?
+    Are you sure you want to delete Note: @Model.noteTitle - Assigned to: @ViewData["user"] from the system?
 </h4>
 <h4>
     <small>This action is irreversible.</small>
@@ -15,8 +15,8 @@
 
 <form action="~/Note/Delete" method="post">
     @Html.AntiForgeryToken()
-    <input type="hidden" name="note" value="@ViewData["note"]" />
     <input type="hidden" name="user" value="@ViewData["user"]" />
+    <input type="hidden" name="noteID" value="@Model.noteID" />
     <input type="submit" value="Yes" />
 </form>
 

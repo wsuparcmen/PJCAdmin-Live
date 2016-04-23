@@ -186,7 +186,6 @@ namespace PJCAdmin.Controllers
                 return HttpNotFound();
 
             ViewData["user"] = user;
-            ViewData["note"] = note;
 
             return View(note);
         }

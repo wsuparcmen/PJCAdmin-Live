@@ -18,7 +18,7 @@
             </td>
             <td>
                 @*Do I need to change this line of code to pass the notes properly? Cuz the details page is getting a null note instead of the needed note.*@
-                @Html.ActionLink("Details", "UserNoteDetails", new { user = ViewData["user"], note = note.noteTitle })
+                @Html.ActionLink("Details", "UserNoteDetails", new { user = ViewData["user"], noteID = note.noteID })
             </td>
             
         </tr>
