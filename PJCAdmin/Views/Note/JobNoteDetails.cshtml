@@ -1,10 +1,10 @@
 ﻿@model PJCAdmin.Models.Note
 
 @{
-    ViewBag.Title = "Note Details";
+    ViewBag.Title = "Job Note Details";
 }
 
-<h2>Job Note Details for <small style="color:#808080">Note Name</small></h2>
+<h2>Viewing Job Note: @ViewData["note"] - Made By: @ViewData["user"]<small style="color:#808080">@Html.DisplayFor(model => model.noteTitle)</small></h2>
 
 <p>@Html.ActionLink("View Different Note", "List", new { user = ViewData["user"] }) | Delete Note</p>
 
@@ -13,19 +13,17 @@
         <th>Overview</th>
     </tr>
     <tr>
-        <td>User:</td>
-        <td>@ViewData["user"]</td>
+        <td>Job:</td>
+        <td>ROUTINENAME</td>
     </tr>
     <tr>
         <td>Time Created:</td>
-        <td></td>
+        <td>00:00:00 12/12/1212</td>
     </tr>
     <tr>
-        <td>Routine Name:</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Message:</td>
-        <td></td>
+        <td>Description:</td>
+        <td>NOTECONTENT</td>
     </tr>
 </table>
+
+@Html.ActionLink("Delete", "Delete", new { user = ViewData["user"], note = ViewData["note"] })

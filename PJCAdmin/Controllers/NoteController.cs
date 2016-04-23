@@ -87,6 +87,7 @@ namespace PJCAdmin.Controllers
             }
 
             ViewData["user"] = user;
+            ViewData["note"] = note;
 
             return View(note);
         }
@@ -100,6 +101,7 @@ namespace PJCAdmin.Controllers
             }
 
             ViewData["user"] = user;
+            ViewData["note"] = note;
 
             return View(note);
         }
@@ -113,6 +115,7 @@ namespace PJCAdmin.Controllers
             }
 
             ViewData["user"] = user;
+            ViewData["note"] = note;
 
             return View(note);
         }

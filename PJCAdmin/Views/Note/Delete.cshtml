@@ -1,37 +1,30 @@
 ﻿@{
-    ViewBag.Title = "Delete Note";
+    ViewBag.Title = "Delete";
 }
 
-<h2>Delete Routine</h2>
-
-view: Routine and Assignee
+<h2>Delete Note</h2>
 
 <h4>
-    Are you sure you want to delete Note: "@ViewData["Routine"]" - Assigned to: @ViewData["Assignee"] from the system?
+    Are you sure you want to delete Note: "@ViewData["note"]" - Assigned to: @ViewData["user"] from the system?
+</h4>
+<h4>
     <small>This action is irreversible.</small>
 </h4>
 
 <br />
 
-<form action="~/Routine/Delete" method="post">
+<form action="~/Note/Delete" method="post">
     @Html.AntiForgeryToken()
-    <input type="hidden" name="routineName" value="@ViewData["Routine"]" />
-    <input type="hidden" name="assigneeName" value="@ViewData["Assignee"]" />
-    @if (Roles.IsUserInRole("Administrator"))
-    {
-        <input type="hidden" name="mockUser" value="@ViewData["mockUser"]" />
-    }
-    Delete all history for this Routine? <input type="checkbox" name="deleteAll" />
+    <input type="hidden" name="note" value="@ViewData["note"]" />
+    <input type="hidden" name="user" value="@ViewData["user"]" />
     <input type="submit" value="Yes" />
 </form>
 
 <br />
 <br />
 
-@Html.ActionLink("Cancel", "Details",
+@Html.ActionLink("Cancel", "List",
     new
     {
-        routineName = ViewData["Routine"],
-        assigneeName = ViewData["Assignee"],
-        mockUser = ViewData["mockUser"]
+        user = ViewData["user"]
     })

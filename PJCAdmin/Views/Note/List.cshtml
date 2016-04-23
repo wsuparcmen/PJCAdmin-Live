@@ -17,6 +17,7 @@
                 @note.noteTitle
             </td>
             <td>
+                @*Do I need to change this line of code to pass the notes properly? Cuz the details page is getting a null note instead of the needed note.*@
                 @Html.ActionLink("Details", "UserNoteDetails", new { user = ViewData["user"], note = note.noteTitle })
             </td>
             
@@ -34,7 +35,7 @@
             @note.noteTitle
         </td>
         <td>
-            Routine name
+            @note.Jobs.First().Routine.routineTitle
         </td>
         <td>
             @Html.ActionLink("Details", "JobNoteDetails", new { user = ViewData["user"], note = note.noteTitle })
@@ -52,7 +53,7 @@
                 @note.noteTitle
             </td>
             <td>
-                Routine name
+                @note.Steps.First().Job.Routine.Tasks.Where(t => t.sequenceNo == note.Steps.First().sequenceNo).First().taskName
             </td>
             <td>
                 Step name
