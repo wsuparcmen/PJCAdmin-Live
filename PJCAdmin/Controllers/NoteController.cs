@@ -215,8 +215,7 @@ namespace PJCAdmin.Controllers
 
             helper.deleteNote(note);
 
-            Response.Redirect("~/Note/List?user=" + user);
-            return View();
+            return RedirectToAction("List", new {user = user});
         }
     }
 }
