@@ -77,7 +77,7 @@ namespace PJCAdmin.Controllers
             return View();
         }
 
-        public ActionResult UserNoteDetails(string user, byte noteID)
+        public ActionResult UserNoteDetails(string user, int noteID)
         {
             if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
@@ -106,7 +106,7 @@ namespace PJCAdmin.Controllers
             return View(note);
         }
 
-        public ActionResult JobNoteDetails(string user, byte noteID)
+        public ActionResult JobNoteDetails(string user, int noteID)
         {
             if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
@@ -135,7 +135,7 @@ namespace PJCAdmin.Controllers
             return View(note);
         }
 
-        public ActionResult StepNoteDetails(string user, byte noteID)
+        public ActionResult StepNoteDetails(string user, int noteID)
         {
             if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
@@ -164,7 +164,7 @@ namespace PJCAdmin.Controllers
             return View(note);
         }
 
-        public ActionResult Delete(string user, byte noteID)
+        public ActionResult Delete(string user, int noteID)
         {
             if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
@@ -192,7 +192,7 @@ namespace PJCAdmin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(string user, byte noteID, int nothing = 0)
+        public ActionResult Delete(string user, int noteID, int nothing = 0)
         {
             if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
@@ -215,8 +215,7 @@ namespace PJCAdmin.Controllers
 
             helper.deleteNote(note);
 
-            Response.Redirect("~/Note/List?user=" + user);
-            return View();
+            return RedirectToAction("List", new {user = user});
         }
     }
 }

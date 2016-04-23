@@ -375,7 +375,7 @@ namespace PJCAdmin.Classes.Helpers
 
             return lst;
         }
-        public Note getNote(byte noteID)
+        public Note getNote(int noteID)
         {
             return db.Notes.Find(noteID);
         }
