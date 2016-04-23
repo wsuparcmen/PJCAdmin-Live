@@ -53,10 +53,10 @@
                 @note.noteTitle
             </td>
             <td>
-                @note.Steps.First().Job.Routine.Tasks.Where(t => t.sequenceNo == note.Steps.First().sequenceNo).First().taskName
+                @note.Steps.First().Job.Routine.routineTitle
             </td>
             <td>
-                @note.Steps.First().Job.Routine.routineTitle
+                @note.Steps.First().Job.Routine.Tasks.Where(t => t.sequenceNo == note.Steps.First().sequenceNo).First().taskName
             </td>
             <td>
                 @Html.ActionLink("Details", "StepNoteDetails", new {user = ViewData["user"], noteID = note.noteID })
