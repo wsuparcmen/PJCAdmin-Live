@@ -375,6 +375,10 @@ namespace PJCAdmin.Classes.Helpers
 
             return lst;
         }
+        public Note getNote(byte noteID)
+        {
+            return db.Notes.Find(noteID);
+        }
         public void deleteNote(Note note)
         {
             db.Notes.Remove(note);

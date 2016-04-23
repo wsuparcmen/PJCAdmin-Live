@@ -44,6 +44,47 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
             return helper.getStepNotes(un);
         }
 
+        public Note getNote(byte noteID)
+        {
+            return helper.getNote(noteID);
+        }
+
+        public bool createdByUser(Note note, string userName)
+        {
+            if (isUserNote(note))
+            {
+                if (userName.Equals(note.UserNames.First().userName1))
+                    return true;
+            }
+            else if (isJobNote(note))
+            {
+                if (userName.Equals(note.Jobs.First().Routine.assigneeUserName))
+                    return true;
+            }
+            else if (isStepNote(note))
+            {
+                if (userName.Equals(note.Steps.First().Job.Routine.assigneeUserName))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public bool isUserNote(Note note)
+        {
+            return note.UserNames.Count() > 0;
+        }
+
+        public bool isJobNote(Note note)
+        {
+            return note.Jobs.Count() > 0;
+        }
+
+        public bool isStepNote(Note note)
+        {
+            return note.Steps.Count() > 0;
+        }
+
         public void deleteNote(Note note)
         {
             helper.deleteNote(note);

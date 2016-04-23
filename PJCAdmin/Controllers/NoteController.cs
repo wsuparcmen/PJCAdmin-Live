@@ -77,8 +77,7 @@ namespace PJCAdmin.Controllers
             return View();
         }
 
-        //if Note note doesn't work, pass noteID and pull from context.
-        public ActionResult UserNoteDetails(string user, Note note)
+        public ActionResult UserNoteDetails(string user, byte noteID)
         {
             if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
@@ -86,13 +85,28 @@ namespace PJCAdmin.Controllers
                 return View();
             }
 
+            if (!(Roles.IsUserInRole("Administrator") && !accountHelper.isThisUserUsersJobCoach(user) && !accountHelper.isThisUserUsersParent(user)))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            Note note = helper.getNote(noteID);
+            if (note == null)
+                return HttpNotFound();
+
+            if (!helper.createdByUser(note, user))
+                return HttpNotFound();
+
+            if (!helper.isUserNote(note))
+                return HttpNotFound();
+
             ViewData["user"] = user;
-            ViewData["note"] = note;
 
             return View(note);
         }
 
-        public ActionResult JobNoteDetails(string user, Note note)
+        public ActionResult JobNoteDetails(string user, byte noteID)
         {
             if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
@@ -100,13 +114,28 @@ namespace PJCAdmin.Controllers
                 return View();
             }
 
+            if (!(Roles.IsUserInRole("Administrator") && !accountHelper.isThisUserUsersJobCoach(user) && !accountHelper.isThisUserUsersParent(user)))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            Note note = helper.getNote(noteID);
+            if (note == null)
+                return HttpNotFound();
+
+            if (!helper.createdByUser(note, user))
+                return HttpNotFound();
+
+            if (!helper.isJobNote(note))
+                return HttpNotFound();
+
             ViewData["user"] = user;
-            ViewData["note"] = note;
 
             return View(note);
         }
 
-        public ActionResult StepNoteDetails(string user, Note note)
+        public ActionResult StepNoteDetails(string user, byte noteID)
         {
             if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
@@ -114,13 +143,28 @@ namespace PJCAdmin.Controllers
                 return View();
             }
 
+            if (!(Roles.IsUserInRole("Administrator") && !accountHelper.isThisUserUsersJobCoach(user) && !accountHelper.isThisUserUsersParent(user)))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            Note note = helper.getNote(noteID);
+            if (note == null)
+                return HttpNotFound();
+
+            if (!helper.createdByUser(note, user))
+                return HttpNotFound();
+
+            if (!helper.isStepNote(note))
+                return HttpNotFound();
+
             ViewData["user"] = user;
-            ViewData["note"] = note;
 
             return View(note);
         }
 
-        public ActionResult Delete(string user, Note note)
+        public ActionResult Delete(string user, byte noteID)
         {
             if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
@@ -128,20 +172,47 @@ namespace PJCAdmin.Controllers
                 return View();
             }
 
+            if (!(Roles.IsUserInRole("Administrator") && !accountHelper.isThisUserUsersJobCoach(user) && !accountHelper.isThisUserUsersParent(user)))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            Note note = helper.getNote(noteID);
+            if (note == null)
+                return HttpNotFound();
+
+            if (!helper.createdByUser(note, user))
+                return HttpNotFound();
+
             ViewData["user"] = user;
+            ViewData["note"] = note;
 
             return View(note);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(string user, Note note, int nothing = 0)
+        public ActionResult Delete(string user, byte noteID, int nothing = 0)
         {
             if (!(Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent")))
             {
                 Response.Redirect("~/Unauthorized");
                 return View();
             }
+
+            if (!(Roles.IsUserInRole("Administrator") && !accountHelper.isThisUserUsersJobCoach(user) && !accountHelper.isThisUserUsersParent(user)))
+            {
+                Response.Redirect("~/Unauthorized");
+                return View();
+            }
+
+            Note note = helper.getNote(noteID);
+            if (note == null)
+                return HttpNotFound();
+
+            if (!helper.createdByUser(note, user))
+                return HttpNotFound();
 
             helper.deleteNote(note);
 
