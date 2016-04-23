@@ -4,26 +4,24 @@
     ViewBag.Title = "Job Note Details";
 }
 
-<h2>Viewing Job Note: @ViewData["note"] - Made By: @ViewData["user"]<small style="color:#808080">@Html.DisplayFor(model => model.noteTitle)</small></h2>
+<h2>Viewing Job Note: <small style="color:#808080">@Html.DisplayFor(model => model.noteTitle)</small> - Made By: @ViewData["user"]</h2>
 
-<p>@Html.ActionLink("View Different Note", "List", new { user = ViewData["user"] }) | Delete Note</p>
+<p>@Html.ActionLink("View Different Note", "List", new { user = ViewData["user"] }) | @Html.ActionLink("Delete Note", "Delete", new { user = ViewData["user"], noteID = Model.noteID })</p>
 
 <table>
     <tr>
         <th>Overview</th>
     </tr>
     <tr>
-        <td>Job:</td>
-        <td>ROUTINENAME</td>
+        <td>Job title:</td>
+        <td>@Html.DisplayFor(model => model.Jobs.First().Routine.routineTitle)</td>
     </tr>
     <tr>
         <td>Time Created:</td>
-        <td>00:00:00 12/12/1212</td>
+        <td>TIMECREATED</td>
     </tr>
     <tr>
         <td>Description:</td>
-        <td>NOTECONTENT</td>
+        <td>@Html.DisplayFor(model => model.noteMessage)</td>
     </tr>
 </table>
-
-@Html.ActionLink("Delete", "Delete", new { user = ViewData["user"], note = ViewData["note"] })
