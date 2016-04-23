@@ -44,7 +44,7 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
             return helper.getStepNotes(un);
         }
 
-        public Note getNote(byte noteID)
+        public Note getNote(int noteID)
         {
             return helper.getNote(noteID);
         }
