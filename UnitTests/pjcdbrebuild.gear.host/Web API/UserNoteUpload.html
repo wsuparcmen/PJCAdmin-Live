@@ -1,0 +1,67 @@
+<html>
+<head><title>UserNote Upload Unit Test</title></head>
+<body>
+  <div>
+    <h4>Uploaded UserNote</h4>
+    <p id="uploadedUserNoteResultsIdentifier"></p>
+    <p id="uploadedUserNoteResultsMessage"></p>
+    <p id="uploadUserNotePF" style="color:limegreen;"></p>
+  </div>
+
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+  <script>
+    var uri = 'http://pjcdbrebuild.gear.host/api/';
+    var loginToken = "";
+    var uName = 'UnitTesterChild';
+    var uPass = 'password';
+    
+    $(document).ready(function () {
+      login();
+    });
+
+    function login() {
+      var login = {
+        'UserName':uName,
+        'Password':uPass};
+      $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        data: login,
+        url: uri + "Login",
+        success: function(data){
+          loginToken = data;
+          $('#data').html(data);
+          uploadUserNote();
+        },
+        error: function(){
+          alert('Login Failure');
+        }
+      });
+    }
+    
+    function uploadUserNote() {
+      var userNote = {
+        'noteTitle':'User Note 1',
+        'noteMessage':'This is a Note'};
+      $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        data: userNote,
+        url: uri + "Note?token=" + loginToken,
+        success: function(data){
+          DisplayUploadedNote(data);
+          $('#uploadUserNotePF').html('Success: Job Uploaded');
+        },
+        error: function(){
+          $('#uploadUserNotePF').html('Failure');
+          $('#uploadUserNotePF').css('color','red');
+        }
+      });
+    }
+
+    function DisplayUploadedNote(note) {
+      $('#uploadedUserNoteResultsIdentifier').html(note.noteTitle);
+      $('#uploadedUserNoteResultsMessage').html(note.noteMessage);
+    }
+
+  </script>
