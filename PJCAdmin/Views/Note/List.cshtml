@@ -38,7 +38,7 @@
             @note.Jobs.First().Routine.routineTitle
         </td>
         <td>
-            @Html.ActionLink("Details", "JobNoteDetails", new { user = ViewData["user"], note = note.noteTitle })
+            @Html.ActionLink("Details", "JobNoteDetails", new { user = ViewData["user"], noteID = note.noteID })
         </td>
     </tr>
    }
@@ -59,7 +59,7 @@
                 Step name
             </td>
             <td>
-                @Html.ActionLink("Details", "StepNoteDetails", new {user = ViewData["user"], note = note.noteTitle })
+                @Html.ActionLink("Details", "StepNoteDetails", new {user = ViewData["user"], noteID = note.noteID })
             </td>
         </tr>
     }
