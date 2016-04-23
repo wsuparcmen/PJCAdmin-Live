@@ -4,26 +4,28 @@
     ViewBag.Title = "Step Note Details";
 }
 
-<h2>Viewing Step Note: @ViewData["note"] - Made By: @ViewData["user"]<small style="color:#808080">@Html.DisplayFor(model => model.noteTitle)</small></h2>
+<h2>Viewing Step Note: <small style="color:#808080">@Html.DisplayFor(model => model.noteTitle)</small></h2>
 
-<p>@Html.ActionLink("View Different Note", "List", new { user = ViewData["user"] }) | Delete Note</p>
+<p>@Html.ActionLink("Back to all " + ViewData["user"] + " notes", "List", new { user = ViewData["user"] }) | @Html.ActionLink("Delete Note", "Delete", new { user = ViewData["user"], noteID = Model.noteID })</p>
 
 <table>
     <tr>
         <th>Overview</th>
     </tr>
     <tr>
-        <td>Step:</td>
-        <td>STEPNAME</td>
+        <td>Made By:</td>
+        <td>@ViewData["user"]</td>
     </tr>
     <tr>
-        <td>Time Created:</td>
-        <td>TIMECREATED</td>
+        <td>Job title:</td>
+        <td>@Html.DisplayFor(model => model.Steps.First().Job.Routine.routineTitle)</td>
+    </tr>
+    <tr>
+        <td>Step title:</td>
+        <td>@Html.DisplayFor(model => model.Steps.First().Job.Routine.Tasks.Where(t => t.sequenceNo == Model.Steps.First().sequenceNo).First().taskName)</td>
     </tr>
     <tr>
         <td>Description:</td>
-        <td>NOTECONTENT</td>
+        <td>@Html.DisplayFor(model => model.noteMessage)</td>
     </tr>
 </table>
-
-@Html.ActionLink("Delete", "Delete", new { user = ViewData["user"], note = ViewData["note"]})

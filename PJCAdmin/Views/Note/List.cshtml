@@ -38,7 +38,7 @@
             @note.Jobs.First().Routine.routineTitle
         </td>
         <td>
-            @Html.ActionLink("Details", "JobNoteDetails", new { user = ViewData["user"], note = note.noteTitle })
+            @Html.ActionLink("Details", "JobNoteDetails", new { user = ViewData["user"], noteID = note.noteID })
         </td>
     </tr>
    }
@@ -56,10 +56,10 @@
                 @note.Steps.First().Job.Routine.Tasks.Where(t => t.sequenceNo == note.Steps.First().sequenceNo).First().taskName
             </td>
             <td>
-                Step name
+                @note.Steps.First().Job.Routine.routineTitle
             </td>
             <td>
-                @Html.ActionLink("Details", "StepNoteDetails", new {user = ViewData["user"], note = note.noteTitle })
+                @Html.ActionLink("Details", "StepNoteDetails", new {user = ViewData["user"], noteID = note.noteID })
             </td>
         </tr>
     }
