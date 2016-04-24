@@ -4,6 +4,8 @@
     ViewBag.Title = "Job - Details";
 }
 
+@(Model.Steps = Model.Steps.OrderBy(s=> s.sequenceNo).ToList())
+
 @if (Roles.IsUserInRole("Administrator") && !(ViewData["mockUser"] as string).Equals(""))
 {
     <h1>
