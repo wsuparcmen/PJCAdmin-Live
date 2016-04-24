@@ -16,6 +16,10 @@
         <td>Made By:</td>
         <td>@ViewData["user"]</td>
     </tr>
+    <!--Right now, the way it is set up, the job title and
+        step title make up the note title, so they don't
+        need to be shown individually. If you want to change
+        the 
     <tr>
         <td>Job title:</td>
         <td>@Html.DisplayFor(model => model.Steps.First().Job.Routine.routineTitle)</td>
@@ -23,7 +27,7 @@
     <tr>
         <td>Step title:</td>
         <td>@Html.DisplayFor(model => model.Steps.First().Job.Routine.Tasks.Where(t => t.sequenceNo == Model.Steps.First().sequenceNo).First().taskName)</td>
-    </tr>
+    </tr>-->
     <tr>
         <td>Description:</td>
         <td>@Html.DisplayFor(model => model.noteMessage)</td>

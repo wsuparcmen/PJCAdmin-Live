@@ -50,7 +50,7 @@
     {
         <tr>
             <td>
-                Has Job Notes <!--TODO ADD view notes link-->
+                @Html.ActionLink("View Notes", "List", "Note", new { user = Model.Routine.assigneeUserName },null)
             </td>
         </tr>
     }
@@ -125,7 +125,7 @@
         {
         <tr>
             <td>
-                Has Step Notes <!--TODO add view step notes link -->
+               @Html.ActionLink("View Notes", "List", "Note", new { user = Model.Routine.assigneeUserName },null)
             </td>
         </tr>
         }
