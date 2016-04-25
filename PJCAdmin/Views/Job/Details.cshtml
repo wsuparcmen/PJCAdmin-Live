@@ -4,7 +4,7 @@
     ViewBag.Title = "Job - Details";
 }
 
-@(Model.Steps = Model.Steps.OrderBy(s=> s.sequenceNo).ToList())
+<span hidden="hidden">@(Model.Steps = Model.Steps.OrderBy(s => s.sequenceNo).ToList())</span>
 
 @if (Roles.IsUserInRole("Administrator") && !(ViewData["mockUser"] as string).Equals(""))
 {
@@ -23,9 +23,9 @@
         @Html.ActionLink("View Different Routine", "ListRoutines", new { mockUser = ViewData["mockUser"] as string })
         <span>|</span>
         @Html.ActionLink("View Different Version", "ListRoutineVersions", new{
-            mockUser = ViewData["mockUser"] as string,
-            routineName = ViewData["routineName"] as string,
-            assigneeName = ViewData["assigneeName"] as string})
+           mockUser = ViewData["mockUser"] as string,
+           routineName = ViewData["routineName"] as string,
+           assigneeName = ViewData["assigneeName"] as string})
         <span>|</span>
         @Html.ActionLink("Delete Job", "Delete", new{
             mockUser = ViewData["mockUser"] as string,
