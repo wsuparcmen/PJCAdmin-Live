@@ -15,12 +15,12 @@
     <fieldset>
         <ol>
             <li>
-                @Html.LabelFor(m => m.UserName)
+                <label>Username</label>
                 @Html.DisplayFor(m => m.UserName)
                 @Html.HiddenFor(m => m.UserName)
             </li>
             <li>
-                @Html.LabelFor(m => m.Email)
+                <label>Email Address</label>
                 @if (Roles.IsUserInRole("Administrator"))
                 {
                     @Html.TextBoxFor(m => m.Email)

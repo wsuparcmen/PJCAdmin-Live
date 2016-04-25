@@ -2,33 +2,32 @@
 <li>
     <table>
         <tr>
+            <td>Feedback Type:</td>
             <td>
-                Feedback Type: Positive @*@(Model.FeedbackType.feedbackTypeName)*@
+                Positive @*@(Model.FeedbackType.feedbackTypeName)*@
                 <input type="hidden" name="Feedbacks[@ViewData["Index"]].FeedbackType.feedbackTypeName" value="POSITIVE" />
             </td>
         </tr>
         <tr>
+            <td>Title:</td>
             <td>
-                Title: <input type="text" name="Feedbacks[@ViewData["Index"]].feedbackTitle" value="@(Model.feedbackTitle)" />
+                <input type="text" name="Feedbacks[@ViewData["Index"]].feedbackTitle" value="@(Model.feedbackTitle)" />
             </td>
         </tr>
         <tr>
+            <td>Message:</td>
             <td>
-                Message: <input type="text" name="Feedbacks[@ViewData["Index"]].feedbackMessage" value="@(Model.feedbackMessage)" />
+                <input type="text" name="Feedbacks[@ViewData["Index"]].feedbackMessage" value="@(Model.feedbackMessage)" />
             </td>
         </tr>
         <tr>
+            <td>Media Type:</td>
             <td>
-                Media Type: Text
+                Text
                 <input type="hidden" name="Feedbacks[@ViewData["Index"]].MediaType.mediaTypeName" value="Text" />
                 @*@(Model.MediaType.mediaTypeName)*@
             </td>
         </tr>
-        <tr>
-            
-            <td>
-                <p><button class="RemoveRoutineFeedback" style="font-size:10pt;">Remove This Routine Feedback</button></p>
-            </td>
-        </tr>
     </table>
+    <p><button class="RemoveRoutineFeedback" style="font-size:10pt;">Remove This Routine Feedback</button></p>
 </li>
