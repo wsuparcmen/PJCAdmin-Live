@@ -7,7 +7,9 @@ ViewBag.Title = "Routines";
     <h1>
         Viewing as: @(ViewData["mockUser"] as string)
     </h1>
-    <p>@Html.ActionLink("View as different user","List")</p>
+    <p>@Html.ActionLink("View as Different User","List")</p>
+
+    <hr/>
 }
 @if (!(ViewData["AssignedTo"] == null))
 {
@@ -17,14 +19,19 @@ ViewBag.Title = "Routines";
     <p>
         @if (Roles.IsUserInRole("Administrator"))
         {
-            @Html.ActionLink("View routines assigned to different user", "ListByAssignedUser", new { mockUser = ViewData["mockUser"] as string })
+            @Html.ActionLink("View Routines Assigned to Different User", "ListByAssignedUser", new { mockUser = ViewData["mockUser"] as string })
+            <span>|</span>
+            @Html.ActionLink("View All Routines", "List", new { mockUser = ViewData["mockUser"] as string })
         }
         else
         {
-            @Html.ActionLink("View routines assigned to different user", "ListByAssignedUser")
-        }
+            @Html.ActionLink("View Routines Assigned to Different User", "ListByAssignedUser")
+            <span>|</span>
+            @Html.ActionLink("View All Routines", "List")
+        } 
     </p>
 }
+
 <table> 
     @if (Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent"))
     {
@@ -91,6 +98,15 @@ ViewBag.Title = "Routines";
         if (ViewData["AssignedTo"] == null) //Assigned User is not chosen
         {
             <tr>
+                <td>
+                    <p>
+                        @if (Roles.IsUserInRole("Administrator")){ @Html.ActionLink("View All Routines", "List", new { mockUser = ViewData["mockUser"] as string }) }
+                         else { @Html.ActionLink("View All Routines", "List") }
+                    </p>
+                </td>
+            </tr>
+
+            <tr>
                 <th>
                     Assignees
                 </th>
@@ -104,6 +120,7 @@ ViewBag.Title = "Routines";
                     </td>
                 </tr>
             }
+            
         }
         else //Assigned User is set
         {
@@ -144,3 +161,4 @@ ViewBag.Title = "Routines";
         }
     }
 </table>
+<br/>

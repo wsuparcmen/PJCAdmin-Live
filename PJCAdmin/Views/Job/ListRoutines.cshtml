@@ -9,20 +9,18 @@ ViewBag.Title = "Job - Routine Selection";
     <h1>
         Viewing as: @(ViewData["mockUser"] as string)
     </h1>
-    <p>@Html.ActionLink("View as different user","Index")</p>
+    <p>@Html.ActionLink("View as Different User","Index")</p>
+
+    <hr />
 }
 
-<table>
-    <tr>
-        <th>Select a Routine...</th>
-    </tr>
+<h2>Select a Routine...</h2>
 
+<table>
     @foreach (PJCAdmin.Models.Routine routine in Model)
     {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => routine.routineTitle) 
-            </td>
+            <td><strong>@Html.DisplayFor(modelItem => routine.routineTitle)</strong></td>
             <td>
                 Assigned to: @Html.DisplayFor(modelItem => routine.assigneeUserName)
             </td>

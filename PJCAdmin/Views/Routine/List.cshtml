@@ -7,7 +7,9 @@ ViewBag.Title = "Routines";
     <h1>
         Viewing as: @(ViewData["mockUser"] as string)
     </h1>
-    <p>@Html.ActionLink("View as different user","List")</p>
+    <p>@Html.ActionLink("View as Different User","List")</p>
+
+    <hr />
 }
 @if (!Roles.IsUserInRole("Administrator") || !(ViewData["mockUser"] as string).Equals(""))
 {
@@ -19,14 +21,15 @@ ViewBag.Title = "Routines";
 
         @if (Roles.IsUserInRole("Administrator"))
         {
-            @Html.ActionLink("View list by assigned user", "ListByAssignedUser", new { mockUser = ViewData["mockUser"] as string })
+            @Html.ActionLink("View List by Assigned User", "ListByAssignedUser", new { mockUser = ViewData["mockUser"] as string })
         }
         else
         {
-            @Html.ActionLink("View list by assigned user", "ListByAssignedUser")
+            @Html.ActionLink("View List by Assigned User", "ListByAssignedUser")
         }
     </p>
 }
+
 <table> 
     @if (Roles.IsUserInRole("Job Coach") || Roles.IsUserInRole("Parent"))
     {
@@ -79,7 +82,7 @@ ViewBag.Title = "Routines";
         {
             <tr>
                 <th>
-                    Select a user to view their routines...
+                    Select a user to view routines as...
                 </th>
             </tr>
             <tr>

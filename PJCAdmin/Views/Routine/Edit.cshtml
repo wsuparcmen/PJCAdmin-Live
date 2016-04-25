@@ -10,8 +10,11 @@
     <h1>
         Viewing as: @(ViewData["mockUser"] as string)
     </h1>
-    <p>@Html.ActionLink("View as different user","List")</p>
+    <p>@Html.ActionLink("View as Different User","List")</p>
+
+    <hr/>
 }
+
 <h2>Edit Routine <small style="color:#808080">@Html.DisplayFor(model => model.routineTitle)</small></h2>
 
 @using (Html.BeginForm())
@@ -22,19 +25,29 @@
     <fieldset>
         @Html.HiddenFor(m => m.routineTitle)
         <table>
-            <tr><td>
-                Assigned to:</td><td>@Html.DisplayFor(model => model.assigneeUserName)
-                @Html.HiddenFor(m => m.assigneeUserName)
-            </td></tr>
-            <tr><td>
-                Timed</td><td>@Html.CheckBoxFor(m => m.isTimed)</tr><tr><td>Time Limit:</td><td>@Html.EditorFor(m => m.expectedDuration)
-            </td></tr>
-            <tr><td>
-                Email on Job Completion:</td><td>@Html.CheckBoxFor(m => m.isNotifiable)
-            </td></tr>
-            <tr><td>
-                Disabled:</td><td>@Html.CheckBoxFor(m => m.isDisabled)
-            </td></tr>
+            <tr>
+                <td>Assigned to:</td>
+                <td>
+                    @Html.DisplayFor(model => model.assigneeUserName)
+                    @Html.HiddenFor(m => m.assigneeUserName)
+                </td>
+            </tr>
+            <tr>
+                <td>Timed:</td>
+                <td>@Html.CheckBoxFor(m => m.isTimed)</td>
+            </tr>
+            <tr>
+                <td>Expected Duration:</td>
+                <td>@Html.EditorFor(m => m.expectedDuration)</td>
+            </tr>
+            <tr>
+                <td>Email on Job Completion:</td>
+                <td>@Html.CheckBoxFor(m => m.isNotifiable)</td>
+            </tr>
+            <tr>
+                <td>Disabled:</td>
+                <td>@Html.CheckBoxFor(m => m.isDisabled)</td>
+            </tr>
         </table>
 
         <h3>Routine Feedback</h3>
@@ -46,7 +59,7 @@
             }
         </ol>
         <button id="AddFinalRoutineFeedback" class="AddFinalRoutineFeedback">Add Routine Feedback</button>
-
+        <br /><br />
         <h3>Tasks</h3>
         <hr/>
         <ol id="Tasks">

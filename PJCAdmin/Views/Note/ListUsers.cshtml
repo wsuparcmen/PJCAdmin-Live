@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Notes";
+}
+
+<table>
+    <tr><th>Select a user to view notes...</th></tr>
+    <tr><td></td></tr>
+
+    @if (ViewData["Users"] != null)
+    {
+
+        if (((List<MembershipUser>)ViewData["Users"]).Count > 0)
+        {
+
+            foreach (MembershipUser user in ViewData["Users"] as IEnumerable<MembershipUser>)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(user.UserName, "List", new { user = (user.UserName) })
+                    </td>
+                </tr>
+            }
+        }
+                @*Html.DisplayFor(modelItem => user.UserName)
+                @Html.ActionLink(user.Username, "List", new { user = user.UserName }) |
+                *@
+    }
+    
+</table>

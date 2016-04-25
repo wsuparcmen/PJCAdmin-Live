@@ -170,6 +170,7 @@
     <Compile Include="Classes\Helpers\APIModelHelpers\Auth.cs" />
     <Compile Include="Classes\Helpers\APIModelHelpers\JobHelper.cs" />
     <Compile Include="Classes\Helpers\APIModelHelpers\ModelCopier.cs" />
+    <Compile Include="Classes\Helpers\APIModelHelpers\UserNoteHelper.cs" />
     <Compile Include="Classes\Helpers\APIModelHelpers\RoutineHelper.cs" />
     <Compile Include="Classes\Helpers\APIModelHelpers\UserInfoHelper.cs" />
     <Compile Include="Classes\Helpers\DbHelper.cs" />
@@ -179,11 +180,13 @@
     <Compile Include="Classes\Helpers\MVCModelHelpers\FeedbackHelper.cs" />
     <Compile Include="Classes\Helpers\MVCModelHelpers\JobHelper.cs" />
     <Compile Include="Classes\Helpers\MVCModelHelpers\ModelCopier.cs" />
+    <Compile Include="Classes\Helpers\MVCModelHelpers\NoteHelper.cs" />
     <Compile Include="Classes\Helpers\MVCModelHelpers\RoutineHelper.cs" />
     <Compile Include="Classes\Helpers\MVCModelHelpers\TaskHelper.cs" />
     <Compile Include="Classes\TokenIsInvalidException.cs" />
     <Compile Include="ControllersAPI\JobCoachController.cs" />
     <Compile Include="ControllersAPI\JobController.cs" />
+    <Compile Include="ControllersAPI\NoteController.cs" />
     <Compile Include="ControllersAPI\ParentController.cs" />
     <Compile Include="ControllersAPI\TestController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -192,6 +195,7 @@
     <Compile Include="ControllersAPI\HelloController.cs" />
     <Compile Include="Controllers\JobController.cs" />
     <Compile Include="ControllersAPI\LoginController.cs" />
+    <Compile Include="Controllers\NoteController.cs" />
     <Compile Include="Controllers\PromptController.cs" />
     <Compile Include="Controllers\PromptTypeController.cs" />
     <Compile Include="ControllersAPI\RoutineController.cs" />
@@ -499,6 +503,13 @@
     <Content Include="Views\Job\ListJobs.cshtml" />
     <Content Include="Views\Routine\_NewTaskFeedback.cshtml" />
     <Content Include="Views\Routine\_EditTaskFeedback.cshtml" />
+    <Content Include="Views\Note\Details.cshtml" />
+    <Content Include="Views\Note\Delete.cshtml" />
+    <Content Include="Views\Note\ListUsers.cshtml" />
+    <Content Include="Views\Note\List.cshtml" />
+    <Content Include="Views\Note\UserNoteDetails.cshtml" />
+    <Content Include="Views\Note\JobNoteDetails.cshtml" />
+    <Content Include="Views\Note\StepNoteDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

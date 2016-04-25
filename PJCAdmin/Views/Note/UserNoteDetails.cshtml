@@ -1,0 +1,25 @@
+﻿@model PJCAdmin.Models.Note
+
+@{
+    ViewBag.Title = "User Note Details";
+}
+
+<h2>Viewing User Note: <small style="color:#808080">@Html.DisplayFor(model => model.noteTitle)</small></h2> 
+
+<p>@Html.ActionLink("Back to all "+ViewData["user"]+" notes", "List", new { user = ViewData["user"] }) | @Html.ActionLink("Delete Note", "Delete", new { user = ViewData["user"], noteID = Model.noteID })</p>
+
+<table>
+    <tr>
+        <th>Overview</th>
+    </tr>
+    <tr>
+        <td>Made By:</td>
+        <td>@ViewData["user"]</td>
+    </tr>
+    <tr>
+        <td>Description:</td>
+        <td>@Html.DisplayFor(model => model.noteMessage)</td>
+    </tr>
+</table>
+
+

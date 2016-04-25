@@ -1,0 +1,35 @@
+﻿@model PJCAdmin.Models.Note
+
+@{
+    ViewBag.Title = "Step Note Details";
+}
+
+<h2>Viewing Step Note: <small style="color:#808080">@Html.DisplayFor(model => model.noteTitle)</small></h2>
+
+<p>@Html.ActionLink("Back to all " + ViewData["user"] + " notes", "List", new { user = ViewData["user"] }) | @Html.ActionLink("Delete Note", "Delete", new { user = ViewData["user"], noteID = Model.noteID })</p>
+
+<table>
+    <tr>
+        <th>Overview</th>
+    </tr>
+    <tr>
+        <td>Made By:</td>
+        <td>@ViewData["user"]</td>
+    </tr>
+    <!--Right now, the way it is set up, the job title and
+        step title make up the note title, so they don't
+        need to be shown individually. If you want to change
+        the 
+    <tr>
+        <td>Job title:</td>
+        <td>@Html.DisplayFor(model => model.Steps.First().Job.Routine.routineTitle)</td>
+    </tr>
+    <tr>
+        <td>Step title:</td>
+        <td>@Html.DisplayFor(model => model.Steps.First().Job.Routine.Tasks.Where(t => t.sequenceNo == Model.Steps.First().sequenceNo).First().taskName)</td>
+    </tr>-->
+    <tr>
+        <td>Description:</td>
+        <td>@Html.DisplayFor(model => model.noteMessage)</td>
+    </tr>
+</table>

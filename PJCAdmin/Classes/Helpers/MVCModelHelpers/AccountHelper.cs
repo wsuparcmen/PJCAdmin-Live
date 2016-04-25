@@ -145,6 +145,23 @@ namespace PJCAdmin.Classes.Helpers.MVCModelHelpers
             //TODO delete all references to this user
             //deleteAllReferencesToUser(username);
 
+            UserName un = helper.findUserName(userName);
+
+            List<Routine> lst = un.Routines.ToList();
+            foreach (Routine r in lst)
+            {
+                helper.deleteRoutine(r);
+            }
+
+            List<Routine> lst2 = un.Routines1.ToList();
+            foreach (Routine r in lst2)
+            {
+                helper.deleteRoutine(r);
+            }
+
+            helper.removeUsersAndChildren(un);
+            
+
             helper.deleteUserName(userName);
 
             System.Web.Security.Membership.DeleteUser(userName);

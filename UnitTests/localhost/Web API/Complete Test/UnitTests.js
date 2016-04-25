@@ -786,7 +786,7 @@
           $('#uploadJobPF').html('Success: Job Uploaded');
           success();
 
-          complete();
+          UserNoteUpload();
         },
         error: function(){
           $('#uploadJobPF').html('Failure');
@@ -809,4 +809,63 @@
       $.each(job.stepNotes, function(key, item) {
         $('<li>', { text: "StepNo" + item.stepNo + " - " + item.note.noteTitle + ": " + item.note.noteMessage}).appendTo($('#uploadedJobResultsStepNotes'));
       });
+    }
+
+<!-- %%%%%%%%% UserNote Upload %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+    function UserNoteUpload() {
+      UNULogin();
+      //UNUploadJob();
+    }
+
+    function UNULogin() {
+      var login = {
+        'UserName':'UnitTesterChild',
+        'Password':'password'};
+      $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        data: login,
+        url: uri + "Login",
+        success: function(data){
+          var loginToken = data;
+          $('#data').html(data);
+          UNUploadUserNote(loginToken);
+        },
+        error: function(){
+          alert('Login Failure');
+          failure();
+          complete();
+        }
+      });
+    }
+
+    function UNUploadUserNote(loginToken) {
+      var userNote = {
+        'noteTitle':'User Note 1',
+        'noteMessage':'This is a Note'};
+      $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        data: userNote,
+        url: uri + "Note?token=" + loginToken,
+        success: function(data){
+          UNUDisplayUploadedNote(data);
+          $('#uploadUserNotePF').html('Success: Job Uploaded');
+          success();
+
+          complete();
+        },
+        error: function(){
+          $('#uploadUserNotePF').html('Failure');
+          $('#uploadUserNotePF').css('color','red');
+          failure();
+          complete();
+        }
+      });
+    }
+
+    function UNUDisplayUploadedNote(note) {
+      $('#uploadedUserNoteResultsIdentifier').html(note.noteTitle);
+      $('#uploadedUserNoteResultsMessage').html(note.noteMessage);
     }

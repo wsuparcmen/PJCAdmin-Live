@@ -1,0 +1,32 @@
+﻿@model PJCAdmin.Models.Note
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete Note</h2>
+
+<h4>
+    Are you sure you want to delete Note: <small style="color:#808080">@Html.DisplayFor(model => model.noteTitle)</small>
+    <br />Made By: @ViewData["user"] from the system?
+</h4>
+<h4>
+    <small>This action is irreversible.</small>
+</h4>
+
+<br />
+
+<form action="~/Note/Delete" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="user" value="@ViewData["user"]" />
+    <input type="hidden" name="noteID" value="@Model.noteID" />
+    <input type="submit" value="Yes" />
+</form>
+
+<br />
+<br />
+
+@Html.ActionLink("Cancel", "List",
+    new
+    {
+        user = ViewData["user"]
+    })
