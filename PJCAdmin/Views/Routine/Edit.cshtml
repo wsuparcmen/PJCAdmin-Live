@@ -50,7 +50,7 @@
             </tr>
         </table>
 
-        <h3>Routine Feedback</h3>
+        <h3>Routine Reminders</h3>
         <ol id="RoutineFeedbacks">
             @{int index = 0;}
             @foreach (PJCAdmin.Models.FeedbackModel feedback in Model.Feedbacks)
@@ -58,7 +58,7 @@
                 @Html.Partial("_EditRoutineFeedback", feedback, new ViewDataDictionary{{"Index",@index++}});
             }
         </ol>
-        <button id="AddFinalRoutineFeedback" class="AddFinalRoutineFeedback">Add Routine Feedback</button>
+        <button id="AddFinalRoutineFeedback" class="AddFinalRoutineFeedback">Add Routine Reminder</button>
         <br /><br />
         <h3>Tasks</h3>
         <hr/>

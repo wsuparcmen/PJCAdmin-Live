@@ -32,7 +32,7 @@
         </tr>
     </table>
 
-    <h4>Task Feedback</h4>
+    <h4>Task Reminder</h4>
     <ol class="TaskFeedbacks">
         @*foreach (PJCAdmin.Models.FeedbackModel feedback in Model.Feedbacks)
         {
@@ -45,7 +45,7 @@
                 @Html.Partial("_EditTaskFeedback", feedback, new ViewDataDictionary { { "TaskIndex", Model.sequenceNo - 1 }, {"Index", @index++} });
             }
     </ol>
-    <p><button class="AddFinalTaskFeedback" style="font-size:10pt;">Add Task Feedback</button></p>
+    <p><button class="AddFinalTaskFeedback" style="font-size:10pt;">Add Task Reminder</button></p>
         
     <table>
         <tr>
