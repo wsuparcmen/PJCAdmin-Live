@@ -53,6 +53,7 @@
         <AssociationConnector Association="pjcModel.StepNote" />
         <AssociationConnector Association="pjcModel.TaskFeedback" />
         <AssociationConnector Association="pjcModel.UserNote" />
+        <EntityTypeShape EntityType="pjcModel.sysdiagram" Width="1.5" PointX="9.3625174674030944" PointY="19.031071567456738" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
