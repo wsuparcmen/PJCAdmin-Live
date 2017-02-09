@@ -21,13 +21,14 @@ namespace PJCAdmin.ControllersAPI
             if (System.Web.Security.Membership.ValidateUser(model.UserName, model.Password))
             {
                 string userName = db.UserNames.Where<UserName>(a => a.userName1.Equals(model.UserName)).FirstOrDefault().userName1;
+                string role = auth.getRoleFromUser(userName);
                
                 AuthToken token;
                 try
                 {
                     token = db.AuthTokens.Where<AuthToken>(t => t.userName.Equals(userName)).First();
                     //User already has a token -> update token
-                    token.token = Guid.NewGuid().ToString() + ":" + token.authTokenID;
+                    token.token = Guid.NewGuid().ToString() + ":" + token.authTokenID + "," + role;
 
                     if (model.RememberMe)
                         token.expirationDate = DateTime.Now.AddYears(50); //Expires in 50 years
@@ -52,8 +53,6 @@ namespace PJCAdmin.ControllersAPI
 
                     token = db.AuthTokens.Add(token);
                     db.SaveChanges();
-
-                    string role = auth.getRoleFromUser(userName);
 
                     token.token = token.token + ":" + token.authTokenID + "," + role;
 
