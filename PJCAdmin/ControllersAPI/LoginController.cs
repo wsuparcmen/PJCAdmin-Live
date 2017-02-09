@@ -53,7 +53,9 @@ namespace PJCAdmin.ControllersAPI
                     token = db.AuthTokens.Add(token);
                     db.SaveChanges();
 
-                    token.token = token.token + ":" + token.authTokenID;
+                    string role = auth.getRoleFromUser(userName);
+
+                    token.token = token.token + ":" + token.authTokenID + "," + role;
 
                     db.Entry(token).State = System.Data.EntityState.Modified;
                     db.SaveChanges();
