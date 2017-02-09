@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Http;
 using System.Net.Http;
 using PJCAdmin.Models;
+using System.Web.Security;
 
 namespace PJCAdmin.Classes.Helpers.APIModelHelpers
 {
@@ -127,6 +128,34 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
                 return true;
             else
                 return false;
+        }
+        /*Returns the role for the user
+         *@param token: The token retrieved from the server 
+         */
+        public string getRoleFromUser(string UserName)
+        {
+            string admin = "Administrator";
+            string user = "User";
+            string parent = "Parent";
+            string jobCoach = "Job Coach";
+
+            if (Roles.IsUserInRole(UserName, admin))
+            {
+                return admin;
+            }
+            else if (Roles.IsUserInRole(UserName, user))
+            {
+                return user;
+            }
+            else if (Roles.IsUserInRole(UserName, parent))
+            {
+                return parent;
+            }
+            else if (Roles.IsUserInRole(UserName, jobCoach))
+            {
+                return jobCoach;
+            }
+            else return "Error";
         }
         
         public void dispose()
