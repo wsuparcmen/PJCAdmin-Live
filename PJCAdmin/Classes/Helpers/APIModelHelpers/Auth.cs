@@ -46,7 +46,8 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
                 throw new TokenIsInvalidException();
             }
 
-            int id = Int32.Parse(token.Substring(37));
+            int stop = token.IndexOf(",") - 37;
+            int id = Int32.Parse(token.Substring(37, stop));
             AuthToken authToken = helper.findAuthToken(id);
 
             return authToken.userName;
@@ -66,7 +67,8 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
                 return false;
 
             string guid = token.Substring(0, 36);
-            int id = Int32.Parse(token.Substring(37));
+            int stop = token.IndexOf(",")-37;
+            int id = Int32.Parse(token.Substring(37,stop));
 
             AuthToken authToken = helper.findAuthToken(id);
 
@@ -102,7 +104,8 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
                 throw new HttpResponseException(new HttpResponseMessage(System.Net.HttpStatusCode.Unauthorized));
             }
 
-            int id = Int32.Parse(token.Substring(37));
+            int stop = token.IndexOf(",") - 37;
+            int id = Int32.Parse(token.Substring(37, stop));
             AuthToken authToken = helper.findAuthToken(id);
 
             if (isExpired(authToken.expirationDate.AddMinutes(-10)))
