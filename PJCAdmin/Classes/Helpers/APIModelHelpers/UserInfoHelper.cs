@@ -45,5 +45,20 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
 
             return info;
         }
+
+        //for user list for app
+        public List<UserInfoModel> getListOfUsersAssignedToCoach(string CoachUsername)
+        {
+            List<UserInfoModel> userList = new List<UserInfoModel>();
+
+            //UserName12 is collection where self is jobcoach
+            foreach (PJCAdmin.Models.UserName usr in helper.findUserName(CoachUsername).UserName12)
+            {
+                UserInfoModel info = getUserInfo(usr.userName1);
+                userList.Add(info);
+            }
+
+            return userList;
+        }
     }
 }
