@@ -21,13 +21,25 @@ namespace PJCAdmin.ControllersAPI
             DbHelper context = helper.getDBHelper();
             auth = new Auth(context);
         }
-
-        public UserInfoModel Get(string token)
+        //Unnecessary code
+        /*public UserInfoModel Get(string token)
         {
+            DbHelper context = helper.getDBHelper();
+            auth = new Auth(context);
             auth.authorizeToken(token);
             string userName = auth.getUserNameFromToken(token);
 
             return helper.getJobCoachInfo(userName);
+        }*/
+
+        //GET ../api/JobCoach?token=<token>
+        public IEnumerable<UserInfoModel> GetUserList(string token)
+        {
+            auth.authorizeToken(token);
+            string userName = auth.getUserNameFromToken(token);
+
+            var userList = helper.getListOfUsersAssignedToCoach(userName);
+            return userList;
         }
     }
 }
