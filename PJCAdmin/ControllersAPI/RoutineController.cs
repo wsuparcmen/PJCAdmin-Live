@@ -32,7 +32,7 @@ namespace PJCAdmin.ControllersAPI
         }
 
         // GET api/Routine?token=<token>&assignedBy=<"Parent" or "Job Coach">
-        public IEnumerable<Routine> Get(string token, string assignedBy)
+        /*public IEnumerable<Routine> Get(string token, string assignedBy)
         {
             auth.authorizeToken(token);
             string userName = auth.getUserNameFromToken(token);
@@ -44,6 +44,13 @@ namespace PJCAdmin.ControllersAPI
 
             //assignedBy is not a valid string
             throw new HttpResponseException(new HttpResponseMessage(System.Net.HttpStatusCode.BadRequest));
+        }*/
+
+        //GET api/Routine?token=<token>&username=<username>
+        public IEnumerable<Routine> GetRoutineListForUser(string token, string username)
+        {
+            auth.authorizeToken(token);
+            return helper.getAllRoutinesAssignedToUserForSerialization(username);
         }
 
         protected override void Dispose(bool disposing)

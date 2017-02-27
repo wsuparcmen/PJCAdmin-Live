@@ -41,5 +41,13 @@ namespace PJCAdmin.ControllersAPI
             var userList = helper.getListOfUsersAssignedToCoach(userName);
             return userList;
         }
+
+        //GET ../api/JobCoach?token=<token>&username=<username>
+        public UserInfoModel GetUserInfo(string token, string username)
+        {
+            auth.authorizeToken(token);
+            UserInfoModel userInfo = helper.getUserInfo(username);
+            return userInfo;
+        }
     }
 }
