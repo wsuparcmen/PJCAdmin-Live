@@ -43,10 +43,15 @@ namespace PJCAdmin.ControllersAPI
         }
 
         //GET ../api/JobCoach?token=<token>&username=<username>
-        public UserInfoModel GetUserInfo(string token, string username)
+        public IEnumerable<string> GetUserInfo(string token, string username)
         {
+            List<string> userInfo = new List<string>();
+            if (username == null) return null;
             auth.authorizeToken(token);
-            UserInfoModel userInfo = helper.getUserInfo(username);
+            UserInfoModel temp = helper.getUserInfo(username);
+            userInfo.Add(temp.userName);
+            userInfo.Add(temp.phone);
+            userInfo.Add(temp.email);
             return userInfo;
         }
     }
