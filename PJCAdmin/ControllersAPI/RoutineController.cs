@@ -58,5 +58,17 @@ namespace PJCAdmin.ControllersAPI
             helper.dispose();
             base.Dispose(disposing);
         }
+
+        public IEnumerable<string> GetRoutineInfo(string token, string username)
+        {
+            List<string> userInfo = new List<string>();
+            if (username == null) return null;
+            auth.authorizeToken(token);
+            UserInfoModel temp = helper.getRoutineInfo(username);
+            userInfo.Add(temp.userName);
+            userInfo.Add(temp.phone);
+            userInfo.Add(temp.email);
+            return userInfo;
+        }
     }
 }

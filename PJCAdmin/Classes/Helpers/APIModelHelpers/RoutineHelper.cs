@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using PJCAdmin.Models;
+using PJCAdmin.Classes.Helpers.MVCModelHelpers;
+
 
 namespace PJCAdmin.Classes.Helpers.APIModelHelpers
 {
@@ -14,6 +16,8 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
     public class RoutineHelper
     {
         private DbHelper helper;
+
+        
 
         public RoutineHelper(DbHelper h = null)
         {
@@ -95,5 +99,23 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
         {
             helper.dispose();
         }
+
+        #region create/modify
+        private void modifyExistingRoutine(string creatorUsername, string routineName, RoutineModel model)  //need to grab creatorUserName from Job model, routineName from Job model, and assigneeName from somewhere else
+        {
+            Routine r = getMostRecentRoutineAssignedToByName(creatorUsername, routineName, model.assigneeUserName);
+
+            r.isTimed = model.isTimed;
+            r.expectedDuration = model.expectedDuration;
+            r.isNotifiable = model.isNotifiable;
+            r.isDisabled = model.isDisabled;
+            r.updatedDate = DateTime.Now;
+
+            taskHelper.modifyExistingTasks(r.Tasks.ToList(), model.Tasks.ToList(),true);
+            feedbackHelper.updateRoutineFeedbacks(r.routineID, model.Feedbacks.ToList());
+
+            helper.updateRoutine(r);
+        }
+        #endregion
     }
 }
