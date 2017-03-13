@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using PJCAdmin.Models;
-using PJCAdmin.Classes.Helpers.MVCModelHelpers;
+using PJCAdmin.Classes.Helpers.APIModelHelpers;
+
 
 
 namespace PJCAdmin.Classes.Helpers.APIModelHelpers
@@ -16,6 +17,8 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
     public class RoutineHelper
     {
         private DbHelper helper;
+        private TaskHelper taskHelper;
+        private FeedbackHelper feedbackHelper;
 
         
 
@@ -101,20 +104,39 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
         }
 
         #region create/modify
-        private void modifyExistingRoutine(string creatorUsername, string routineName, RoutineModel model)  //need to grab creatorUserName from Job model, routineName from Job model, and assigneeName from somewhere else
+        private void modifyExistingRoutine(string routineName, RoutineModel model)
         {
-            Routine r = getMostRecentRoutineAssignedToByName(creatorUsername, routineName, model.assigneeUserName);
+            Routine rout = getRoutineAssignedToByName(routineName);
 
-            r.isTimed = model.isTimed;
-            r.expectedDuration = model.expectedDuration;
-            r.isNotifiable = model.isNotifiable;
-            r.isDisabled = model.isDisabled;
-            r.updatedDate = DateTime.Now;
+            rout.isTimed = model.isTimed;
+            rout.expectedDuration = model.expectedDuration;
+            rout.isNotifiable = model.isNotifiable;
+            rout.isDisabled = model.isDisabled;
+            rout.updatedDate = DateTime.Now;
 
-            taskHelper.modifyExistingTasks(r.Tasks.ToList(), model.Tasks.ToList(),true);
-            feedbackHelper.updateRoutineFeedbacks(r.routineID, model.Feedbacks.ToList());
+            taskHelper.modifyExistingTasks(rout.Tasks.ToList(), model.Tasks.ToList(),true);
+            feedbackHelper.updateRoutineFeedbacks(rout.routineID, model.Feedbacks.ToList());
 
-            helper.updateRoutine(r);
+            helper.updateRoutine(rout);
+        }
+
+        public Routine getRoutineAssignedToByName(string routineName)
+        {
+
+           return helper.getAllRoutines().AsQueryable().Where<Routine>(r => r.routineTitle.Equals(routineName)).OrderBy(r => r.updatedDate).Last();
+            // return getRoutinesAssignedTo(creatorUsername, assigneeName).Where(r => r.routineTitle.Equals(routineName)).ToList();
+            //    public List<Routine> getRoutinesAssignedTo(string creatorUsername, string assigneeUsername)
+            //{
+            //    return getRoutines(creatorUsername).Where(r => r.assigneeUserName != null && r.assigneeUserName.Equals(assigneeUsername)).ToList();
+            //}
+
+            //public List<Routine> getRoutines(string creatorUsername)
+            //{
+            //    return helper.findUserName(creatorUsername).Routines.ToList();
+            //}
+
+            //getMostRecentRoutineAssignedToByName(creatorUsername, routineName, model.assigneeUserName);
+            //return getRoutinesAssignedToByName(creatorUsername, routineName, assigneeName).OrderBy().Last();
         }
         #endregion
     }

@@ -59,16 +59,28 @@ namespace PJCAdmin.ControllersAPI
             base.Dispose(disposing);
         }
 
-        public IEnumerable<string> GetRoutineInfo(string token, string username)
+        public IEnumerable<string> GetRoutineInfo(string token, string username, string routineTitle)
         {
-            List<string> userInfo = new List<string>();
+            List<string> routineInfo = new List<string>();
             if (username == null) return null;
             auth.authorizeToken(token);
-            UserInfoModel temp = helper.getRoutineInfo(username);
-            userInfo.Add(temp.userName);
-            userInfo.Add(temp.phone);
-            userInfo.Add(temp.email);
-            return userInfo;
+            //UserInfoModel temp = helper.getRoutineInfo(username);
+            //userInfo.Add(temp.userName);
+            //userInfo.Add(temp.phone);
+            //userInfo.Add(temp.email);
+
+            Routine temp = helper.getRoutineAssignedToByName(routineTitle);
+            routineInfo.Add(temp.routineID.ToString());
+            routineInfo.Add(temp.creatorUserName);
+            routineInfo.Add(temp.assigneeUserName);
+            routineInfo.Add(temp.routineTitle);
+            routineInfo.Add(temp.isTimed.ToString());
+            routineInfo.Add(temp.expectedDuration.ToString());
+            routineInfo.Add(temp.isNotifiable.ToString());
+            routineInfo.Add(temp.updatedDate.ToString());
+            routineInfo.Add(temp.isDisabled.ToString());
+
+            return routineInfo;
         }
     }
 }
