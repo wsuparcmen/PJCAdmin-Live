@@ -69,6 +69,7 @@ namespace PJCAdmin.ControllersAPI
             //userInfo.Add(temp.phone);
             //userInfo.Add(temp.email);
 
+
             Routine temp = helper.getRoutineAssignedToByName(routineTitle);
             routineInfo.Add(temp.routineID.ToString());
             routineInfo.Add(temp.creatorUserName);
