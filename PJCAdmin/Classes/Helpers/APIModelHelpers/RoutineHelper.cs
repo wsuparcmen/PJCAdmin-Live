@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using PJCAdmin.Models;
-using PJCAdmin.Classes.Helpers.APIModelHelpers;
+using PJCAdmin.Classes.Helpers.MVCModelHelpers;
 
 
 
@@ -123,7 +123,9 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
         public Routine getRoutineAssignedToByName(string routineName)
         {
 
-           return helper.getAllRoutines().AsQueryable().Where<Routine>(r => r.routineTitle.Equals(routineName)).OrderBy(r => r.updatedDate).Last();
+            //RoutineModel temp = helper.getAllRoutines().AsQueryable().Where<Routine>(r => r.isDisabled.Equals(0) && r.routineTitle.Equals(routineName));
+            
+            return (Routine) helper.getAllRoutines().AsQueryable().Where<Routine>(r => r.isDisabled.Equals(0) && r.routineTitle.Equals(routineName));
             // return getRoutinesAssignedTo(creatorUsername, assigneeName).Where(r => r.routineTitle.Equals(routineName)).ToList();
             //    public List<Routine> getRoutinesAssignedTo(string creatorUsername, string assigneeUsername)
             //{

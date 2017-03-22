@@ -35,6 +35,11 @@ namespace PJCAdmin.Models
         public virtual ICollection<TaskModel> Tasks { get; set; }
         [Display(Name = "Routine Feedback")]
         public virtual ICollection<FeedbackModel> Feedbacks { get; set; }
+
+        public static implicit operator RoutineModel(Routine v)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class TaskModel
