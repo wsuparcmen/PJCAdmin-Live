@@ -52,6 +52,37 @@ namespace PJCAdmin.ControllersAPI
             auth.authorizeToken(token);
             return helper.getAllRoutinesAssignedToUserForSerialization(username);
         }
+        
+        //POST api/Routine?token=<token>&create=<c,m,or d>&routineModel=<[routine object]>
+        [HttpPost]
+        public HttpResponseMessage PostJob(string token, string create, RoutineModel model)
+        {
+            auth.authorizeToken(token);
+            PJCAdmin.Classes.Helpers.MVCModelHelpers.RoutineHelper helper = new Classes.Helpers.MVCModelHelpers.RoutineHelper();
+            switch (create)
+            {
+                case "c": //create new job
+                    //create the model in the database
+                    helper.createRoutine(model);
+                    break;
+
+                case "m": //modify existing job
+                    //find the routine that matches
+                    //update the database for routine
+                    helper.updateRoutine(model.routineTitle, model);
+                    break;
+
+                case "d": //delete existing job
+                    //find the routine that matches
+                    //delete the matching routine from the database
+                    helper.deleteRoutine(model.routineTitle, auth.getUserNameFromToken(token), false);
+                    return Request.CreateResponse<string>(HttpStatusCode.OK, "Job Deleted");
+
+                default: return Request.CreateResponse<string>(HttpStatusCode.BadRequest, "Create Code Not Recognized");
+            }
+
+            return Request.CreateResponse<string>(HttpStatusCode.Created, "Job Created");
+        }
 
         protected override void Dispose(bool disposing)
         {
