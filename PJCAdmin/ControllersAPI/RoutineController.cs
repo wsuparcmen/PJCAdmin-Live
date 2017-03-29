@@ -67,7 +67,7 @@ namespace PJCAdmin.ControllersAPI
             return routineInfo;
         }*/
 
-        //POST api/Routine?token=<token>&create=<c,m,or d>&model=<[routine object]>
+        //POST api/Routine?token=<token>&create=<c,m,or d>&model=<jsonStringObject>
         [HttpPost]
         public HttpResponseMessage PostRoutine(PostRoutineRequest data)
         {
@@ -93,7 +93,7 @@ namespace PJCAdmin.ControllersAPI
                 case "d": //delete existing job
                     //find the routine that matches
                     //delete the matching routine from the database
-                    helper.deleteRoutine(routine.routineTitle, auth.getUserNameFromToken(token), false);
+                    helper.deleteRoutine(auth.getUserNameFromToken(token), routine.routineTitle, routine.assigneeUserName, false);
                     return Request.CreateResponse<string>(HttpStatusCode.OK, "Job Deleted");
 
                 default: return Request.CreateResponse<string>(HttpStatusCode.BadRequest, "Create Code Not Recognized");
@@ -128,7 +128,7 @@ namespace PJCAdmin.ControllersAPI
 
 
             Routine temp = helper.getRoutineAssignedToByName(routineTitle);
-            routineInfo = (RoutineModel) temp;
+            //routineInfo = (RoutineModel) temp;
             return routineInfo;
         }
     }
