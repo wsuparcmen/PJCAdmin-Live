@@ -87,7 +87,7 @@ namespace PJCAdmin.ControllersAPI
                 case "m": //modify existing job
                     //find the routine that matches
                     //update the database for routine
-                    helper.updateRoutine(auth.getUserNameFromToken(token), routine.routineTitle, routine);
+                    helper.modifyExistingRoutine(auth.getUserNameFromToken(token), routine.routineTitle, routine);
                     break;
 
                 case "d": //delete existing job
