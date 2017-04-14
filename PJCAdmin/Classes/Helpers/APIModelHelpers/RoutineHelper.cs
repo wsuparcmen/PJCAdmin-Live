@@ -104,7 +104,7 @@ namespace PJCAdmin.Classes.Helpers.APIModelHelpers
         }
 
         #region create/modify
-        private void modifyExistingRoutine(string routineName, RoutineModel model)
+        public void modifyExistingRoutine(string routineName, RoutineModel model)
         {
             Routine rout = getRoutineAssignedToByName(routineName);
 
